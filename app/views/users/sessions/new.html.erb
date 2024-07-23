@@ -1,0 +1,13 @@
+<div class="flex h-full w-full items-center justify-center">
+  <div class="flex flex-col gap-4 text-slate-600 w-full max-w-md">
+    <div class="font-serif">
+      welcome to context.ai
+    </div>
+
+    <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: "false" },
+                  class: 'flex items-center p-2 border rounded gap-2 shadow-sm w-full justify-center hover:bg-slate-50 bg-white' do %>
+      <%= image_tag 'google.png', class: 'h-4' %>
+      Continue with Google
+    <% end %>
+  </div>
+</div>

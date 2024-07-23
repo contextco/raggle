@@ -5,10 +5,23 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  # Defines the root path route ("/")
-  root 'chats#index'
-
   resources :chats, only: %i[index create show update] do
     post 'chat', on: :member
   end
+
+  # Devise User Paths
+  devise_for :users,
+             path: '',
+             skip: %i[registrations passwords],
+             path_names: {
+               sign_in: 'start',
+               sign_out: 'logout'
+             },
+             controllers: {
+               omniauth_callbacks: 'users/omniauth_callbacks',
+               sessions: 'users/sessions'
+             }
+
+  # Defines the root path route ("/")
+  root 'chats#index'
 end
