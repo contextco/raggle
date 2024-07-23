@@ -62,6 +62,12 @@
     <orderEntry type="library" scope="PROVIDED" name="faraday-net_http (v3.1.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.17.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.2.1, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="google-cloud-ai_platform (v1.3.0, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="google-cloud-core (v1.7.0, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="google-cloud-env (v2.1.1, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="google-cloud-errors (v1.4.0, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="google-cloud-location (v0.8.0, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="googleauth (v1.11.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="hashie (v5.0.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="heroicon (v1.0.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="hotwire-livereload (v1.4.0, asdf: 3.3.3) [gem]" level="application" />
@@ -82,6 +88,7 @@
     <orderEntry type="library" scope="PROVIDED" name="mini_mime (v1.1.5, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.24.1, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="msgpack (v1.7.2, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="multi_json (v1.15.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="multi_xml (v0.7.1, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="multipart-post (v2.4.1, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-http (v0.4.1, asdf: 3.3.3) [gem]" level="application" />
@@ -96,6 +103,7 @@
     <orderEntry type="library" scope="PROVIDED" name="omniauth-oauth2 (v1.8.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="omniauth-rails_csrf_protection (v1.0.2, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="orm_adapter (v0.5.0, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="os (v1.1.4, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parallel (v1.25.1, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parser (v3.3.4.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pg (v1.5.6, asdf: 3.3.3) [gem]" level="application" />
@@ -131,6 +139,7 @@
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v4.23.0, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="signet (v0.19.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="snaky_hash (v2.0.1, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v4.2.1, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.5.1, asdf: 3.3.3) [gem]" level="application" />

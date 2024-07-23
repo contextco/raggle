@@ -110,6 +110,8 @@ GEM
     dotenv (3.1.2)
     drb (2.2.1)
     erubi (1.13.0)
+    et-orbi (1.2.11)
+      tzinfo
     event_stream_parser (1.0.0)
     faraday (2.10.0)
       faraday-net_http (>= 2.0, < 3.2)
@@ -126,6 +128,9 @@ GEM
     ffi (1.17.0-x86-linux-gnu)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
+    fugit (1.11.0)
+      et-orbi (~> 1, >= 1.2.11)
+      raabro (~> 1.4)
     gapic-common (0.22.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -314,6 +319,7 @@ GEM
     public_suffix (6.0.0)
     puma (6.4.2)
       nio4r (~> 2.0)
+    raabro (1.4.0)
     racc (1.8.0)
     rack (2.2.9)
     rack-protection (3.2.0)
@@ -413,6 +419,12 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
+    solid_queue (0.3.4)
+      activejob (>= 7.1)
+      activerecord (>= 7.1)
+      concurrent-ruby (>= 1.3.1)
+      fugit (~> 1.11.0)
+      railties (>= 7.1)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -494,6 +506,7 @@ DEPENDENCIES
   rubocop-rails
   ruby-openai
   selenium-webdriver
+  solid_queue
   sprockets-rails
   stimulus-rails
   tailwindcss-rails

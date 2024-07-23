@@ -82,3 +82,4 @@ gem 'omniauth-rails_csrf_protection'
 gem 'redcarpet'
 gem 'ruby-openai'
 gem 'google-cloud-ai_platform'
+gem "solid_queue"
