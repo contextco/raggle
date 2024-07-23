@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+
+@layer components {
+  .btn-primary {
+    @apply py-2 px-4 bg-blue-200;
+  }
+}
+
+*/
+
+.message-content pre {
+    @apply bg-stone-200 p-2 rounded overflow-x-auto max-w-full;
+}
+
+/* Style the entire scrollbar */
+::-webkit-scrollbar {
+    height: 6px; /* Height of the horizontal scrollbar */
+    width: 6px;
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Style the scrollbar handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1px; /* Rounded corners of the handle */
+}
+
+/* Style the handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
