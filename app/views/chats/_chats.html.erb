@@ -1,10 +1,10 @@
-<div class="flex justify-between px-6 py-2 border-b items-center">
+<div class="flex justify-between pl-6 pr-2 py-2 border-b items-center">
   <div class="font-serif">
     context ai
   </div>
 
   <div class="right text-xs">
-    <%= link_to chats_path, class: 'text-blue' do %>
+    <%= link_to chats_path, class: 'text-stone-600 border rounded py-1 px-2 hover:border-b-2 border-stone-300' do %>
     + New Chat
     <% end %>
   </div>
@@ -12,7 +12,7 @@
 <div class="flex min-h-0 grow items-stretch">
   <div class="w-64 flex flex-col gap-1 shrink-0 items-stretch p-4">
     <% @chats.each do |chat| %>
-      <%= link_to chat_path(chat), class: 'p-2 text-sm rounded hover:bg-blue-50' do %>
+      <%= link_to chat_path(chat), class: 'p-2 text-sm rounded hover:bg-stone-200' do %>
         <div class="truncate">
           <%= chat.messages.first&.content %>
         </div>

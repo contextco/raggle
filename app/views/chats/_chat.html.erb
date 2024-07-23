@@ -70,16 +70,16 @@
 
   <div class="flex justify-center mt-4">
     <%= form_with model: @chat,
-                  class: 'flex items-center min-h-0 shrink-0 py-2 bg-white rounded-md px-2 mb-4 max-w-4xl w-full',
+                  class: 'flex items-center min-h-0 shrink-0 py-1 bg-white rounded-md pl-3 pr-1 mb-4 max-w-4xl w-full border border-stone-200',
                   data: { action: 'keypress.enter->chat#submit'} do |form| %>
       <%= form.text_area :content,
-                         class: 'w-full border-0 focus:ring-0 border-gray-300 p-1 resize-none rounded-md',
+                         class: 'w-full border-0 focus:ring-0 border-gray-300 p-0 resize-none rounded-md text-sm',
                          placeholder: 'Type your message here',
                          autofocus: true
       %>
 
       <%= form.button class: 'uppercase rounded bg-stone-100 flex items-center justify-center p-4' do %>
-        <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-700'} %>
+        <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-600'} %>
       <% end %>
     <% end %>
   </div>

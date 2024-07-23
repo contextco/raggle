@@ -4,11 +4,11 @@ class ChatsController < ApplicationController
   before_action :set_chat, only: %i[show update]
   before_action :load_chats_layout
   def index
-    @chat = Chat.new
+    @chat = current_user.chats.build
   end
 
   def create
-    @chat = Chat.create!
+    @chat = current_user.chats.create
 
     push_chat_forward
 
@@ -26,7 +26,7 @@ class ChatsController < ApplicationController
   private
 
   def load_chats_layout
-    @chats = Chat.all.limit(20).order(created_at: :desc)
+    @chats = current_user.chats.limit(20).order(created_at: :desc)
   end
 
   def chat_params
@@ -34,7 +34,7 @@ class ChatsController < ApplicationController
   end
 
   def set_chat
-    @chat = Chat.find_by(id: params[:id])
+    @chat = current_user.chats.find_by(id: params[:id])
     redirect_to chats_path unless @chat
   end
 
