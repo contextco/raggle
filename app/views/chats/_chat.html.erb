@@ -23,7 +23,7 @@
                   <div id="<%= dom_id(message) %>" class="message-content min-h-4 p-2 rounded-md bg-stone-200 flex flex-col gap-2 items-end"><%== markdown_to_html(message.content) %></div>
                 </div>
               </div>
-              <div class="size-6 bg-stone-600 rounded-full mt-1.5 shrink-0"></div>
+              <div class="size-6 bg-stone-600 rounded-full mt-1.5 shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url %></div>
             </div>
           <% end %>
         <% end %>
@@ -35,14 +35,13 @@
   <% if @chat.messages.empty? %>
     <div class="flex py-1 w-full border-b justify-end px-2">
       <%= collection_select(
+            :chat,
             :model,
-            :canonical_name,
             LLM.all!.select(&:generation_allowed?).select { |llm| llm.provider.canonical_name == :openai },
             :canonical_name,
             :display_name,
             { selected: 'gpt-4o-mini' },
-            { class: 'border-1 border-stone-200 rounded-md px-2 py-1 text-sm' }
-
+            { class: 'border-1 border-stone-200 rounded-md px-2 py-1 text-sm', form: 'chat-form' }
           )
       %>
     </div>
@@ -53,15 +52,18 @@
         </div>
 
         <div class="flex gap-4 text-sm">
-          <div class="border-2 rounded w-36 p-4">
+          <%= button_to chats_path(params: { chat: { content: 'Help me draft a fun birthday message.' }}), class: 'border-2 rounded w-36 p-4 flex gap-2 flex-col text-left hover:border-slate-500 duration-200' do %>
+            <%= heroicon 'cake', variant: :outline, options: { class: 'size-6 flex-1'} %>
             Draft a birthday message.
-          </div>
-          <div class="border-2 rounded w-36 p-4">
-            Draft a birthday message.
-          </div>
-          <div class="border-2 rounded w-36 p-4">
-            Draft a birthday message.
-          </div>
+          <% end %>
+          <%= button_to chats_path(params: { chat: { content: 'Help me plan a trip to Paris.' }}), class: 'border-2 rounded w-36 p-4 flex gap-2 flex-col text-left hover:border-slate-500 duration-200' do %>
+            <%= heroicon 'globe-europe-africa', variant: :outline, options: { class: 'size-6 flex-1'} %>
+            Plan a trip to Paris.
+          <% end %>
+          <%= button_to chats_path(params: { chat: { content: 'Help me debug some Javascript.' }}), class: 'border-2 rounded w-36 p-4 flex gap-2 flex-col text-left hover:border-slate-500 duration-200' do %>
+            <%= heroicon 'code-bracket-square', variant: :outline, options: { class: 'size-6 flex-1'} %>
+            Debug some Javascript.
+          <% end %>
         </div>
       </div>
     </div>
@@ -70,6 +72,7 @@
 
   <div class="flex justify-center mt-4">
     <%= form_with model: @chat,
+                  id: 'chat-form',
                   class: 'flex items-center min-h-0 shrink-0 py-1 bg-white rounded-md pl-3 pr-1 mb-4 max-w-4xl w-full border border-stone-200',
                   data: { action: 'keypress.enter->chat#submit'} do |form| %>
       <%= form.text_area :content,
@@ -79,7 +82,7 @@
       %>
 
       <%= form.button class: 'uppercase rounded bg-stone-100 flex items-center justify-center p-4' do %>
-        <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-600'} %>
+        <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-600' } %>
       <% end %>
     <% end %>
   </div>
