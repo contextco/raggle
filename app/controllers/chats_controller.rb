@@ -8,7 +8,7 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @chat = current_user.chats.create
+    @chat = current_user.chats.create(chat_params)
 
     push_chat_forward
 
@@ -29,8 +29,12 @@ class ChatsController < ApplicationController
     @chats = current_user.chats.limit(20).order(created_at: :desc)
   end
 
-  def chat_params
+  def message_params
     params.require(:chat).permit(:content)
+  end
+
+  def chat_params
+    params.require(:chat).permit(:model)
   end
 
   def set_chat
@@ -40,9 +44,9 @@ class ChatsController < ApplicationController
 
   def push_chat_forward
     message = @chat.transaction do
-      @chat.messages.create!(chat_params.merge(role: :user))
+      @chat.messages.create!(message_params.merge(role: :user))
       @chat.messages.create!(role: :assistant)
     end
-    GenerateNewMessageJob.perform_later(message, chat_params[:content])
+    GenerateNewMessageJob.perform_later(message, message_params[:content])
   end
 end
