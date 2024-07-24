@@ -10,17 +10,19 @@ class GenerateNewMessageJob < ApplicationJob
   private
 
   def generate_new_message(message, content)
-    llm_client.chat_streaming(
+    outcome = llm_client.chat_streaming(
       [
         *prior_messages(message),
         {
           role: :user,
-          content:
+          content: content || ''
         }
       ],
       stream_new_messages(message),
       ->(content) { message.update!(content:) }
     )
+
+    raise StandardError.new(outcome.full_json) unless outcome.success
   end
 
   def stream_new_messages(message)
