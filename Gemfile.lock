@@ -114,6 +114,11 @@ GEM
     et-orbi (1.2.11)
       tzinfo
     event_stream_parser (1.0.0)
+    factory_bot (6.4.6)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
+      railties (>= 5.0.0)
     faraday (2.10.0)
       faraday-net_http (>= 2.0, < 3.2)
       logger
@@ -123,6 +128,7 @@ GEM
       net-http
     faraday-retry (2.2.1)
       faraday (~> 2.0)
+    ffaker (2.23.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm-linux-gnu)
     ffi (1.17.0-arm64-darwin)
@@ -507,6 +513,8 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   dotenv
+  factory_bot_rails
+  ffaker
   google-cloud-ai_platform
   heroicon
   hotwire-livereload
