@@ -110,6 +110,7 @@
     <orderEntry type="library" scope="PROVIDED" name="psych (v5.1.2, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="public_suffix (v6.0.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="puma (v6.4.2, asdf: 3.3.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="raabro (v1.4.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="racc (v1.8.0, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.9, asdf: 3.3.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack-protection (v3.2.0, asdf: 3.3.3) [gem]" level="application" />
