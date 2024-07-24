@@ -17,10 +17,10 @@
           <% elsif message.role == 'user' %>
             <div class="flex gap-4 last:pb-8">
               <div class="w-6"></div>
-              <div class="flex justify-end grow">
-                <div class="text-sm text-slate-700 flex gap-4 text-right">
+              <div class="flex justify-end flex-1">
+                <div class="text-sm text-slate-700 flex gap-4">
                   <%= turbo_stream_from message %>
-                  <div id="<%= dom_id(message) %>" class="message-content min-h-4 p-2 rounded-md bg-stone-200 flex flex-col gap-2 items-end"><%== markdown_to_html(message.content) %></div>
+                  <div id="<%= dom_id(message) %>" class="message-content min-h-4 p-2 rounded-md bg-stone-200 flex flex-col gap-2"><%== markdown_to_html(message.content) %></div>
                 </div>
               </div>
               <div class="size-6 bg-stone-600 rounded-full mt-1.5 shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url %></div>

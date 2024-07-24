@@ -16,6 +16,18 @@
     @apply bg-stone-200 p-2 rounded overflow-x-auto max-w-full;
 }
 
+.message-content table {
+    @apply overflow-x-auto whitespace-nowrap max-w-prose block p-2;
+}
+
+.message-content th {
+    @apply p-2 border bg-stone-200 border-stone-300 font-medium;
+}
+
+.message-content td {
+    @apply p-2 border border-stone-200;
+}
+
 /* Style the entire scrollbar */
 ::-webkit-scrollbar {
     height: 6px; /* Height of the horizontal scrollbar */
