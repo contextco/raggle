@@ -2,18 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-
-@layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
-  }
-}
-
-*/
-
 .message-content pre {
     @apply bg-stone-200 p-2 rounded overflow-x-auto max-w-full;
+}
+
+.message-content ol {
+    @apply flex flex-col gap-1;
 }
 
 .message-content table {

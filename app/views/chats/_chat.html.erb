@@ -1,5 +1,14 @@
 <div data-controller="chat" class="flex flex-col justify-between items-stretch border-x min-h-0 grow text-sm">
   <% if @chat.messages.present? %>
+    <div class="text-stone-600 flex py-2 w-full border-b justify-between px-2">
+      <div class="">
+        Only visible to me
+      </div>
+      <div class="flex items-center gap-1 text-xs">
+        <%= image_tag LLM.from_string!(@chat.model)&.image_path, class: 'w-4' %>
+        <%= @chat.model %>
+      </div>
+    </div>
     <div class="flex flex-col gap-4 overflow-y-auto py-4 flex-1 items-center" data-chat-target="scrollContainer" data-scroll-to-bottom-target>
       <div class="items max-w-prose w-full flex flex-col gap-4">
         <% @chat.messages.each do |message| %>
@@ -7,7 +16,7 @@
             <div class="flex gap-4 last:pb-8 w-full">
               <div class="size-6 bg-stone-600 rounded-full shrink-0"></div>
               <div class="flex grow min-w-0">
-                <div class="text-sm text-slate-700 flex gap-4 flex-1 min-w-0">
+                <div class="text-sm text-slate-700 flex gap-4 flex-1 min-w-0 leading-normal">
                   <%= turbo_stream_from message %>
                   <div id="<%= dom_id(message) %>" class="message-content flex flex-col gap-2 items-start min-w-0"><%== markdown_to_html(message.content) %></div>
                 </div>
@@ -20,7 +29,19 @@
               <div class="flex justify-end flex-1">
                 <div class="text-sm text-slate-700 flex gap-4">
                   <%= turbo_stream_from message %>
-                  <div id="<%= dom_id(message) %>" class="message-content min-h-4 p-2 rounded-md bg-stone-200 flex flex-col gap-2"><%== markdown_to_html(message.content) %></div>
+                  <div id="<%= dom_id(message) %>" class="leading-relaxed message-content min-h-4 px-2 py-1 rounded-md bg-stone-200 flex flex-col gap-1">
+                    <%== markdown_to_html(message.content) %>
+                    <% if message.files.attached? %>
+                      <div class="flex gap-2">
+                        <% message.files.each do |file| %>
+                          <div class="border p-1 bg-stone-300 rounded flex items-center text-xs gap-1">
+                            <%= heroicon 'document', variant: :outline, options: { class: 'size-4'} %>
+                            <%= link_to file.filename, rails_blob_path(file, disposition: 'attachment') %>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
               </div>
               <div class="size-6 bg-stone-600 rounded-full mt-1.5 shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url %></div>
@@ -74,16 +95,50 @@
     <%= form_with model: @chat,
                   id: 'chat-form',
                   class: 'flex items-center min-h-0 shrink-0 py-1 bg-white rounded-md pl-3 pr-1 mb-4 max-w-4xl w-full border border-stone-200 has-[:focus]:border-stone-400',
-                  data: { action: 'keypress.enter->chat#submit'} do |form| %>
-      <%= form.text_area :content,
-                         class: 'w-full border-0 focus:ring-0 border-gray-300 p-0 resize-none rounded-md text-sm',
-                         placeholder: 'Type your message here',
-                         autofocus: true
-      %>
+                  data: {
+                    action: 'keypress.enter->chat#submit'
+                  } do |form| %>
+      <div class="flex flex-col flex-1">
+        <div class="flex">
+          <%= form.text_area :content,
+                             class: 'pt-1 w-full border-0 focus:ring-0 border-gray-300 p-0 resize-none rounded-md text-sm min-h-16',
+                             placeholder: 'Send a new message...',
+                             autofocus: true
+          %>
+          <%= form.button class: 'uppercase rounded flex items-center justify-center p-4' do %>
+            <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-600' } %>
+          <% end %>
+        </div>
 
-      <%= form.button class: 'uppercase rounded bg-stone-100 flex items-center justify-center p-4' do %>
-        <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-600' } %>
-      <% end %>
+        <div class="dropzone dropzone-default dz-clickable border-t mr-4 pt-1 flex gap-2 py-1"
+             data-controller="dropzone"
+             data-dropzone-max-file-size="1"
+             data-dropzone-accepted-files="text/markdown"
+             data-dropzone-preview-template="#dropzone-chat-preview-template"
+        >
+          <%= form.file_field :files, multiple: true, direct_upload: true, data: { 'dropzone-target': 'input' }, class: 'hidden' %>
+          <div class="dropzone-msg dz-message needsclick flex gap-1 items-center text-stone-500 cursor-pointer">
+            <%= heroicon 'document-plus', variant: :outline, options: { class: 'size-4'} %>
+            Attach files as context
+          </div>
+
+          <template id='dropzone-chat-preview-template'>
+            <div class="flex gap-2 block">
+              <div class="border p-1 bg-stone-100 rounded flex items-center text-xs gap-1">
+                <%= heroicon 'document', variant: :outline, options: { class: 'size-4'} %>
+                <div class="dz-filename"><span data-dz-name></span></div>
+                <div class="flex items-center gap-1">
+                  <button data-dz-remove class="text-stone-600 hover:text-stone-800">
+                    <%= heroicon 'x-mark', variant: :outline, options: { class: 'size-3'} %>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+
     <% end %>
   </div>
 </div>

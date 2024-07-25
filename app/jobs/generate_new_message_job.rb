@@ -10,9 +10,9 @@ class GenerateNewMessageJob < ApplicationJob
   private
 
   def generate_new_message(message, content)
-    outcome = llm_client.chat_streaming(
+    outcome = llm_client(message).chat_streaming(
       [
-        *prior_messages(message),
+        *prior_messages(message.chat, message),
         {
           role: :user,
           content: content || ''
@@ -22,7 +22,7 @@ class GenerateNewMessageJob < ApplicationJob
       ->(content) { message.update!(content:) }
     )
 
-    raise StandardError.new(outcome.full_json) unless outcome.success
+    raise StandardError, outcome.full_json unless outcome.success
   end
 
   def stream_new_messages(message)
@@ -35,11 +35,26 @@ class GenerateNewMessageJob < ApplicationJob
     }
   end
 
-  def prior_messages(message)
-    message.chat.messages - [message]
+  def prior_messages(chat, current_message)
+    chat.messages.excluding(current_message).flat_map do |message|
+      buf = message.files.map do |file|
+        {
+          role: :system,
+          content: <<~FILE
+            The user uploaded the following file, use this to inform your response if necessary.
+
+            Filename: #{file.filename}
+
+            Contents:
+            #{file.download}
+          FILE
+        }
+      end
+      buf << { role: :assistant, content: message.content }
+    end
   end
 
-  def llm_client
-    @llm_client = LLM.from_string!('gpt-4o-mini').client
+  def llm_client(message)
+    @llm_client = LLM.from_string!(message.chat.model).client
   end
 end
