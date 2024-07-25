@@ -5,7 +5,9 @@ export default class extends Controller {
   static targets = ["scrollContainer"]
 
   connect() {
+    if (this.hasScrollContainerTarget) {
       this.scrollContainerTarget.scrollTop = this.scrollContainerTarget.scrollHeight;
+    }
   }
 
   submit(event) {
