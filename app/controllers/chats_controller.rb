@@ -8,7 +8,7 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @chat = current_user.chats.create(chat_params)
+    @chat = current_user.chats.create(chat_params.reverse_merge(model: 'gpt-4o-mini'))
 
     push_chat_forward
 
@@ -26,11 +26,11 @@ class ChatsController < ApplicationController
   private
 
   def load_chats_layout
-    @chats = current_user.chats.limit(20).order(created_at: :desc)
+    @chats = current_user.chats.preload(:first_message).limit(20).order(created_at: :desc)
   end
 
   def message_params
-    params.require(:chat).permit(:content)
+    params.require(:chat).permit(:content, files: [])
   end
 
   def chat_params
@@ -38,7 +38,7 @@ class ChatsController < ApplicationController
   end
 
   def set_chat
-    @chat = current_user.chats.find_by(id: params[:id])
+    @chat = current_user.chats.preload(:messages).find_by(id: params[:id])
     redirect_to chats_path unless @chat
   end
 
