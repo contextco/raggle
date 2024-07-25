@@ -87,3 +87,4 @@ gem 'ruby-openai'
 gem 'google-cloud-ai_platform'
 gem "solid_queue"
 gem "view_component"
+gem 'aws-sdk-s3'
