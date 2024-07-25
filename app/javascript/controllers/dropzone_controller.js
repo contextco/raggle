@@ -6,7 +6,7 @@ import { getMetaValue, findElement, removeElement, insertAfter } from "./../help
 Dropzone.autoDiscover = false
 
 export default class extends Controller {
-    static targets = [ "input" ]
+    static targets = [ "input", "previewsContainer" ]
 
     connect() {
         this.dropZone = createDropZone(this)
@@ -54,12 +54,11 @@ export default class extends Controller {
 
     get addRemoveLinks() { return this.data.get("addRemoveLinks") || true }
 
-    get form() { return this.element.closest("form") }
+    get form() { return this.inputTarget.closest("form") }
 
     get submitButton() { return findElement(this.form, "input[type=submit], button[type=submit]") }
 
     get previewElement() {
-        console.log(this.element.querySelector(this.data.get('previewTemplate')).innerHTML)
         return this.element.querySelector(this.data.get('previewTemplate')).innerHTML
     }
 }
@@ -147,5 +146,6 @@ function createDropZone(controller) {
         autoQueue: false,
         previewTemplate: controller.previewElement,
         addRemoveLinks: false,
+        previewsContainer: controller.previewsContainerTarget,
     })
 }
