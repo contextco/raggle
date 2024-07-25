@@ -23,7 +23,9 @@
               <div class="flex grow min-w-0">
                 <div class="text-sm text-slate-700 flex gap-4 flex-1 min-w-0 leading-normal">
                   <%= turbo_stream_from message %>
-                  <div id="<%= dom_id(message) %>" class="message-content flex flex-col gap-2 items-start min-w-0"><%== markdown_to_html(message.content) %></div>
+                  <div id="<%= dom_id(message) %>" class="peer message-content flex flex-col gap-2 items-start min-w-0"><%== markdown_to_html(message.content) %></div>
+                  <%= image_tag 'loading.gif', class: 'size-4 peer-empty:block hidden mt-1 -ml-4'  %>
+
                 </div>
               </div>
               <div class="w-6"></div>
