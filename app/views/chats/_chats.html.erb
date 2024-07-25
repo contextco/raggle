@@ -14,7 +14,7 @@
     <% @chats.each do |chat| %>
       <%= link_to chat_path(chat), class: 'p-2 text-sm rounded hover:bg-stone-200' do %>
         <div class="truncate">
-          <%= chat.messages.first&.content %>
+          <%= chat.first_message&.content %>
         </div>
 
         <div class="text-xs text-slate-500">
