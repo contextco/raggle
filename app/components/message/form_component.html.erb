@@ -28,7 +28,8 @@
 
       <template id='dropzone-chat-preview-template'>
         <div class="flex gap-2 block">
-          <div class="border p-1 bg-stone-100 rounded flex items-center text-xs gap-1">
+          <div class="border p-1 bg-stone-100 rounded flex items-center text-xs gap-1 relative overflow-hidden">
+            <div class="dz-upload border-t-2 border-stone-500 w-0 absolute top-0 left-0"></div>
             <%= heroicon 'document', variant: :outline, options: { class: 'size-4'} %>
             <div class="dz-filename"><span data-dz-name></span></div>
             <div class="flex items-center gap-1">
