@@ -2,7 +2,8 @@
               id: 'chat-form',
               class: 'flex items-center min-h-0 shrink-0 py-1 bg-white rounded-md pl-3 pr-1 mb-4 max-w-4xl w-full border border-stone-200 has-[:focus]:border-stone-400',
               data: {
-                action: 'keypress.enter->chat#submit'
+                action: 'keypress.enter->chat#submit',
+                'dropzone-target': 'form',
               } do |form| %>
   <div class="flex flex-col flex-1">
     <div class="flex">
@@ -17,10 +18,7 @@
     </div>
 
     <div class="dropzone dropzone-default dz-clickable border-t mr-4 pt-1 flex gap-2 py-1"
-         data-controller="dropzone"
-         data-dropzone-max-file-size="1"
-         data-dropzone-accepted-files="text/markdown"
-         data-dropzone-preview-template="#dropzone-chat-preview-template"
+         data-dropzone-target="previewsContainer"
     >
       <%= form.file_field :files, multiple: true, direct_upload: true, data: { 'dropzone-target': 'input' }, class: 'hidden' %>
       <div class="dropzone-msg dz-message needsclick flex gap-1 items-center text-stone-500 cursor-pointer">

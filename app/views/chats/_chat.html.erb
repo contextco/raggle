@@ -1,4 +1,9 @@
-<div data-controller="chat" class="flex flex-col justify-between items-stretch border-x min-h-0 grow text-sm">
+<div data-controller="chat dropzone"
+     data-dropzone-max-file-size="1"
+     data-dropzone-accepted-files="text/markdown,text/plain"
+     data-dropzone-preview-template="#dropzone-chat-preview-template"
+     class="flex flex-col justify-between items-stretch border-x min-h-0 grow text-sm"
+>
   <% if @chat.messages.present? %>
     <div class="text-stone-600 flex py-2 w-full border-b justify-between px-2">
       <div class="">
