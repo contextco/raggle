@@ -44,7 +44,7 @@
                   </div>
                 </div>
               </div>
-              <div class="size-6 bg-stone-600 rounded-full mt-1.5 shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url %></div>
+              <div class="size-6 items-center h-full flex shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url, class: 'rounded-full overflow-hidden' %></div>
             </div>
           <% end %>
         <% end %>
