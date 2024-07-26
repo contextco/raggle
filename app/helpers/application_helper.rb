@@ -10,7 +10,8 @@ module ApplicationHelper
   end
 
   def profile_picture_tag
-    image_tag current_user.profile_picture_url, class: 'rounded-full overflow-hidden size-full',
-                                                referrerpolicy: 'no-referrer'
+    image_tag current_user.profile_picture_url,
+              class: 'rounded-full overflow-hidden size-full',
+              referrerpolicy: 'no-referrer'
   end
 end

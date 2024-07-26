@@ -165,6 +165,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rubocop (v1.65.0, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-ast (v1.31.3, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rails (v2.25.1, ruby-3.3.4-p94) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rubocop-rspec (v3.0.3, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-openai (v7.1.0, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, ruby-3.3.4-p94) [gem]" level="application" />
@@ -182,6 +183,7 @@
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="unicode-display_width (v2.5.0, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="uri (v0.13.0, ruby-3.3.4-p94) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="vcr (v6.2.0, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="version_gem (v1.1.4, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="view_component (v3.13.0, ruby-3.3.4-p94) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="warden (v1.2.9, ruby-3.3.4-p94) [gem]" level="application" />
@@ -661,6 +663,7 @@
           <RakeTaskImpl description="Run all specs in spec directory (excluding plugin specs)" fullCommand="spec" id="spec" />
           <RakeTaskImpl id="spec">
             <subtasks>
+              <RakeTaskImpl description="Run the code examples in spec/clients" fullCommand="spec:clients" id="clients" />
               <RakeTaskImpl description="Run the code examples in spec/jobs" fullCommand="spec:jobs" id="jobs" />
               <RakeTaskImpl description="" fullCommand="spec:prepare" id="prepare" />
               <RakeTaskImpl description="" fullCommand="spec:statsetup" id="statsetup" />
