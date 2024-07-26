@@ -1,5 +1,5 @@
 ![Github card](https://github.com/user-attachments/assets/be2725b5-60df-4abc-a637-bb07961d68f2)
-_[Star us on Github]((https://github.com/contextco/chat)_
+_[Star us on Github](https://github.com/contextco/chat)_
 
 # SideKick 🥾 By Context.ai
 SideKick 🥾 is an open source LLM and RAG chat product that provides similar features to both Glean and ChatGPT - but self-hosted
