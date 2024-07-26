@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
@@ -43,7 +45,7 @@ Rails.application.configure do
                                   when 'local'
                                     :local
                                   else
-                                    raise "Unknown FILE_STORAGE: #{ENV['FILE_STORAGE']}"
+                                    raise "Unknown FILE_STORAGE: #{ENV.fetch('FILE_STORAGE', nil)}"
                                   end
 
   # Mount Action Cable outside main process or domain.
@@ -59,8 +61,8 @@ Rails.application.configure do
   config.force_ssl = true
 
   # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
-                                       .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
+  config.logger = ActiveSupport::Logger.new($stdout)
+                                       .tap  { |logger| logger.formatter = Logger::Formatter.new }
                                        .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Prepend all log lines with the following tags.
