@@ -97,19 +97,19 @@ class LLM
   end
 
   attr_accessor :canonical_name,
-    :client_alias,
-    :url_slug,
-    :display_name,
-    :provider_canonical_name,
-    :context_window_tokens,
-    :client_class,
-    :config_validation,
-    :tokenization_unit,
-    :tiktoken_model,
-    :supports_streaming,
-    :benchmarks,
-    :premium_model,
-    :instruct_model
+                :client_alias,
+                :url_slug,
+                :display_name,
+                :provider_canonical_name,
+                :context_window_tokens,
+                :client_class,
+                :config_validation,
+                :tokenization_unit,
+                :tiktoken_model,
+                :supports_streaming,
+                :benchmarks,
+                :premium_model,
+                :instruct_model
 
   attribute :cents_per_thousand_input_tokenization_units, :decimal
   attribute :cents_per_thousand_output_tokenization_units, :decimal
@@ -154,7 +154,11 @@ class LLM
     def filtered_models_for_team(team:)
       models = known_models
       # If you want to filter models based on a feature flag, you can do it here. If you want the model to be available only outside of free tier then do it through accessible? method by setting premium_model:true in llm config.
-      models = models.reject { |model| model.canonical_name == 'gemini-ultra' } unless Flipper.enabled?(:gemini_ultra, team)
+      unless Flipper.enabled?(:gemini_ultra, team)
+        models = models.reject do |model|
+          model.canonical_name == 'gemini-ultra'
+        end
+      end
 
       models
     end
