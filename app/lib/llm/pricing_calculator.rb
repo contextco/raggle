@@ -17,7 +17,7 @@ class LLM::PricingCalculator
                                  output_price
                                else
                                  raise "Unknown LLM I/O type, must be either input or :output #{type}"
-    end
+                               end
 
     price_per_thousand_units * unit_count / 1000
   end

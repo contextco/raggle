@@ -10,16 +10,14 @@
       <%= form.text_area :content,
                          class: 'pt-1 w-full border-0 focus:ring-0 border-gray-300 p-0 resize-none rounded-md text-sm min-h-16',
                          placeholder: 'Send a new message...',
-                         autofocus: true
-      %>
+                         autofocus: true %>
       <%= form.button class: 'uppercase rounded flex items-center justify-center p-4' do %>
         <%= heroicon 'arrow-right-circle', variant: :outline, options: { class: 'size-6 text-stone-600' } %>
       <% end %>
     </div>
 
     <div class="dropzone dropzone-default dz-clickable border-t mr-4 pt-1 flex gap-2 py-1"
-         data-dropzone-target="previewsContainer"
-    >
+         data-dropzone-target="previewsContainer">
       <%= form.file_field :files, multiple: true, direct_upload: true, data: { 'dropzone-target': 'input' }, class: 'hidden' %>
       <div class="dropzone-msg dz-message needsclick flex gap-1 items-center text-stone-500 cursor-pointer">
         <%= heroicon 'document-plus', variant: :outline, options: { class: 'size-4'} %>

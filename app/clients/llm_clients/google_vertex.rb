@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/AbcSize
 
@@ -19,7 +18,8 @@ class LLMClients::GoogleVertex
   def chat(messages, **kwargs)
     prompt, context = prepare_messages(messages)
     request = Google::Cloud::AIPlatform::V1::PredictRequest.new(
-      endpoint: "projects/#{ENV.fetch('GOOGLE_CLOUD_PROJECT', nil)}/locations/us-central1/publishers/google/models/#{@llm.client_model_identifier}",
+      endpoint: "projects/#{ENV.fetch('GOOGLE_CLOUD_PROJECT',
+                                      nil)}/locations/us-central1/publishers/google/models/#{@llm.client_model_identifier}",
       instances: [
         {
           struct_value: {
@@ -44,7 +44,11 @@ class LLMClients::GoogleVertex
             'frequencyPenalty' => kwargs[:frequency_penalty].present? ? Google::Protobuf::Value.new(number_value: kwargs[:frequency_penalty]) : nil,
             'presencePenalty' => kwargs[:presence_penalty].present? ? Google::Protobuf::Value.new(number_value: kwargs[:presence_penalty]) : nil,
             'logProbs' => kwargs[:log_probs].present? ? Google::Protobuf::Value.new(number_value: kwargs[:log_probs]) : nil,
-            'logitBias' => kwargs[:logit_bias].present? ? Google::Protobuf::Value.new(list_value: JSON.parse(kwargs[:logit_bias].gsub('=>', ':'))) : nil,
+            'logitBias' => if kwargs[:logit_bias].present?
+                             Google::Protobuf::Value.new(list_value: JSON.parse(kwargs[:logit_bias].gsub(
+                                                                                  '=>', ':'
+                                                                                )))
+                           end,
             'seed' => kwargs[:seed].present? ? Google::Protobuf::Value.new(number_value: kwargs[:seed]) : nil
           }.compact_blank
         }
@@ -54,17 +58,24 @@ class LLMClients::GoogleVertex
     resp = @client.predict(request)
 
     # TODO: more intelligent success reporting, always return :stop for now
-    LLMClients::Response.new(content: resp['predictions'][0]['struct_value']['candidates'][0]['content'], full_json: resp, success: true, stop_reason: :stop)
+    LLMClients::Response.new(content: resp['predictions'][0]['struct_value']['candidates'][0]['content'],
+                             full_json: resp, success: true, stop_reason: :stop)
   rescue Google::Cloud::Error, Google::Cloud::AIPlatform::V1::PredictionService::Client::ArgumentError => e
     return error_response(e, :other) unless e.respond_to?(:code)
 
     case e.code
     when GRPC::Core::StatusCodes::UNAVAILABLE, GRPC::Core::StatusCodes::INTERNAL
-      raise LLMClients::InternalServerError, 'Google Vertex server error' if e.code == GRPC::Core::StatusCodes::INTERNAL
+      if e.code == GRPC::Core::StatusCodes::INTERNAL
+        raise LLMClients::InternalServerError,
+              'Google Vertex server error'
+      end
 
       error_response(e, :server_error)
     else
-      raise LLMClients::RateLimitError, 'Google Vertex rate limit exceeded' if e.code == GRPC::Core::StatusCodes::RESOURCE_EXHAUSTED
+      if e.code == GRPC::Core::StatusCodes::RESOURCE_EXHAUSTED
+        raise LLMClients::RateLimitError,
+              'Google Vertex rate limit exceeded'
+      end
 
       error_response(e, :client_error)
     end
@@ -74,7 +85,8 @@ class LLMClients::GoogleVertex
     p = prompt + "\nInput: #{query}\nOutput: "
 
     request = Google::Cloud::AIPlatform::V1::PredictRequest.new(
-      endpoint: "projects/#{ENV.fetch('GOOGLE_CLOUD_PROJECT', nil)}/locations/us-central1/publishers/google/models/#{@llm.client_model_identifier}",
+      endpoint: "projects/#{ENV.fetch('GOOGLE_CLOUD_PROJECT',
+                                      nil)}/locations/us-central1/publishers/google/models/#{@llm.client_model_identifier}",
       instances: [
         {
           struct_value: {
@@ -142,6 +154,5 @@ class LLMClients::GoogleVertex
   end
 end
 # rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/AbcSize
