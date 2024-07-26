@@ -6,7 +6,7 @@ class Chat < ApplicationRecord
   accepts_nested_attributes_for :messages
 
   def salient_message
-    return first_message if first_message.content.present?
+    return first_message if first_message&.content.present?
 
     messages.user_role.first
   end

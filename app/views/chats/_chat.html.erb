@@ -65,7 +65,7 @@
       <%= collection_select(
             :chat,
             :model,
-            LLM.all!.select(&:generation_allowed?).select { |llm| llm.provider.canonical_name == :openai },
+            LLM.all!.select(&:generation_allowed?).select { |llm| [:openai, :anthropic].include?(llm.provider.canonical_name) },
             :canonical_name,
             :display_name,
             { selected: 'gpt-4o-mini' },

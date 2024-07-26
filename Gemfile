@@ -88,3 +88,5 @@ gem 'google-cloud-ai_platform'
 gem "solid_queue"
 gem "view_component"
 gem 'aws-sdk-s3'
+gem 'event_stream_parser'
+gem "mission_control-jobs"

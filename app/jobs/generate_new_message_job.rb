@@ -50,7 +50,7 @@ class GenerateNewMessageJob < ApplicationJob
           FILE
         }
       end
-      buf << { role: :assistant, content: message.content }
+      buf << { role: message.role, content: message.content }
     end
   end
 
