@@ -29,6 +29,17 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'vcr/cassettes'
+  config.hook_into :faraday
+  config.filter_sensitive_data('<API_KEY>') do |_interaction|
+    ENV['ANTHROPIC_API_KEY']
+  end
+  config.default_cassette_options = { match_requests_on: %i[method uri path body headers] }
+  config.configure_rspec_metadata!
+end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -64,4 +75,11 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Devise
+  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
 end
