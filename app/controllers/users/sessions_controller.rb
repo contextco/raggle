@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Users::SessionsController < ApplicationController
   skip_before_action :authenticate_user!
 
