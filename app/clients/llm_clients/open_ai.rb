@@ -4,7 +4,7 @@ require 'openai'
 
 class LLMClients::OpenAi
   def initialize(llm:)
-    @client = OpenAI::Client.new(access_token: ENV['OPENAI_API_KEY'])
+    @client = OpenAI::Client.new(access_token: ENV.fetch('OPENAI_API_KEY', nil))
     @llm = llm
   end
 

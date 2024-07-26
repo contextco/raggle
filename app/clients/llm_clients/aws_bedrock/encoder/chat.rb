@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/PerceivedComplexity
 class LLMClients::AwsBedrock::Encoder::Chat
   ##
@@ -33,7 +35,9 @@ class LLMClients::AwsBedrock::Encoder::Chat
     case message[:role]
     when 'system'
       if index < messages.length - 1 && messages[index + 1][:role] == 'user'
-        ["#{DELIMITERS[:system][:start]}#{message[:content]}#{DELIMITERS[:system][:end]}#{messages[index + 1][:content]}", true]
+        [
+          "#{DELIMITERS[:system][:start]}#{message[:content]}#{DELIMITERS[:system][:end]}#{messages[index + 1][:content]}", true
+        ]
       else
         ["#{DELIMITERS[:system][:start]}#{message[:content]}#{DELIMITERS[:system][:end]}", false]
       end

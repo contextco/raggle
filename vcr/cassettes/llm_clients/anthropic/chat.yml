@@ -12,7 +12,7 @@ http_interactions:
       anthropic-version:
       - '2023-06-01'
       x-api-key:
-      - "<API_KEY>"
+      - "<ANTHROPIC_API_KEY>"
       Content-Type:
       - application/json
   response:
@@ -21,7 +21,7 @@ http_interactions:
       message: OK
     headers:
       date:
-      - Fri, 26 Jul 2024 11:12:37 GMT
+      - Fri, 26 Jul 2024 15:48:37 GMT
       content-type:
       - application/json
       transfer-encoding:
@@ -33,17 +33,17 @@ http_interactions:
       anthropic-ratelimit-requests-remaining:
       - '999'
       anthropic-ratelimit-requests-reset:
-      - '2024-07-26T11:13:36Z'
+      - '2024-07-26T15:49:36Z'
       anthropic-ratelimit-tokens-limit:
       - '80000'
       anthropic-ratelimit-tokens-remaining:
       - '80000'
       anthropic-ratelimit-tokens-reset:
-      - '2024-07-26T11:12:37Z'
+      - '2024-07-26T15:48:37Z'
       request-id:
-      - req_01AtTUvfJjfskUnVz3PmS2nw
+      - req_01Lr4Lnfo89ehG5hYic2XCtE
       x-cloud-trace-context:
-      - a65d97401c5e6ad34183bda5efc80af6
+      - 22b518015d786691c1ad0e0e121f8c63
       via:
       - 1.1 google
       cf-cache-status:
@@ -51,14 +51,14 @@ http_interactions:
       server:
       - cloudflare
       cf-ray:
-      - 8a93f4a4fb2fbd91-LHR
+      - 8a9588ed1f1d9496-LHR
       content-encoding:
       - gzip
     body:
       encoding: ASCII-8BIT
-      string: '{"id":"msg_01GF8c8piJao8qnwWN3nTmCc","type":"message","role":"assistant","model":"claude-3-sonnet-20240229","content":[{"type":"text","text":"Hello!
+      string: '{"id":"msg_01U83iP1m7VmonwveMPHsffw","type":"message","role":"assistant","model":"claude-3-sonnet-20240229","content":[{"type":"text","text":"Hello!
         As an AI language model, I don''t have feelings, but I''m operating properly
         and ready to assist you with any questions or tasks you may have. How can
         I help you today?"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":13,"output_tokens":43}}'
-  recorded_at: Fri, 26 Jul 2024 11:12:37 GMT
+  recorded_at: Fri, 26 Jul 2024 15:48:37 GMT
 recorded_with: VCR 6.2.0
