@@ -4,7 +4,7 @@ class LLM::Provider
   include ActiveModel::Model
 
   attr_accessor :canonical_name,
-    :display_name
+                :display_name
 
   def models
     LLM.all!.select { |llm| llm.provider_canonical_name == canonical_name }

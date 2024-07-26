@@ -75,8 +75,6 @@ class LLMClients::Gemini
     end
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
   def consolidate_response(response_data)
     return LLMClients::Response.new(success: false, stop_reason: :other) if response_data.nil?
 
@@ -101,10 +99,9 @@ class LLMClients::Gemini
     end
     stop_reason = normalised_stop_reason(stop_reason)
     # fail unless llm hits a stop token
-    LLMClients::Response.new(content: response, full_json: response_data, success: success?(stop_reason), stop_reason:)
+    LLMClients::Response.new(content: response, full_json: response_data, success: success?(stop_reason),
+                             stop_reason:)
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/PerceivedComplexity
 
   def success?(stop_reason)
     # documentation for this quite poor, but appears that there is not always a finishReason.

@@ -91,7 +91,7 @@ class LLMClients::Anthropic
 
     conn.post('/v1/messages') do |request|
       request.headers['anthropic-version'] = '2023-06-01'
-      request.headers['x-api-key'] = ENV['ANTHROPIC_API_KEY']
+      request.headers['x-api-key'] = ENV.fetch('ANTHROPIC_API_KEY', nil)
 
       if request_payload[:stream].respond_to?(:call)
         request.options.on_data = request_payload[:stream].call

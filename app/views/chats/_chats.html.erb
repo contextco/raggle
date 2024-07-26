@@ -27,7 +27,6 @@
             <%= chat.salient_message&.content.presence || 'Untitled' %>
           </div>
 
-
           <div class="text-xs text-slate-500">
             Created <%= distance_of_time_in_words_to_now(chat.created_at) %> ago
           </div>

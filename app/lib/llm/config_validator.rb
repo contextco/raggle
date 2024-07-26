@@ -15,7 +15,10 @@ class LLM::ConfigValidator
 
   def assign_defaults!
     validations.each do |instance|
-      config[instance.c_key] = instance.default_value if config[instance.c_key].blank? && instance.default_value.present?
+      if config[instance.c_key].blank? && instance.default_value.present?
+        config[instance.c_key] =
+          instance.default_value
+      end
     end
 
     config
