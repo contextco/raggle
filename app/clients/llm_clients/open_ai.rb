@@ -103,8 +103,8 @@ class LLMClients::OpenAi
       finish_reason = chunk.dig('choices', 0, 'finish_reason')
 
       buffer << new_content unless new_content.nil?
-      on_message.call(buffer) unless new_content.nil?
-      complete_proc.call(buffer) if finish_reason.present?
+      on_message.call(new_content, buffer) unless new_content.nil?
+      complete_proc.call(finish_reason, buffer) if finish_reason.present?
     end
   end
 

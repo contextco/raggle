@@ -29,19 +29,25 @@ class LLMClients::Anthropic
     error_response(e, :server_error)
   end
 
-  def chat_streaming(messages, on_message, complete_proc, **kwargs)
+  def chat_streaming(messages, on_message_proc, on_complete_proc, **kwargs)
     config = @llm.config_validator(kwargs).assign_defaults!
 
     buffer = String.new
     chunks = []
-    config[:stream] = handle_event_stream(buffer, chunks, on_message_proc: on_message, on_complete_proc: complete_proc)
-    resp = chat_request(payload(messages, **config))
-    response = JSON.parse(resp.body)
+    results = {}
 
-    stop_reason = translate_stop_reason(response['stop_reason'])
+    nested_on_complete_proc = lambda { |finish_reason, buffer|
+      on_complete_proc.call(finish_reason, buffer)
+      results[:finish_reason] = finish_reason
+    }
+
+    config[:stream] = on_data_proc(buffer, chunks, on_message_proc:, on_complete_proc: nested_on_complete_proc)
+    chat_request(payload(messages, **config))
+
+    stop_reason = translate_stop_reason(results[:finish_reason])
     LLMClients::Response.new(
-      content: response.dig('content', 0, 'text'),
-      full_json: response,
+      content: buffer,
+      full_json: chunks,
       success: %i[stop user_provided_stop_sequence_emitted].include?(stop_reason),
       stop_reason:
     )
@@ -61,16 +67,19 @@ class LLMClients::Anthropic
 
   def payload(messages, **kwargs)
     {
-      # TODO: Claude allows only a single system message :(
-      #       so we need to establish via validation somewhere that no other messages are 'system' messages.
-      system: messages.first[:role].to_sym == :system ? messages.first[:content] : nil,
+      system: combined_system_messages(messages),
       messages: messages.filter { |m| m[:role].to_sym != :system },
       model: @llm.client_model_identifier,
       max_tokens: kwargs[:max_output_tokens],
       temperature: kwargs[:temperature],
       top_p: kwargs[:top_p],
-      top_k: kwargs[:top_k]
+      top_k: kwargs[:top_k],
+      stream: kwargs[:stream]
     }.compact_blank
+  end
+
+  def on_data_proc(buffer, chunks, on_message_proc:, on_complete_proc:)
+    -> { handle_event_stream(buffer, chunks, on_message_proc:, on_complete_proc:) }
   end
 
   def chat_request(payload)
@@ -85,7 +94,7 @@ class LLMClients::Anthropic
       request.headers['x-api-key'] = ENV['ANTHROPIC_API_KEY']
 
       if request_payload[:stream].respond_to?(:call)
-        request.options.on_data = handle_json_stream(proc: request_payload[:stream])
+        request.options.on_data = request_payload[:stream].call
         request_payload[:stream] = true
       elsif request_payload[:stream]
         raise ArgumentError, 'stream must be a proc'
@@ -102,10 +111,10 @@ class LLMClients::Anthropic
       when 'content_block_delta'
         new_content = chunk.dig('delta', 'text')
         buffer << new_content
-        on_message_proc.call(new_content)
+        on_message_proc.call(new_content, buffer)
       when 'message_delta'
         finish_reason = chunk.dig('delta', 'stop_reason')
-        on_complete_proc.call(finish_reason)
+        on_complete_proc.call(finish_reason, buffer)
       else next
       end
     end
@@ -152,5 +161,9 @@ class LLMClients::Anthropic
     JSON.parse(maybe_json)
   rescue JSON::ParserError
     maybe_json
+  end
+
+  def combined_system_messages(messages)
+    messages.filter { |m| m[:role].to_sym == :system }.map { |m| m[:content] }.join('\n\n')
   end
 end
