@@ -280,6 +280,11 @@ GEM
     method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.24.1)
+    mission_control-jobs (0.2.1)
+      importmap-rails
+      rails (~> 7.1)
+      stimulus-rails
+      turbo-rails
     msgpack (1.7.2)
     multi_json (1.15.0)
     multi_xml (0.7.1)
@@ -536,6 +541,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   dotenv
+  event_stream_parser
   factory_bot_rails
   ffaker
   google-cloud-ai_platform
@@ -543,6 +549,7 @@ DEPENDENCIES
   hotwire-livereload
   importmap-rails
   jbuilder
+  mission_control-jobs
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
