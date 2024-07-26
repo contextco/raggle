@@ -660,6 +660,7 @@ module LLM::Info
       context_window_tokens: 200_000,
       client_class: LLMClients::Anthropic,
       tokenization_unit: :tokens,
+      supports_streaming: true,
       tiktoken_model: 'gpt-4', # TODO: Is this right?
       cents_per_thousand_input_tokenization_units: '0.3',
       cents_per_thousand_output_tokenization_units: '1.5',
