@@ -97,6 +97,7 @@ gem 'omniauth-rails_csrf_protection'
 gem 'redcarpet'
 gem 'ruby-openai'
 gem 'solid_queue'
+gem 'strong_migrations'
 gem 'view_component'
 gem "strong_migrations"
 
