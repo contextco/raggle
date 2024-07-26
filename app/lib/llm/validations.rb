@@ -24,7 +24,11 @@ module LLM::Validations
 
     attr_writer :attr_value
 
-    validates :attr_value, numericality: { greater_than_or_equal_to: ->(obj) { obj.instance_variable_get(:@range)[:min] }, less_than_or_equal_to: ->(obj) { obj.instance_variable_get(:@range)[:max] } }
+    validates :attr_value, numericality: { greater_than_or_equal_to: lambda { |obj|
+                                                                       obj.instance_variable_get(:@range)[:min]
+                                                                     }, less_than_or_equal_to: lambda { |obj|
+                                                                                                 obj.instance_variable_get(:@range)[:max]
+                                                                                               } }
   end
 
   class Temperature < RangeValidator
