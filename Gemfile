@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.3.4'
@@ -49,15 +51,18 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem 'brakeman', require: false
+  gem 'bundle-audit'
   gem 'debug', platforms: %i[mri windows]
   gem 'dotenv'
+  gem 'factory_bot_rails'
+  gem 'ffaker'
+  gem 'parallel_tests'
+  gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-rails'
-  gem 'rspec-rails'
-  gem 'ffaker'
-  gem 'factory_bot_rails'
-  gem 'vcr'
   gem 'rubocop-rspec', require: false
+  gem 'vcr'
 end
 
 group :development do
@@ -79,16 +84,16 @@ group :test do
   gem 'selenium-webdriver'
 end
 
+gem 'aws-sdk-s3'
 gem 'devise', '~> 4.9'
+gem 'event_stream_parser'
+gem 'google-cloud-ai_platform'
 gem 'heroicon'
+gem 'mission_control-jobs'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'redcarpet'
 gem 'ruby-openai'
-gem 'google-cloud-ai_platform'
-gem "solid_queue"
-gem "view_component"
-gem 'aws-sdk-s3'
-gem 'event_stream_parser'
-gem "mission_control-jobs"
+gem 'solid_queue'
+gem 'view_component'
