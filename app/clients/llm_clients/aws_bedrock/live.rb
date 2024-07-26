@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/PerceivedComplexity
 class LLMClients::AwsBedrock::Live
   def initialize(llm:)
     @client = Aws::BedrockRuntime::Client.new(
@@ -16,15 +15,17 @@ class LLMClients::AwsBedrock::Live
   def chat(messages, **)
     utils = instantiate_provider_helper
     params = utils.request_parameters(messages,
-      @llm.client_model_identifier,
-      instruct_only: @llm.instruct_model.present?,
-      **
-    )
+                                      @llm.client_model_identifier,
+                                      instruct_only: @llm.instruct_model.present?,
+                                      **)
     json_response = model_response(params)
     utils.parse_response(json_response)
   rescue Aws::BedrockRuntime::Errors::ServiceError => e
     if e.context.http_response.status_code >= 400 && e.context.http_response.status_code < 500
-      raise LLMClients::RateLimitError, 'AwsBedrock rate limit exceeded' if e.context.http_response.status_code == 429
+      if e.context.http_response.status_code == 429
+        raise LLMClients::RateLimitError,
+              'AwsBedrock rate limit exceeded'
+      end
 
       error_response(e, :client_error)
     elsif e.context.http_response.status_code >= 500 && e.context.http_response.status_code < 600
@@ -58,5 +59,3 @@ class LLMClients::AwsBedrock::Live
     )
   end
 end
-
-# rubocop:enable Metrics/PerceivedComplexity

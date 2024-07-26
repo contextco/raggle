@@ -1,0 +1,92 @@
+# This workflow uses actions that are not certified by GitHub.  They are
+# provided by a third-party and are governed by separate terms of service,
+# privacy policy, and support documentation.
+#
+# This workflow will install a prebuilt Ruby version, install dependencies, and
+# run tests and linters.
+name: "Ruby on Rails CI"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  test:
+    runs-on: runs-on,runner=16cpu-linux-x64,run-id=${{ github.run_id }}
+    services:
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+    env:
+      RAILS_ENV: test
+      CI: true
+      API_HOSTNAME: localhost
+      DATABASE_URL: "postgres://rails:password@localhost:5432"
+      LLM_SEED_VALUE: 12345
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # Add or replace dependency steps here
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache-dependency-path: web/package-lock.json
+      - uses: browser-actions/setup-chrome@v1
+      - name: Set secret key base
+        run: bundle exec rake environment
+      - name: Precompile assets
+        run: bundle exec rake assets:precompile
+      - name: Set up database schema
+        run: bundle exec rake parallel:create parallel:load_schema
+      - name: Set up tailwind
+        run: bundle exec rake tailwindcss:build
+      # Add or replace test runners here
+      - name: Run tests
+        run: bundle exec rake parallel:spec
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          USE_LIVE_LLM: true
+
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      # Add or replace any other lints here
+      - name: Security audit dependencies
+        run: bundle exec bundle-audit check --update
+      - name: Security audit application code
+        run: bundle exec brakeman -q -w2 --skip-files node_modules/
+      - name: Lint Ruby files
+        run: bundle exec rubocop --parallel
+      - name: Lint ERB files
+        run: bundle exec erblint --lint-all

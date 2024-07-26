@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -33,9 +35,8 @@ end
 VCR.configure do |config|
   config.cassette_library_dir = 'vcr/cassettes'
   config.hook_into :faraday
-  config.filter_sensitive_data('<API_KEY>') do |_interaction|
-    ENV['ANTHROPIC_API_KEY']
-  end
+  config.filter_sensitive_data('<ANTHROPIC_API_KEY>') { ENV.fetch('ANTHROPIC_API_KEY', nil) }
+  config.filter_sensitive_data('<OPENAI_API_KEY>') { ENV.fetch('OPENAI_API_KEY', nil) }
   config.default_cassette_options = { match_requests_on: %i[method uri path body headers] }
   config.configure_rspec_metadata!
 end
