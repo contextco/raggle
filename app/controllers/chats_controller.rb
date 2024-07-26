@@ -43,10 +43,11 @@ class ChatsController < ApplicationController
   end
 
   def push_chat_forward
-    message = @chat.transaction do
-      @chat.messages.create!(message_params.merge(role: :user))
-      @chat.messages.create!(role: :assistant)
+    input_message, output_message = @chat.transaction do
+      input = @chat.messages.create!(message_params.merge(role: :user))
+      output = @chat.messages.create!(role: :assistant)
+      [input, output]
     end
-    GenerateNewMessageJob.perform_later(message, message_params[:content])
+    GenerateNewMessageJob.perform_later(input_message, output_message)
   end
 end

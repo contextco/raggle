@@ -11,7 +11,7 @@
       </div>
       <div class="flex items-center gap-1 text-xs">
         <%= image_tag LLM.from_string!(@chat.model)&.image_path, class: 'w-4' %>
-        <%= @chat.model %>
+        <%= LLM.from_string!(@chat.model).display_name %>
       </div>
     </div>
     <div class="flex flex-col gap-4 overflow-y-auto py-4 flex-1 items-center" data-chat-target="scrollContainer" data-scroll-to-bottom-target>

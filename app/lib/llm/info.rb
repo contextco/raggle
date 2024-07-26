@@ -622,6 +622,7 @@ module LLM::Info
       cents_per_thousand_output_tokenization_units: '7.5',
       release_date: '2024-03-04',
       premium_model: true,
+      supports_streaming: true,
       benchmarks: [
         {
           name: 'MMMU',
@@ -709,6 +710,7 @@ module LLM::Info
       cents_per_thousand_output_tokenization_units: '0.125',
       release_date: '2024-03-13',
       premium_model: true,
+      supports_streaming: true,
       benchmarks: [
         {
           name: 'MMMU',
@@ -740,7 +742,7 @@ module LLM::Info
     },
     {
       canonical_name: 'claude-3.5-sonnet-20240620',
-      client_alias: 'claude-3.5-sonnet-20240620',
+      client_alias: 'claude-3-5-sonnet-20240620',
       display_name: 'Claude 3.5 Sonnet',
       url_slug: 'claude-3-5-sonnet',
       provider_canonical_name: :anthropic,
@@ -752,6 +754,7 @@ module LLM::Info
       cents_per_thousand_output_tokenization_units: '1.5',
       release_date: '2024-06-20',
       premium_model: true,
+      supports_streaming: true,
       benchmarks: [
         {
           name: 'MMMU',
