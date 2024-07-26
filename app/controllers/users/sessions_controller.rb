@@ -1,10 +1,14 @@
-class Users::SessionsController < ApplicationController
-  skip_before_action :authenticate_user!
+# frozen_string_literal: true
 
-  def new; end
+module Users
+  class SessionsController < ApplicationController
+    skip_before_action :authenticate_user!
 
-  def destroy
-    sign_out
-    redirect_to new_user_session_path
+    def new; end
+
+    def destroy
+      sign_out
+      redirect_to new_user_session_path
+    end
   end
 end
