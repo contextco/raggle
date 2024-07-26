@@ -58,6 +58,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'vcr'
   gem 'rubocop-rspec', require: false
+  gem 'parallel_tests'
 end
 
 group :development do
