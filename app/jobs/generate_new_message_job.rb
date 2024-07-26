@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GenerateNewMessageJob < ApplicationJob
   queue_as :default
   include ActionView::RecordIdentifier

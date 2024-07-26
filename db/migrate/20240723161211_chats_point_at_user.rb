@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChatsPointAtUser < ActiveRecord::Migration[7.1]
   def change
     remove_column :chats, :team_id, :uuid
