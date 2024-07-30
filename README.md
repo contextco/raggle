@@ -1,4 +1,4 @@
-![Github card](https://github.com/user-attachments/assets/be2725b5-60df-4abc-a637-bb07961d68f2)
+![Github card](https://github.com/user-attachments/assets/50fc3276-d641-4931-b12a-e303cabf31ba)
 _[Star us on Github](https://github.com/contextco/chat)_
 
 # SideKick 🥾 By Context.ai
