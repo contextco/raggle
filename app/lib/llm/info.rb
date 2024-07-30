@@ -698,12 +698,12 @@ module LLM::Info
     },
     {
       canonical_name: 'claude-3-haiku-20240307',
-      client_alias: 'claude-3-haiku-20240307',
+      client_alias: 'anthropic.claude-3-haiku-20240307-v1:0',
       display_name: 'Claude 3 Haiku',
       url_slug: 'claude-3-haiku',
       provider_canonical_name: :anthropic,
       context_window_tokens: 200_000,
-      client_class: LLMClients::Anthropic,
+      client_class: LLMClients::AwsBedrock::Live,
       tokenization_unit: :tokens,
       tiktoken_model: 'gpt-4', # TODO: Is this right?
       cents_per_thousand_input_tokenization_units: '0.025',
