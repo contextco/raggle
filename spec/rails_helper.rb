@@ -34,9 +34,13 @@ end
 
 VCR.configure do |config|
   config.cassette_library_dir = 'vcr/cassettes'
-  config.hook_into :faraday
+  config.hook_into :faraday, :webmock
   config.filter_sensitive_data('<ANTHROPIC_API_KEY>') { ENV.fetch('ANTHROPIC_API_KEY', nil) }
   config.filter_sensitive_data('<OPENAI_API_KEY>') { ENV.fetch('OPENAI_API_KEY', nil) }
+  config.filter_sensitive_data('<AWS_ACCESS_KEY_ID>') { ENV.fetch('AWS_ACCESS_KEY_ID', nil) }
+  config.filter_sensitive_data('<AWS_SECRET_ACCESS_KEY>') { ENV.fetch('AWS_SECRET_ACCESS_KEY', nil) }
+
+  # config.debug_logger = $stderr
   config.default_cassette_options = { match_requests_on: %i[method uri path body headers] }
   config.configure_rspec_metadata!
 end
@@ -48,6 +52,7 @@ RSpec.configure do |config|
   ]
 
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveSupport::Testing::TimeHelpers
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
