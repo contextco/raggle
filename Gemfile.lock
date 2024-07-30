@@ -426,6 +426,7 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
+    rb_sys (0.9.87)
     rdoc (6.7.0)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
@@ -531,6 +532,13 @@ GEM
     tailwindcss-rails (2.6.3-x86_64-linux)
       railties (>= 7.0.0)
     thor (1.3.1)
+    tiktoken_ruby (0.0.9)
+      rb_sys (= 0.9.87)
+    tiktoken_ruby (0.0.9-aarch64-linux)
+    tiktoken_ruby (0.0.9-arm-linux)
+    tiktoken_ruby (0.0.9-arm64-darwin)
+    tiktoken_ruby (0.0.9-x86_64-darwin)
+    tiktoken_ruby (0.0.9-x86_64-linux)
     timeout (0.4.1)
     turbo-rails (2.0.6)
       actionpack (>= 6.0.0)
@@ -614,6 +622,7 @@ DEPENDENCIES
   stimulus-rails
   strong_migrations
   tailwindcss-rails
+  tiktoken_ruby
   turbo-rails
   tzinfo-data
   vcr
