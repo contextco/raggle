@@ -777,114 +777,6 @@ module LLM::Info
         LLM::Validations::TopK.new({ min: 0, max: 100_000_000 }),
         LLM::Validations::MaxOutputTokens.new({ min: 1, max: 4_096 }, default: 1024)
       ]
-    },
-
-    # Meta Models
-    {
-      canonical_name: 'llama3-70b-instruct-v1',
-      client_alias: 'meta.llama3-70b-instruct-v1:0',
-      display_name: 'Llama 3 70B Instruct',
-      url_slug: 'llama3-70b-instruct-v1',
-      provider_canonical_name: :meta,
-      context_window_tokens: 8_000,
-      client_class: LLMClients::AwsBedrock::Live,
-      release_date: '2024-04-18',
-      instruct_model: true,
-      tokenization_unit: :tokens,
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '82.0',
-          caveat: '5-shot',
-          source: 'https://llama.meta.com/llama3/'
-        }
-      ],
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::MaxOutputTokens.new({ min: 1, max: 2_048 }, default: 512)
-      ]
-    },
-    {
-      canonical_name: 'llama3-8b-instruct-v1',
-      client_alias: 'meta.llama3-8b-instruct-v1:0',
-      display_name: 'Llama 3 8B Instruct',
-      url_slug: 'llama3-8b-instruct-v1',
-      provider_canonical_name: :meta,
-      context_window_tokens: 8_000,
-      client_class: LLMClients::AwsBedrock::Live,
-      tokenization_unit: :tokens,
-      release_date: '2024-04-18',
-      instruct_model: true,
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '68.4',
-          caveat: '5-shot',
-          source: 'https://llama.meta.com/llama3/'
-        }
-      ],
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::MaxOutputTokens.new({ min: 1, max: 2_048 }, default: 512)
-      ]
-    },
-    {
-      canonical_name: 'llama2-70b-chat-v1',
-      client_alias: 'meta.llama2-70b-chat-v1',
-      display_name: 'Llama 2 Chat 70B',
-      url_slug: 'llama2-70b-chat-v1',
-      provider_canonical_name: :meta,
-      context_window_tokens: 4096,
-      client_class: LLMClients::AwsBedrock::Live,
-      release_date: '2023-07-18',
-      tokenization_unit: :tokens,
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '30.1',
-          source: 'https://arxiv.org/pdf/2311.16502.pdf'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '68.9',
-          source: 'https://llama.meta.com/llama2/'
-        }
-      ],
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::MaxOutputTokens.new({ min: 1, max: 2_048 }, default: 512)
-      ]
-    },
-    {
-      canonical_name: 'llama2-13b-chat-v1',
-      client_alias: 'meta.llama2-13b-chat-v1',
-      display_name: 'Llama 2 Chat 13B',
-      url_slug: 'llama2-13b-chat-v1',
-      provider_canonical_name: :meta,
-      context_window_tokens: 4096,
-      client_class: LLMClients::AwsBedrock::Live,
-      release_date: '2023-07-18',
-      tokenization_unit: :tokens,
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '54.8',
-          source: 'https://llama.meta.com/llama2/'
-        }
-      ],
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::MaxOutputTokens.new({ min: 1, max: 2_048 }, default: 512)
-      ]
     }
   ].freeze
 
@@ -900,10 +792,6 @@ module LLM::Info
     {
       canonical_name: :anthropic,
       display_name: 'Anthropic'
-    },
-    {
-      canonical_name: :meta,
-      display_name: 'Meta'
     },
     {
       canonical_name: :mistral,
