@@ -45,8 +45,7 @@ class LLM::Summary
         context_window_tokens: model_config.context_window_tokens,
         cents_per_thousand_input_tokenization_units: model_config.cents_per_thousand_input_tokenization_units,
         cents_per_thousand_output_tokenization_units: model_config.cents_per_thousand_output_tokenization_units,
-        release_date: model_config.release_date,
-        benchmarks: model_config.benchmarks&.map { |benchmark| benchmark.slice(:name, :score, :caveat) }
+        release_date: model_config.release_date
       }.compact_blank
     end
   end
