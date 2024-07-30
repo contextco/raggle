@@ -5,8 +5,8 @@ class LLMClients::AwsBedrock::Live
     @client = Aws::BedrockRuntime::Client.new(
       region: 'us-east-1',
       credentials: Aws::Credentials.new(
-        SecureCredentials.aws_access_key_id,
-        SecureCredentials.aws_secret_access_key
+        ENV.fetch('AWS_ACCESS_KEY_ID', nil),
+        ENV.fetch('AWS_SECRET_ACCESS_KEY', nil)
       )
     )
     @llm = llm
@@ -35,7 +35,37 @@ class LLMClients::AwsBedrock::Live
     end
   end
 
+  def chat_streaming(messages, on_message_proc, on_complete_proc, **)
+    utils = instantiate_provider_helper
+    params = utils.request_parameters(messages,
+                                      @llm.client_model_identifier,
+                                      instruct_only: @llm.instruct_model.present?,
+                                      **)
+    buf = String.new
+    @client.converse_stream(params, &handle_stream(buf, on_message_proc, on_complete_proc))
+    LLMClients::Response.new(content: buf, success: true, stop_reason: :stop)
+  end
+
   private
+
+  def handle_stream(buffer, on_message_proc, on_complete_proc)
+    proc do |stream|
+      stream.on_content_block_delta_event do |chunk|
+        value = chunk.delta.value
+        buffer << value
+        on_message_proc.call(value, buffer)
+      end
+
+      stream.on_message_stop_event do |_chunk|
+        on_complete_proc.call(buffer, :stop)
+      end
+
+      stream.on_internal_server_exception_event do |err|
+        on_complete_proc.call(buffer, :server_error)
+        raise LLMClients::InternalServerError, err.message
+      end
+    end
+  end
 
   def model_response(params)
     response = @client.invoke_model(params)

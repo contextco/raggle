@@ -83,8 +83,10 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'webmock'
 end
 
+gem 'aws-sdk-bedrockruntime'
 gem 'aws-sdk-s3'
 gem 'devise', '~> 4.9'
 gem 'event_stream_parser'
