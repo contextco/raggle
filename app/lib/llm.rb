@@ -151,15 +151,7 @@ class LLM
     private
 
     def filtered_models_for_team(team:)
-      models = known_models
-      # If you want to filter models based on a feature flag, you can do it here. If you want the model to be available only outside of free tier then do it through accessible? method by setting premium_model:true in llm config.
-      unless Flipper.enabled?(:gemini_ultra, team)
-        models = models.reject do |model|
-          model.canonical_name == 'gemini-ultra'
-        end
-      end
-
-      models
+      known_models
     end
 
     def known_models
