@@ -83,6 +83,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'webmock'
 end
 
 gem 'aws-sdk-s3'
@@ -99,3 +100,5 @@ gem 'ruby-openai'
 gem 'solid_queue'
 gem 'strong_migrations'
 gem 'view_component'
+gem 'aws-sdk-bedrockruntime'
+gem 'stackprof'
