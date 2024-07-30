@@ -86,6 +86,7 @@ group :test do
   gem 'webmock'
 end
 
+gem 'aws-sdk-bedrockruntime'
 gem 'aws-sdk-s3'
 gem 'devise', '~> 4.9'
 gem 'event_stream_parser'
