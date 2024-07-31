@@ -1,0 +1,6 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+RUN su apt-get install postgresql redis-server
+
+CMD ["/rails/bin/monolith.sh"]
