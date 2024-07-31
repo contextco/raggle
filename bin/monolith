@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+if ! gem list foreman -i --silent; then
+  echo "Installing foreman..."
+  gem install foreman
+fi
+
+# Default to port 3000 if not specified
+export PORT="${PORT:-3000}"
+
+export DATABASE_URL=postgres://postgres@localhost:5432/chatting_production
+
+sudo service postgresql start
+sudo service redis-server start
+
+./bin/rails db:prepare
+
+exec foreman start -f Procfile.monolith "$@"
