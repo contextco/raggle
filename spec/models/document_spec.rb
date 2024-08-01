@@ -61,7 +61,6 @@ RSpec.describe Document, type: :model do
       end
     end
 
-
     it 'does not create chunks if already present' do
       expect { document.send(:chunk_attachment) }.not_to(change { document.chunks.count })
     end
