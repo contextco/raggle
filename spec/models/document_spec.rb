@@ -28,6 +28,7 @@ RSpec.describe Document, type: :model do
     let(:document) { create(:document) }
     let(:content) { 'a' * 5000 }
     let(:chunk_size) { Document::CHUNK_SIZE }
+    let(:chunk_overlap) { Document::CHUNK_OVERLAP }
 
     before do
       document.attachment.attach(
@@ -38,18 +39,28 @@ RSpec.describe Document, type: :model do
     end
 
     it 'creates chunks of appropriate size after the document is created' do
-      expect(document.chunks.count).to eq((content.size.to_f / chunk_size).ceil)
+      total_chunks = if chunk_overlap < chunk_size
+                       (content.size.to_f / (chunk_size - chunk_overlap)).ceil
+                     else
+                       1
+                     end
+      expect(document.chunks.count).to eq(total_chunks)
     end
+
 
     it 'creates chunks with correct content' do
       document.send(:chunk_attachment)
 
       document.chunks.each_with_index do |chunk, index|
-        start_index = index * chunk_size
+        start_index = index * (chunk_size - chunk_overlap)
         end_index = [start_index + chunk_size, content.size].min
-        expect(chunk.content).to eq(content[start_index...end_index])
+
+        expected_content = content[start_index...end_index].force_encoding(Encoding::ASCII_8BIT)
+
+        expect(chunk.content).to eq(expected_content)
       end
     end
+
 
     it 'does not create chunks if already present' do
       expect { document.send(:chunk_attachment) }.not_to(change { document.chunks.count })
