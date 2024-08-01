@@ -85,6 +85,7 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'webmock'
+  gem 'shoulda-matchers'
 end
 
 gem 'aws-sdk-bedrockruntime'

@@ -3,4 +3,3 @@
 class UploadedFile < ApplicationRecord
   has_one :document, as: :documentable, dependent: :destroy
 end
-

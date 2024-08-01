@@ -1,5 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Chunk, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'associations' do
+    it { should belong_to(:document) }
+  end
+
+  describe 'validations' do
+    it { should validate_presence_of(:chunk_index) }
+    it { should validate_presence_of(:content) }
+  end
 end
