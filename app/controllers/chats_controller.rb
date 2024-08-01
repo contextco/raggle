@@ -32,7 +32,7 @@ class ChatsController < ApplicationController
   end
 
   def message_params
-    params.require(:chat).permit(:content, files: [])
+    params.require(:chat).permit(:content)
   end
 
   def chat_params
@@ -47,6 +47,7 @@ class ChatsController < ApplicationController
   def push_chat_forward
     input_message, output_message = @chat.transaction do
       input = @chat.messages.create!(message_params.merge(role: :user))
+      input.attach(params[:chat][:files]) if params[:chat][:files].present?
       output = @chat.messages.create!(role: :assistant)
       [input, output]
     end

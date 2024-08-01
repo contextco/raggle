@@ -37,12 +37,12 @@
                   <%= turbo_stream_from message %>
                   <div id="<%= dom_id(message) %>" class="leading-relaxed message-content min-h-4 px-2 py-1 rounded-md bg-stone-200 flex flex-col gap-1">
                     <%== markdown_to_html(message.content) %>
-                    <% if message.files.attached? %>
+                    <% if message.documents.present? %>
                       <div class="flex gap-2">
-                        <% message.files.each do |file| %>
+                        <% message.documents.each do |document| %>
                           <div class="border p-1 bg-stone-300 rounded flex items-center text-xs gap-1">
                             <%= heroicon 'document', variant: :outline, options: { class: 'size-4'} %>
-                            <%= link_to file.filename, rails_blob_path(file, disposition: 'attachment') %>
+                            <%= link_to document.attachment.filename, rails_blob_path(document.attachment, disposition: 'attachment') %>
                           </div>
                         <% end %>
                       </div>
