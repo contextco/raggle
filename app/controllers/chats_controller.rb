@@ -23,7 +23,9 @@ class ChatsController < ApplicationController
     redirect_to chat_path(@chat)
   end
 
-  def show; end
+  def show
+    render partial: 'chats/chat', locals: { chat: @chat } if turbo_frame_request?
+  end
 
   private
 
@@ -51,6 +53,7 @@ class ChatsController < ApplicationController
       output = @chat.messages.create!(role: :assistant)
       [input, output]
     end
+
     GenerateNewMessageJob.perform_later(input_message, output_message)
   end
 end

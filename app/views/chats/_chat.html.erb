@@ -1,8 +1,11 @@
-<div data-controller="chat dropzone"
-     data-dropzone-max-file-size="1"
-     data-dropzone-accepted-files="text/markdown,text/plain"
-     data-dropzone-preview-template="#dropzone-chat-preview-template"
-     class="flex flex-col justify-between items-stretch border-x min-h-0 grow text-sm">
+<%= turbo_frame_tag :chat,
+  data: {
+    controller: 'chat dropzone',
+    'dropzone-max-file-size': 1,
+    'dropzone-accepted-files': 'text/markdown,text/plain',
+    'dropzone-preview-template': '#dropzone-chat-preview-template'
+  },
+  class: 'flex flex-col justify-between items-stretch border-x min-h-0 grow text-sm' do %>
   <% if @chat.messages.present? %>
     <div class="text-stone-600 flex py-2 w-full border-b justify-between px-2">
       <div class="">
@@ -61,10 +64,12 @@
 
   <% if @chat.messages.empty? %>
     <div class="flex py-1 w-full border-b justify-end px-2">
-      <%= collection_select(
+      <%= grouped_collection_select(
             :chat,
             :model,
-            LLM.all!.select(&:generation_allowed?).select { |llm| [:openai, :anthropic].include?(llm.provider.canonical_name) },
+            [:openai, :anthropic].map { |p| LLM::Provider.from_string(p) },
+            :models,
+            :display_name,
             :canonical_name,
             :display_name,
             { selected: 'gpt-4o-mini' },
@@ -99,4 +104,4 @@
   <div class="flex justify-center mt-4">
     <%= render Message::FormComponent.new(chat: @chat) %>
   </div>
-</div>
+<% end %>
