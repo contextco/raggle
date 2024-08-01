@@ -411,69 +411,6 @@ module LLM::Info
 
     # Anthropic Models
     {
-      canonical_name: 'claude-v2',
-      client_alias: 'anthropic.claude-v2',
-      display_name: 'Claude 2',
-      url_slug: 'claude-v2',
-      provider_canonical_name: :anthropic,
-      context_window_tokens: 100_000,
-      client_class: LLMClients::AwsBedrock::Live,
-      tokenization_unit: :tokens,
-      tiktoken_model: 'gpt-4', # TODO: Is this right?
-      cents_per_thousand_input_tokenization_units: '0.8',
-      cents_per_thousand_output_tokenization_units: '2.4',
-      release_date: '2023-07-11',
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopK.new({ min: 0, max: 500 }, default: 250),
-        LLM::Validations::MaxTokensToSample.new({ min: 1, max: 4_096 }, default: 400),
-        LLM::Validations::StopSequences.new
-      ]
-    },
-    {
-      canonical_name: 'claude-instant-v1',
-      client_alias: 'anthropic.claude-instant-v1',
-      display_name: 'Claude Instant 1.2',
-      url_slug: 'claude-instant-v1',
-      provider_canonical_name: :anthropic,
-      context_window_tokens: 100_000,
-      client_class: LLMClients::AwsBedrock::Live,
-      tokenization_unit: :tokens,
-      tiktoken_model: 'gpt-4', # TODO: Is this right?
-      cents_per_thousand_input_tokenization_units: '0.08',
-      cents_per_thousand_output_tokenization_units: '0.24',
-      release_date: '2023-08-09',
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopK.new({ min: 0, max: 500 }, default: 250),
-        LLM::Validations::MaxTokensToSample.new({ min: 1, max: 4_096 }, default: 400),
-        LLM::Validations::StopSequences.new
-      ]
-    },
-    {
-      canonical_name: 'claude-v2.1',
-      client_alias: 'anthropic.claude-v2:1',
-      display_name: 'Claude 2.1',
-      url_slug: 'claude-v2-1',
-      provider_canonical_name: :anthropic,
-      context_window_tokens: 200_000,
-      client_class: LLMClients::AwsBedrock::Live,
-      tokenization_unit: :tokens,
-      tiktoken_model: 'gpt-4', # TODO: Is this right?
-      cents_per_thousand_input_tokenization_units: '0.8',
-      cents_per_thousand_output_tokenization_units: '2.4',
-      release_date: '2023-11-23',
-      config_validation: [
-        LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
-        LLM::Validations::TopK.new({ min: 0, max: 500 }, default: 250),
-        LLM::Validations::MaxTokensToSample.new({ min: 1, max: 4_096 }, default: 400),
-        LLM::Validations::StopSequences.new
-      ]
-    },
-    {
       canonical_name: 'claude-3-opus-20240229',
       client_alias: 'claude-3-opus-20240229',
       display_name: 'Claude 3 Opus',
