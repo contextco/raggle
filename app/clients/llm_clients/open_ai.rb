@@ -12,7 +12,7 @@ class LLMClients::OpenAi
     resp = @client.embeddings(
       parameters: {
         input: texts,
-        model: 'text-embedding-ada-002'
+        model: 'text-embedding-3-small'
       }
     )
 
