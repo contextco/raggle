@@ -42,7 +42,7 @@ FROM base
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libvips postgresql-client && \
+    apt-get install --no-install-recommends -y curl libvips postgresql redis-server sudo && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
@@ -51,8 +51,14 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
-USER rails:rails
+    chown -R rails:rails data db log storage tmp && \
+    echo 'rails ALL=NOPASSWD: /sbin/service postgresql *' >> /etc/sudoers && \
+    echo 'rails ALL=NOPASSWD: /sbin/service redis-server *' >> /etc/sudoers
+
+RUN sed -i '1ihost all all ::1/128 trust' /etc/postgresql/15/main/pg_hba.conf && \
+    sed -i '1ihost all all 127.0.0.1/32 trust' /etc/postgresql/15/main/pg_hba.conf
+
+#USER rails:rails
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]

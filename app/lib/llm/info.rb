@@ -33,22 +33,6 @@ module LLM::Info
       cents_per_thousand_output_tokenization_units: '0.15',
       supports_streaming: true,
       release_date: '2022-11-28',
-      benchmarks: [
-        {
-          name: 'HellaSwag',
-          canonical_name: :hellaswag,
-          score: '85.5',
-          caveat: '10-shot',
-          source: 'https://arxiv.org/pdf/2303.08774v5.pdf'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '70.0',
-          caveat: '5-shot',
-          source: 'https://arxiv.org/pdf/2303.08774v5.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 2.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -140,28 +124,6 @@ module LLM::Info
       supports_streaming: true,
       premium_model: true,
       release_date: '2023-03-14',
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '34.9',
-          source: 'https://arxiv.org/pdf/2311.16502.pdf'
-        },
-        {
-          name: 'HellaSwag',
-          canonical_name: :hellaswag,
-          score: '95.3',
-          caveat: '10-shot',
-          source: 'https://arxiv.org/pdf/2303.08774v5.pdf'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '86.4',
-          caveat: '5-shot',
-          source: 'https://arxiv.org/pdf/2303.08774v5.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 2.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -325,21 +287,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.5',
       cents_per_thousand_output_tokenization_units: '1.5',
       release_date: '2024-05-13',
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '69.1',
-          source: 'https://openai.com/index/hello-gpt-4o/'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '88.7',
-          caveat: '5-shot',
-          source: 'https://arxiv.org/pdf/2303.08774v5.pdf'
-        }
-      ],
       premium_model: true,
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 2.0 }),
@@ -363,21 +310,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.015',
       cents_per_thousand_output_tokenization_units: '0.06',
       release_date: '2024-07-18',
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '59.4',
-          source: 'https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '82.0',
-          caveat: '5-shot',
-          source: 'https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 2.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -400,21 +332,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.5',
       cents_per_thousand_output_tokenization_units: '1.5',
       release_date: '2024-05-13',
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '69.1',
-          source: 'https://openai.com/index/hello-gpt-4o/'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '88.7',
-          caveat: '5-shot',
-          source: 'https://arxiv.org/pdf/2303.08774v5.pdf'
-        }
-      ],
       premium_model: true,
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 2.0 }),
@@ -440,15 +357,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.025',
       cents_per_thousand_output_tokenization_units: '0.025',
       release_date: '2023-09-27',
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '60.1',
-          caveat: '5-shot',
-          source: 'https://arxiv.org/pdf/2310.06825.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -470,15 +378,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.07',
       cents_per_thousand_output_tokenization_units: '0.07',
       release_date: '2023-12-11',
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '70.6',
-          caveat: '5-shot',
-          source: 'https://arxiv.org/pdf/2401.04088.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -501,22 +400,6 @@ module LLM::Info
       cents_per_thousand_output_tokenization_units: '0.8',
       release_date: '2024-02-26',
       premium_model: true,
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '81.2',
-          caveat: '5-shot',
-          source: 'https://mistral.ai/news/mistral-large/'
-        },
-        {
-          name: 'HellaSwag',
-          canonical_name: :hellaswag,
-          score: '89.2',
-          caveat: '10-shot',
-          source: 'https://mistral.ai/news/mistral-large/'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -540,15 +423,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.8',
       cents_per_thousand_output_tokenization_units: '2.4',
       release_date: '2023-07-11',
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '78.5',
-          caveat: '5-shot',
-          source: 'https://www-cdn.anthropic.com/5c49cc247484cecf107c699baf29250302e5da70/claude-2-model-card.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -570,15 +444,6 @@ module LLM::Info
       cents_per_thousand_input_tokenization_units: '0.08',
       cents_per_thousand_output_tokenization_units: '0.24',
       release_date: '2023-08-09',
-      benchmarks: [
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '73.4',
-          caveat: '5-shot',
-          source: 'https://www-cdn.anthropic.com/5c49cc247484cecf107c699baf29250302e5da70/claude-2-model-card.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -623,28 +488,6 @@ module LLM::Info
       release_date: '2024-03-04',
       premium_model: true,
       supports_streaming: true,
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '59.4',
-          source: 'https://mmmu-benchmark.github.io/#leaderboard'
-        },
-        {
-          name: 'HellaSwag',
-          canonical_name: :hellaswag,
-          score: '95.4',
-          caveat: '10-shot',
-          source: 'https://www.anthropic.com/news/claude-3-family'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '88.2',
-          caveat: '5-shot CoT',
-          source: 'https://www.anthropic.com/claude-3-model-card'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -667,28 +510,6 @@ module LLM::Info
       cents_per_thousand_output_tokenization_units: '1.5',
       release_date: '2024-03-04',
       premium_model: true,
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '53.1',
-          source: 'https://mmmu-benchmark.github.io/#leaderboard'
-        },
-        {
-          name: 'HellaSwag',
-          canonical_name: :hellaswag,
-          score: '89.0',
-          caveat: '10-shot',
-          source: 'https://www.anthropic.com/news/claude-3-family'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '81.5',
-          caveat: '5-shot CoT',
-          source: 'https://www.anthropic.com/claude-3-model-card'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -711,28 +532,6 @@ module LLM::Info
       release_date: '2024-03-13',
       premium_model: true,
       supports_streaming: true,
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '50.2',
-          source: 'https://mmmu-benchmark.github.io/#leaderboard'
-        },
-        {
-          name: 'HellaSwag',
-          canonical_name: :hellaswag,
-          score: '85.9',
-          caveat: '10-shot',
-          source: 'https://www.anthropic.com/news/claude-3-family'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '76.7',
-          caveat: '5-shot CoT',
-          source: 'https://www.anthropic.com/claude-3-model-card'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),
@@ -755,22 +554,6 @@ module LLM::Info
       release_date: '2024-06-20',
       premium_model: true,
       supports_streaming: true,
-      benchmarks: [
-        {
-          name: 'MMMU',
-          canonical_name: :mmmu,
-          score: '68.3',
-          caveat: '0-shot CoT',
-          source: 'https://cdn.sanity.io/files/4zrzovbb/website/fed9cc193a14b84131812372d8d5857f8f304c52.pdf'
-        },
-        {
-          name: 'MMLU',
-          canonical_name: :mmlu,
-          score: '90.4',
-          caveat: '5-shot CoT',
-          source: 'https://cdn.sanity.io/files/4zrzovbb/website/fed9cc193a14b84131812372d8d5857f8f304c52.pdf'
-        }
-      ],
       config_validation: [
         LLM::Validations::Temperature.new({ min: 0.0, max: 1.0 }),
         LLM::Validations::TopP.new({ min: 0.0, max: 1.0 }),

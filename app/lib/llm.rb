@@ -82,19 +82,6 @@ class LLM
     config_validation&.find { |cv| cv.c_key == :max_output_tokens }&.range&.dig(:max)
   end
 
-  def benchmark_score(benchmark_canonical_name)
-    score = benchmark(benchmark_canonical_name)&.dig(:score)
-    BigDecimal(score) if score.present?
-  end
-
-  def benchmark_source(benchmark_canonical_name)
-    benchmark(benchmark_canonical_name)&.dig(:source)
-  end
-
-  def benchmark_caveat(benchmark_canonical_name)
-    benchmark(benchmark_canonical_name)&.dig(:caveat)
-  end
-
   attr_accessor :canonical_name,
                 :client_alias,
                 :url_slug,
@@ -106,7 +93,6 @@ class LLM
                 :tokenization_unit,
                 :tiktoken_model,
                 :supports_streaming,
-                :benchmarks,
                 :premium_model,
                 :instruct_model
 
@@ -115,10 +101,6 @@ class LLM
   attribute :release_date, :date
 
   private
-
-  def benchmark(benchmark_canonical_name)
-    benchmarks&.find { |benchmark| benchmark[:canonical_name] == benchmark_canonical_name }
-  end
 
   def use_live_llm?
     ENV['USE_LIVE_LLM'] || Rails.env.self_hosted?
