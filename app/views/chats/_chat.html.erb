@@ -61,10 +61,12 @@
 
   <% if @chat.messages.empty? %>
     <div class="flex py-1 w-full border-b justify-end px-2">
-      <%= collection_select(
+      <%= grouped_collection_select(
             :chat,
             :model,
-            LLM.all!.select(&:generation_allowed?).select { |llm| [:openai, :anthropic].include?(llm.provider.canonical_name) },
+            [:openai, :anthropic].map { |p| LLM::Provider.from_string(p) },
+            :models,
+            :display_name,
             :canonical_name,
             :display_name,
             { selected: 'gpt-4o-mini' },
