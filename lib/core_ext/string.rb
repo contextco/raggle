@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# Define the CoreExt module
-module CoreExt
-  # Define the String module within CoreExt
+module ::CoreExt
   module String
     def each_chunk(chunk_size)
       return enum_for(:each_chunk, chunk_size) unless block_given?
