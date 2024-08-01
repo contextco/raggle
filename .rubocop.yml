@@ -1,5 +1,7 @@
 inherit_from: .rubocop_todo.yml
 AllCops:
   NewCops: enable
+  Exclude:
+    - db/schema.rb
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
