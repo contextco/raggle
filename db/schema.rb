@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -222,5 +220,3 @@ ActiveRecord::Schema[7.1].define(version: 20_240_731_100_343) do
   add_foreign_key 'solid_queue_scheduled_executions', 'solid_queue_jobs', column: 'job_id', on_delete: :cascade
   add_foreign_key 'users', 'teams'
 end
-
-# rubocop:enable Metrics/BlockLength
