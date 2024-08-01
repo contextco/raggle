@@ -47,7 +47,6 @@ RSpec.describe Document, type: :model do
       expect(document.chunks.count).to eq(total_chunks)
     end
 
-
     it 'creates chunks with correct content' do
       document.send(:chunk_attachment)
 
