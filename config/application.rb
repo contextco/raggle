@@ -30,5 +30,9 @@ module Chatting
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
+
+    config.active_record.encryption.primary_key = ENV.fetch('ENCRYPTION_KEY', nil)
+    config.active_record.encryption.deterministic_key = ENV.fetch('ENCRYPTION_DETERMINISTIC_KEY', nil)
+    config.active_record.encryption.key_derivation_salt = ENV.fetch('ENCRYPTION_KEY_DERIVATION_SALT', nil)
   end
 end
