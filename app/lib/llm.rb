@@ -103,7 +103,7 @@ class LLM
   private
 
   def use_live_llm?
-    ENV['USE_LIVE_LLM'] || Rails.env.self_hosted?
+    Rails.configuration.use_live_llm
   end
 
   class << self
