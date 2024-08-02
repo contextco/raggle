@@ -6,6 +6,7 @@ class Message < ApplicationRecord
   attribute :content, :string, default: ''
 
   has_many :documents, dependent: :destroy
+  has_many :uploaded_files, through: :documents, source: :documentable, source_type: 'UploadedFile'
 
   enum role: %w[user assistant system].index_by(&:to_sym), _suffix: true
 
@@ -14,8 +15,9 @@ class Message < ApplicationRecord
       files_to_attach.each do |file|
         next unless file.present?
 
-        doc = documents.create!(documentable: UploadedFile.create!)
-        doc.attachment.attach(file)
+        uploaded_file = UploadedFile.create!
+        uploaded_file.attachment.attach(file)
+        doc = documents.create!(documentable: uploaded_file)
 
         uploaded_by.document_ownerships.create!(document: doc)
       end

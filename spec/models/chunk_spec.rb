@@ -17,7 +17,7 @@ RSpec.describe Chunk, type: :model do
 
     it 'generates embedding before creating a chunk' do
       expect(chunk).to receive(:generate_embedding)
-      chunk.save
+      chunk.save!
     end
 
     it 'sets the embedding attribute with correct dimensions' do
