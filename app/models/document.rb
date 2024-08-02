@@ -13,6 +13,8 @@ class Document < ApplicationRecord
 
   after_commit :chunk_attachment, on: %i[create update]
 
+  attribute :stable_id, :string, default: -> { SecureRandom.uuid_v7 }
+
   private
 
   def chunk_attachment
