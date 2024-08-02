@@ -57,8 +57,6 @@ RSpec.describe ChunkAttachmentJob, type: :job, vcr: { cassette_name: 'jobs/chunk
   it 'does not create chunks if already present' do
     VCR.use_cassette('chunk_attachment_job/does_not_create_chunks_if_already_present') do
       ChunkAttachmentJob.perform_now(document)
-      initial_chunk_count = document.chunks.count
-
       expect { ChunkAttachmentJob.perform_now(document) }.not_to(change { document.chunks.count })
     end
   end
