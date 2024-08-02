@@ -67,5 +67,22 @@ RSpec.describe ChatsController, type: :request do
       expect(chat.messages.user_role.last.content).to eq('hi this is a message')
       expect(chat.messages.assistant_role.last.content).to be_present
     end
+
+    context 'when a file is attached', vcr: { cassette_name: 'chats/new_message/with_file' } do
+      let(:file) { fixture_file_upload('gg.txt') }
+      let(:blob) { ActiveStorage::Blob.create_and_upload!(io: file, filename: 'gg.txt', content_type: 'text/plain') }
+      let(:params) { { chat: { content: 'hi this is a message', files: [blob.signed_id] } } }
+
+      it 'attaches the file to the message' do
+        expect do
+          put chat_path(chat, params:)
+        end.to change(ActiveStorage::Attachment, :count).by(1)
+      end
+
+      it 'associates the created document to the user' do
+        put chat_path(chat, params:)
+        expect(UserDocumentOwnership.find_by(user:, document: chat.documents.last)).to be_present
+      end
+    end
   end
 end

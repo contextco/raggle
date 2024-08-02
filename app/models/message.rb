@@ -9,12 +9,15 @@ class Message < ApplicationRecord
 
   enum role: %w[user assistant system].index_by(&:to_sym), _suffix: true
 
-  def attach(documents_to_attach)
+  def attach(files_to_attach, uploaded_by:)
     ActiveRecord::Base.transaction do
-      documents_to_attach.each do |document|
-        next unless document.present?
+      files_to_attach.each do |file|
+        next unless file.present?
 
-        documents.create!(documentable: UploadedFile.create!).attachment.attach(document)
+        doc = documents.create!(documentable: UploadedFile.create!)
+        doc.attachment.attach(file)
+
+        uploaded_by.document_ownerships.create!(document: doc)
       end
     end
   end

@@ -9,6 +9,11 @@ class Document < ApplicationRecord
   has_one_attached :attachment
   has_many :chunks, dependent: :destroy
 
+  has_many :user
+
+  has_many :user_ownerships, class_name: 'UserDocumentOwnership', dependent: :delete_all
+  has_many :users, through: :user_ownerships
+
   delegated_type :documentable, types: %w[UploadedFile]
 
   after_commit :chunk_attachment, on: %i[create update]

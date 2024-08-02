@@ -49,7 +49,7 @@ class ChatsController < ApplicationController
   def push_chat_forward
     input_message, output_message = @chat.transaction do
       input = @chat.messages.create!(message_params.merge(role: :user))
-      input.attach(params[:chat][:files]) if params[:chat][:files].present?
+      input.attach(params[:chat][:files], uploaded_by: current_user) if params[:chat][:files].present?
       output = @chat.messages.create!(role: :assistant)
       [input, output]
     end
