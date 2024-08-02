@@ -79,4 +79,6 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.hotwire_livereload.listen_paths << Rails.root.join('app/assets/builds')
+
+  config.use_live_llm = ENV.fetch('USE_LIVE_LLM', 'false') == 'true'
 end
