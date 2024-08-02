@@ -7,4 +7,3 @@ class AddEmbeddingToChunks < ActiveRecord::Migration[7.1]
     add_column :chunks, :embedding, :vector, limit: 1536
   end
 end
-
