@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_105243) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_134734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -192,6 +192,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_105243) do
   create_table "uploaded_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_document_ownerships", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "document_id", null: false
+    t.index ["document_id"], name: "index_user_document_ownerships_on_document_id"
+    t.index ["user_id"], name: "index_user_document_ownerships_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
