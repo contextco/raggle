@@ -3,7 +3,8 @@
 FactoryBot.define do
   factory :document do
     association :message, factory: :message
-    documentable { association :uploaded_file }
+
+    documentable factory: :uploaded_file, document: nil
 
     factory :document_with_chunks do
       transient do

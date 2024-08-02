@@ -3,12 +3,10 @@
 class ChunkAttachmentJob < ApplicationJob
   queue_as :default
 
-  def perform(document)
-    return unless document.attachment.attached? && document.chunks.empty?
+  def perform(uploaded_file)
+    return unless uploaded_file.attachment.attached? && uploaded_file.document.chunks.empty?
 
-    content = document.attachment.download
-    content.each_chunk(Document::CHUNK_SIZE, Document::CHUNK_OVERLAP).with_index do |chunk_content, chunk_index|
-      document.chunks.create!(chunk_index:, content: chunk_content)
-    end
+    content = uploaded_file.attachment.download
+    uploaded_file.document.chunks.from_string!(content)
   end
 end
