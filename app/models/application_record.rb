@@ -8,6 +8,6 @@ class ApplicationRecord < ActiveRecord::Base
   private
 
   def generate_uuid
-    self.id = SecureRandom.uuid_v7
+    self.id = SecureRandom.uuid_v7 if self.class.column_names.include?('id') && id.blank?
   end
 end

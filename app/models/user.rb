@@ -4,6 +4,9 @@ class User < ApplicationRecord
   belongs_to :team
   has_many :chats, dependent: :destroy
 
+  has_many :document_ownerships, class_name: 'UserDocumentOwnership', dependent: :delete_all
+  has_many :documents, through: :document_ownerships
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :omniauthable, :database_authenticatable, omniauth_providers: %i[google_oauth2]
