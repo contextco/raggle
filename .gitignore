@@ -40,3 +40,5 @@
 
 .DS_Store
 /.idea
+
+/config/credentials/test.key
