@@ -9,6 +9,13 @@ RSpec.describe Document, type: :model do
     it { should have_many(:chunks).dependent(:destroy) }
   end
 
+  describe 'attributes' do
+    it 'sets a default value for stable_id' do
+      document = build(:document)
+      expect(document.stable_id).to be_present
+    end
+  end
+
   describe 'callbacks' do
     let(:document) { build(:document) }
 
