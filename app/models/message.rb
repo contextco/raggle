@@ -14,8 +14,9 @@ class Message < ApplicationRecord
       files_to_attach.each do |file|
         next unless file.present?
 
-        doc = documents.create!(documentable: UploadedFile.create!)
-        doc.attachment.attach(file)
+        uploaded_file = UploadedFile.create!
+        uploaded_file.attachment.attach(file)
+        doc = documents.create!(documentable: uploaded_file)
 
         uploaded_by.document_ownerships.create!(document: doc)
       end
