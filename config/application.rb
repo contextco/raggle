@@ -34,5 +34,7 @@ module Chatting
     config.active_record.encryption.primary_key = ENV.fetch('ENCRYPTION_KEY', nil)
     config.active_record.encryption.deterministic_key = ENV.fetch('ENCRYPTION_DETERMINISTIC_KEY', nil)
     config.active_record.encryption.key_derivation_salt = ENV.fetch('ENCRYPTION_KEY_DERIVATION_SALT', nil)
+
+    config.use_live_llm = true
   end
 end
