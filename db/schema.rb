@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_801_161_047) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_105243) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
-  enable_extension 'vector'
+  enable_extension "plpgsql"
+  enable_extension "vector"
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
@@ -53,7 +51,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_801_161_047) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
-  create_table 'chunks', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
+  create_table "chunks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "document_id", null: false
     t.integer "chunk_index", null: false
     t.text "content", null: false
