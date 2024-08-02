@@ -67,6 +67,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          ENCRYPTION_DETERMINISTIC_KEY: ${{ secrets.ENCRYPTION_DETERMINISTIC_KEY }}
+          ENCRYPTION_KEY_DERIVATION_SALT: ${{ secrets.ENCRYPTION_KEY_DERIVATION_SALT }}
           USE_LIVE_LLM: true
 
   lint:
