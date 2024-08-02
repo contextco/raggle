@@ -35,16 +35,16 @@ class GenerateNewMessageJob < ApplicationJob
 
   def prior_messages(chat, current_message)
     chat.messages.excluding(current_message).flat_map do |message|
-      buf = message.documents.map do |document|
+      buf = message.uploaded_files.map do |file|
         {
           role: :system,
           content: <<~FILE
             The user uploaded the following file, use this to inform your response if necessary.
 
-            Filename: #{document.attachment.filename}
+            Filename: #{file.attachment.filename}
 
             Contents:
-            #{document.attachment.download}
+            #{file.attachment.download}
           FILE
         }
       end

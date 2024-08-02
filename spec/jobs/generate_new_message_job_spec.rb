@@ -21,7 +21,9 @@ RSpec.describe GenerateNewMessageJob do
       let(:input_message) { create(:message, role: :user, chat:, content: 'test') }
 
       before do
-        input_message.documents.create!(documentable: UploadedFile.create!).attachment.attach(file)
+        uploaded_file = create(:uploaded_file)
+        uploaded_file.attachment.attach(file)
+        input_message.documents << uploaded_file.document
       end
 
       it 'updates the last message' do
