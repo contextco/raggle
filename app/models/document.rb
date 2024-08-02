@@ -7,6 +7,7 @@ class Document < ApplicationRecord
   has_many :chunks, dependent: :destroy
 
   delegated_type :documentable, types: %w[UploadedFile]
+  self.ignored_columns += ['documentable_id']
 
   after_commit :chunk_attachment, on: %i[create update]
 
