@@ -68,8 +68,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_134734) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "documentable_id"
+    t.string "stable_id"
     t.index ["documentable_id", "documentable_type"], name: "index_documents_on_documentable_id_and_type"
     t.index ["message_id"], name: "index_documents_on_message_id"
+    t.check_constraint "stable_id IS NOT NULL", name: "check_stable_id_not_null", validate: false
   end
 
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
