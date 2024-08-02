@@ -24,7 +24,7 @@ RSpec.describe Document, type: :model do
     end
   end
 
-  describe 'chunk_attachment' do
+  describe 'chunk_attachment', vcr: { cassette_name: 'openai_embeddings/embeddings' } do
     let(:document) { create(:document) }
     let(:content) { 'a' * 5000 }
     let(:chunk_size) { Document::CHUNK_SIZE }
