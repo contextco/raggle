@@ -29,6 +29,8 @@ class Message < ApplicationRecord
   private
 
   def generate_embedding
+    return unless saved_change_to_content? && content.present?
+
     GenerateEmbeddingsJob.perform_later(self)
   end
 end
