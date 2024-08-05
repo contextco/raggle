@@ -38,7 +38,7 @@ RSpec.describe ChatsController, type: :request do
     end
   end
 
-  describe 'PUT #update', vcr: { cassette_name: 'chats/new_message' }  do
+  describe 'PUT #update', vcr: { cassette_name: 'chats/new_message' } do
     let(:chat) { create(:chat, user:) }
     let(:params) { { chat: { content: 'hi this is a message' } } }
 
