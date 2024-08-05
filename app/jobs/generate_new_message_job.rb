@@ -58,14 +58,14 @@ class GenerateNewMessageJob < ApplicationJob
       buf = message.top_k_chunks_grouped_by_document.flat_map do |document, chunks|
         {
           role: :system,
-          content: <<~DOC
+          content: <<~FILE
             The following is an excerpt from a user-uploaded file that may be relevant to the current conversation. Consider this information when formulating your response, if necessary.
 
             Filename: #{document.attachment.filename}
 
             Content:
             #{chunks.map(&:content).join("\n")}
-          DOC
+          FILE
         }
       end
       buf << { role: message.role, content: message.content }

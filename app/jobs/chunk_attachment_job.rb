@@ -7,6 +7,6 @@ class ChunkAttachmentJob < ApplicationJob
     return unless uploaded_file.attachment.attached? && uploaded_file.document.chunks.empty?
 
     content = uploaded_file.attachment.download
-    uploaded_file.document.chunks.from_string!(content)
+    uploaded_file.document.chunks.from_string!(uploaded_file.document, content)
   end
 end
