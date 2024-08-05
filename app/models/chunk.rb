@@ -14,10 +14,12 @@ class Chunk < ApplicationRecord
   DEFAULT_SIZE = 512
   DEFAULT_OVERLAP = 32
 
-  def self.from_string!(content)
+  def self.from_string!(document, content)
     transaction do
       content.each_chunk(DEFAULT_SIZE, DEFAULT_OVERLAP)
              .with_index do |chunk_content, chunk_index|
+        next if document.reload.chunks.exists?(chunk_index:)
+
         create!(chunk_index:, content: chunk_content)
       end
     end
@@ -26,6 +28,8 @@ class Chunk < ApplicationRecord
   private
 
   def generate_embedding
+    return if embedding.present?
+
     GenerateEmbeddingsJob.perform_later(self)
   end
 end

@@ -38,7 +38,7 @@ RSpec.describe ChatsController, type: :request do
     end
   end
 
-  describe 'PUT #update' do
+  describe 'PUT #update', vcr: { cassette_name: 'chats/new_message' } do
     let(:chat) { create(:chat, user:) }
     let(:params) { { chat: { content: 'hi this is a message' } } }
 
@@ -59,13 +59,22 @@ RSpec.describe ChatsController, type: :request do
       end.to have_enqueued_job(GenerateNewMessageJob)
     end
 
-    it 'saves the new messages', vcr: { cassette_name: 'chats/new_message' } do
+    it 'saves the new messages' do
       perform_enqueued_jobs do
         put chat_path(chat, params:)
       end
 
       expect(chat.messages.user_role.last.content).to eq('hi this is a message')
       expect(chat.messages.assistant_role.last.content).to be_present
+    end
+
+    it 'generates embeddings for the new messages' do
+      perform_enqueued_jobs do
+        put chat_path(chat, params:)
+      end
+
+      expect(chat.messages.user_role.last.embedding).to be_present
+      expect(chat.messages.assistant_role.last.embedding).to be_present
     end
 
     context 'when a file is attached', vcr: { cassette_name: 'chats/new_message/with_file' } do

@@ -2,13 +2,17 @@
 
 class Message < ApplicationRecord
   belongs_to :chat
+  has_neighbors :embedding
 
   attribute :content, :string, default: ''
 
   has_many :documents, dependent: :destroy
+  has_many :chunks, through: :documents
   has_many :uploaded_files, through: :documents, source: :documentable, source_type: 'UploadedFile'
 
   enum role: %w[user assistant system].index_by(&:to_sym), _suffix: true
+
+  after_commit :generate_embedding, on: %i[create update]
 
   def attach(files_to_attach, uploaded_by:)
     ActiveRecord::Base.transaction do
@@ -22,5 +26,19 @@ class Message < ApplicationRecord
         uploaded_by.document_ownerships.create!(document: doc)
       end
     end
+  end
+
+  def top_k_chunks_grouped_by_document(count: 5)
+    return [] if content.blank? || documents.empty? || count <= 0
+
+    chunks.nearest_neighbors(:embedding, embedding, distance: :cosine).first(count).group_by(&:document)
+  end
+
+  private
+
+  def generate_embedding
+    return unless saved_change_to_content? && content.present?
+
+    GenerateEmbeddingsJob.perform_later(self)
   end
 end
