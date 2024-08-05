@@ -10,6 +10,8 @@ class Message < ApplicationRecord
 
   enum role: %w[user assistant system].index_by(&:to_sym), _suffix: true
 
+  after_commit :generate_embedding, on: %i[create update]
+
   def attach(files_to_attach, uploaded_by:)
     ActiveRecord::Base.transaction do
       files_to_attach.each do |file|
@@ -22,5 +24,11 @@ class Message < ApplicationRecord
         uploaded_by.document_ownerships.create!(document: doc)
       end
     end
+  end
+
+  private
+
+  def generate_embedding
+    GenerateEmbeddingsJob.perform_later(self)
   end
 end
