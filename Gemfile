@@ -90,6 +90,7 @@ end
 
 gem 'aws-sdk-bedrockruntime'
 gem 'aws-sdk-s3'
+gem 'console1984'
 gem 'devise', '~> 4.9'
 gem 'event_stream_parser'
 gem 'google-cloud-ai_platform'
