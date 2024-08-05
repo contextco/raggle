@@ -130,6 +130,11 @@ GEM
       xpath (~> 3.2)
     concurrent-ruby (1.3.3)
     connection_pool (2.4.1)
+    console1984 (0.2.0)
+      irb (~> 1.13)
+      parser
+      rails (>= 7.0)
+      rainbow
     crack (1.0.0)
       bigdecimal
       rexml
@@ -595,6 +600,7 @@ DEPENDENCIES
   bundle-audit
   byebug
   capybara
+  console1984
   debug
   devise (~> 4.9)
   dotenv
