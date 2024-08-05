@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Document < ApplicationRecord
-  belongs_to :message
+  belongs_to :message, optional: true
 
   has_many :chunks, dependent: :destroy
 
@@ -12,6 +12,14 @@ class Document < ApplicationRecord
   delegated_type :documentable, types: %w[UploadedFile]
 
   attribute :stable_id, :string, default: -> { SecureRandom.uuid_v7 }
+
+
+def rechunk!(content)
+    transaction do
+        chunks.delete_all
+        chunks.from_string!(content)
+    end
+end
 
   def uploaded_file?
     documentable_type == 'UploadedFile'
