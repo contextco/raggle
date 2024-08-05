@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_134734) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_05_164329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -62,8 +62,42 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_134734) do
     t.index ["document_id"], name: "index_chunks_on_document_id"
   end
 
+  create_table "console1984_commands", force: :cascade do |t|
+    t.text "statements"
+    t.bigint "sensitive_access_id"
+    t.bigint "session_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sensitive_access_id"], name: "index_console1984_commands_on_sensitive_access_id"
+    t.index ["session_id", "created_at", "sensitive_access_id"], name: "on_session_and_sensitive_chronologically"
+  end
+
+  create_table "console1984_sensitive_accesses", force: :cascade do |t|
+    t.text "justification"
+    t.bigint "session_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_console1984_sensitive_accesses_on_session_id"
+  end
+
+  create_table "console1984_sessions", force: :cascade do |t|
+    t.text "reason"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_console1984_sessions_on_created_at"
+    t.index ["user_id", "created_at"], name: "index_console1984_sessions_on_user_id_and_created_at"
+  end
+
+  create_table "console1984_users", force: :cascade do |t|
+    t.string "username", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_console1984_users_on_username"
+  end
+
   create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "message_id", null: false
+    t.uuid "message_id"
     t.string "documentable_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -72,6 +106,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_134734) do
     t.index ["documentable_id", "documentable_type"], name: "index_documents_on_documentable_id_and_type"
     t.index ["message_id"], name: "index_documents_on_message_id"
     t.check_constraint "stable_id IS NOT NULL", name: "check_stable_id_not_null", validate: false
+  end
+
+  create_table "google_drive_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -211,6 +251,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_134734) do
     t.datetime "updated_at", null: false
     t.uuid "team_id"
     t.string "encrypted_password"
+    t.jsonb "google_oauth"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["team_id"], name: "index_users_on_team_id"
   end
