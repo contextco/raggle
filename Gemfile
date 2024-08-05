@@ -105,3 +105,5 @@ gem 'solid_queue'
 gem 'strong_migrations'
 gem 'tiktoken_ruby'
 gem 'view_component'
+gem 'console1984'
+
