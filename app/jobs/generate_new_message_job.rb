@@ -39,7 +39,11 @@ class GenerateNewMessageJob < ApplicationJob
       next if document.chunks.present?
 
       content = document.attachment.download
-      document.chunks.from_string!(document, content)
+      chunks = content.each_chunk(Chunk::DEFAULT_SIZE, Chunk::DEFAULT_OVERLAP).with_index.map do |chunk_content, chunk_index|
+        embedding = EmbeddingService.generate(chunk_content)
+        { content: chunk_content, chunk_index:, embedding: }
+      end
+      document.chunks.create!(chunks)
     end
   end
 

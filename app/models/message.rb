@@ -7,6 +7,7 @@ class Message < ApplicationRecord
   attribute :content, :string, default: ''
 
   has_many :documents, dependent: :destroy
+  has_many :chunks, through: :documents
   has_many :uploaded_files, through: :documents, source: :documentable, source_type: 'UploadedFile'
 
   enum role: %w[user assistant system].index_by(&:to_sym), _suffix: true
@@ -30,11 +31,7 @@ class Message < ApplicationRecord
   def top_k_chunks_grouped_by_document(count: 5)
     return [] if content.blank? || documents.empty? || count <= 0
 
-    chunks = documents.flat_map(&:chunks)
-    chunks_with_embeddings = Chunk.where(id: chunks.map(&:id))
-    top_chunks = chunks_with_embeddings.nearest_neighbors(:embedding, embedding, distance: :cosine).first(count)
-
-    top_chunks.group_by(&:document)
+    chunks.nearest_neighbors(:embedding, embedding, distance: :cosine).first(count).group_by(&:document)
   end
 
   private
