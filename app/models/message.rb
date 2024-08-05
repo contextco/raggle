@@ -2,6 +2,7 @@
 
 class Message < ApplicationRecord
   belongs_to :chat
+  has_neighbors :embedding
 
   attribute :content, :string, default: ''
 
@@ -24,6 +25,16 @@ class Message < ApplicationRecord
         uploaded_by.document_ownerships.create!(document: doc)
       end
     end
+  end
+
+  def top_k_chunks_grouped_by_document(count: 5)
+    return [] if content.blank? || documents.empty? || count <= 0
+
+    chunks = documents.flat_map(&:chunks)
+    chunks_with_embeddings = Chunk.where(id: chunks.map(&:id))
+    top_chunks = chunks_with_embeddings.nearest_neighbors(:embedding, embedding, distance: :cosine).first(count)
+
+    top_chunks.group_by(&:document)
   end
 
   private
