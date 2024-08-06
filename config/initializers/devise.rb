@@ -311,5 +311,12 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
 
-  config.omniauth :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID', nil), ENV.fetch('GOOGLE_CLIENT_SECRET', nil)
+  config.omniauth :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID', nil), ENV.fetch('GOOGLE_CLIENT_SECRET', nil), {
+    scope: %w[
+      https://www.googleapis.com/auth/userinfo.email
+      https://www.googleapis.com/auth/userinfo.profile
+      https://www.googleapis.com/auth/drive.readonly
+      https://www.googleapis.com/auth/documents.readonly
+    ].join(' ')
+  }
 end
