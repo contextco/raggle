@@ -6,7 +6,7 @@ RSpec.describe Ingestors::Google::Docs do
   let(:user) { create(:user, google_oauth_credentials: { 'refresh_token' => 'fake_refresh_token' }) }
   let(:ingestor) { described_class.new(user) }
   let(:mock_client) { instance_double(Google::Apis::DriveV2::DriveService) }
-  let(:mock_file) { instance_double(Google::Apis::DriveV2::File, id: 'fake_file_id', title: 'Test Document') }
+  let(:mock_file) { instance_double(Google::Apis::DriveV2::File, id: 'fake_file_id', title: 'Test Document', modified_date: 1.minute.ago) }
   let(:mock_oauth_client) { instance_double(Signet::OAuth2::Client) }
 
   before do
@@ -47,10 +47,19 @@ RSpec.describe Ingestors::Google::Docs do
     end
 
     context 'when a document already exists' do
-      let!(:google_drive_file) { create(:google_drive_file, document: create(:document, stable_id: 'fake_file_id')) }
+      let!(:google_drive_file) { create(:google_drive_file, document: build(:document, stable_id: 'fake_file_id', last_sync_at: 1.day.ago)) }
 
       it 'updates the existing document' do
         expect { ingestor.ingest }.to change { google_drive_file.reload.payload }.to(mock_file.to_json)
+      end
+    end
+
+    context 'when was modified before the last sync time' do
+      let!(:google_drive_file) { create(:google_drive_file, document: build(:document, stable_id: 'fake_file_id', last_sync_at: 1.day.ago)) }
+      let(:mock_file) { instance_double(Google::Apis::DriveV2::File, id: 'fake_file_id', title: 'Test Document', modified_date: 2.days.ago) }
+
+      it 'does not update the document' do
+        expect { ingestor.ingest }.not_to(change { google_drive_file.reload.payload })
       end
     end
   end

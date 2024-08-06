@@ -36,5 +36,8 @@ module Chatting
     config.active_record.encryption.key_derivation_salt = ENV.fetch('ENCRYPTION_KEY_DERIVATION_SALT', nil)
 
     config.use_live_llm = true
+
+    # Seeing the massive vector isn't useful and makes reading logs much harder.
+    config.filter_parameters += %i[embedding]
   end
 end
