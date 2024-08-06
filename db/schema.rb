@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_05_164329) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_06_163842) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_164329) do
     t.datetime "updated_at", null: false
     t.uuid "documentable_id"
     t.string "stable_id"
+    t.datetime "last_sync_at"
     t.index ["documentable_id", "documentable_type"], name: "index_documents_on_documentable_id_and_type"
     t.index ["message_id"], name: "index_documents_on_message_id"
     t.check_constraint "stable_id IS NOT NULL", name: "check_stable_id_not_null"
