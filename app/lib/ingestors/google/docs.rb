@@ -24,11 +24,10 @@ class Ingestors::Google::Docs
   private
 
   def persist_or_update_doc(file)
-    response = google_drive_client.export_file(file.id, 'text/plain')
-
     document = Document.find_by(stable_id: file.id, documentable_type: GoogleDriveFile.name)
+    return if document&.last_sync_at.present? && document.last_sync_at > file.modified_date
 
-    # TODO: Only sync documents if they have changed since the last sync period.
+    response = google_drive_client.export_file(file.id, 'text/plain')
 
     Document.transaction do
       if document.present?
