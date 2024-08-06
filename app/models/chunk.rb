@@ -11,6 +11,8 @@ class Chunk < ApplicationRecord
 
   after_commit :generate_embedding, on: :create
 
+  self.filter_attributes += [:embedding]
+
   DEFAULT_SIZE = 512
   DEFAULT_OVERLAP = 32
 
