@@ -13,6 +13,8 @@ class Document < ApplicationRecord
 
   attribute :stable_id, :string, default: -> { SecureRandom.uuid_v7 }
 
+  attribute :last_sync_at, :datetime, default: -> { Time.current }
+
   def rechunk!(content)
     transaction do
       chunks.delete_all
