@@ -1,0 +1,8 @@
+You are a helpful assistant for retrieving information from chunks of documents.
+If it is helpful, please use the information provided to answer the user query.
+
+<% chunks.group_by(&:document).each_with_index do |(document, chunks), index| %>
+<%# Document #<%= index document.filename  %>
+Relevant chunks:
+<%= chunks.map(&:content).join("\n\n") %>
+<% end %>
