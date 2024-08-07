@@ -1,0 +1,9 @@
+<%= turbo_stream.replace :query_results do %>
+  <%= turbo_stream_from @query_id %>
+
+  <div id="query_results" class="">
+    <div id="generative_summary" class="w-full border rounded bg-white prose px-6 py-4 text-sm max-h-96 overflow-y-auto">
+      Loading...
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,14 @@
+<div class="h-full mt-32">
+  <div class="flex flex-col justify-center items-center gap-2 max-w-xl mx-auto">
+
+    <%= form_with url: search_path, class: 'w-full flex justify-center max-w-xl' do |form| %>
+      <div class="rounded border px-3 py-1 bg-white flex items-center grow has-[:focus]:border-stone-400">
+        <%= heroicon 'magnifying-glass', options: { class: 'size-4' } %>
+        <%= form.text_field :q, class: 'grow border-0 focus:ring-0' %>
+      </div>
+    <% end %>
+
+    <div id="query_results"></div>
+  </div>
+
+</div>
