@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :document_ownerships, class_name: 'UserDocumentOwnership', dependent: :delete_all
   has_many :documents, through: :document_ownerships
+  has_many :chunks, through: :documents
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
