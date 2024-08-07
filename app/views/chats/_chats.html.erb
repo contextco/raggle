@@ -1,21 +1,3 @@
-<div class="flex justify-between pl-6 pr-2 py-2 border-b items-center h-12">
-  <div class="font-serif">
-    Context AI Chat
-  </div>
-
-  <div class="right text-xs flex items-center gap-2 h-8">
-      <%= link_to chats_path, class: 'text-stone-600 border rounded py-1 px-2 hover:border-b-2 border-stone-300',
-                  data: { action: 'keydown.meta+k@window->application#navigate', 'application-location-param': chats_path } do %>
-        + New Chat <span class="bg-stone-200 p-0.5 rounded">⌘K</span>
-      <% end %>
-
-    <div class="size-6">
-      <%= button_to destroy_user_session_path, method: :delete do %>
-        <%= profile_picture_tag %>
-      <% end %>
-    </div>
-  </div>
-</div>
 <div class="flex min-h-0 grow items-stretch">
   <div class="w-64 flex flex-col gap-1 shrink-0 items-stretch p-4 overflow-y-auto justify-between">
     <div class="flex flex-col items-stretch gap-1">
