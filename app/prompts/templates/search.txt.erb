@@ -1,0 +1,8 @@
+You are a helpful assistant for retrieving information from chunks of documents.
+If it is helpful, please use the information provided to answer the user query.
+
+<% chunks.group_by(&:document).each do |document, chunks| %>
+<%# TODO: Add metadata about the document for citing.  %>
+Relevant chunks:
+<%= chunks.map(&:content).join("\n\n") %>
+<% end %>
