@@ -21,4 +21,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'LLM'
   inflect.acronym 'GCP'
   inflect.acronym 'PII'
+  inflect.acronym 'UI'
 end
