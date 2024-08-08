@@ -14,13 +14,18 @@ RSpec.describe SearchesController do
       get :show
       expect(response).to be_successful
     end
-  end
 
-  describe 'POST /search' do
-    it 'creates a search' do
-      expect do
-        post :create, params: { q: 'foo' }, as: :turbo_stream
-      end.to have_enqueued_job(PerformSearchJob).with('foo', user, anything)
+    context 'when a query is present' do
+      it 'performs a search' do
+        expect(controller).to receive(:perform_search)
+        get :show, params: { q: 'foo' }
+      end
+
+      it 'enqueues a search job' do
+        expect do
+          get :show, params: { q: 'foo' }
+        end.to have_enqueued_job(PerformSearchJob).with('foo', user, anything)
+      end
     end
   end
 end
