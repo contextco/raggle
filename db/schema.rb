@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_06_163842) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_08_130141) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -107,6 +107,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_06_163842) do
     t.index ["documentable_id", "documentable_type"], name: "index_documents_on_documentable_id_and_type"
     t.index ["message_id"], name: "index_documents_on_message_id"
     t.check_constraint "stable_id IS NOT NULL", name: "check_stable_id_not_null"
+  end
+
+  create_table "gmail_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "google_drive_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
