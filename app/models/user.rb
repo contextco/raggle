@@ -29,7 +29,7 @@ class User < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       team = Team.create!
-      team.users.create_user_from_omniauth(access_token_payload)
+      user = team.users.create_user_from_omniauth(access_token_payload)
     end
 
     user
