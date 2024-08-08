@@ -1,0 +1,18 @@
+<div class="py-4">
+  <div class="flex flex-col justify-center items-center gap-2 mx-auto max-w-2xl">
+
+    <%= form_with url: search_path, method: :get, class: 'w-full flex justify-center ' do |form| %>
+      <div class="rounded border px-3 py-1 bg-white flex items-center grow has-[:focus]:border-stone-400">
+        <%= heroicon 'magnifying-glass', options: { class: 'size-4' } %>
+        <%= form.text_field :q, value: params[:q], class: 'grow border-0 focus:ring-0' %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="bg-stone-50 w-full my-4 shadow-inset">
+    <div class="max-w-2xl mx-auto">
+      <%= render Search::ResultsComponent.new(query_id: @query_id) %>
+    </div>
+  </div>
+</div>
