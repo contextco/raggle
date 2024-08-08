@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     post 'chat', on: :member
   end
 
-  resource :search, only: %i[show create]
+  resource :search, only: %i[show]
 
   # Devise User Paths
   devise_for :users,
