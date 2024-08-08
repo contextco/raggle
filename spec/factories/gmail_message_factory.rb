@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :gmail_message do
-    payload {
+    payload do
       {
         id: '17b8f1d1b1b1b1b1',
         threadId: '17b8f1d1b1b1b1b1',
@@ -11,7 +11,7 @@ FactoryBot.define do
         historyId: '123456',
         internalDate: '123456'
       }.to_json
-    }
+    end
 
     association :document, factory: :document, strategy: :build
   end
