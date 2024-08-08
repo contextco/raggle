@@ -43,6 +43,6 @@ class PerformSearchJob < ApplicationJob
   end
 
   def llm_client
-    LLM.from_string!('gpt-4o').client
+    LLM.from_string!('gpt-4o-mini').client
   end
 end

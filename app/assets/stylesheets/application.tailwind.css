@@ -44,4 +44,11 @@
     background: #555;
 }
 
+#generative_summary ol {
+    @apply flex flex-col gap-1 my-2;
+}
+
+.stable-scrollbar {
+    scrollbar-gutter: stable;
+}
 
