@@ -17,24 +17,26 @@ class Ingestors::Google::Gmail
   def ingest
     messages = gmail_client.list_user_messages('me', q: 'is:unread')&.messages
     messages&.each(&method(:persist_or_update_message))
-
-    nil
   end
 
   private
 
   def persist_or_update_message(message)
     document = Document.find_by(stable_id: message.id, documentable_type: GmailMessage.name)
-    return if document&.last_sync_at.present? && document.last_sync_at.to_i > message.internal_date
+    response = gmail_client.get_user_message('me', message.id, format: 'full')
 
-    response = gmail_client.get_user_message('me', message.id)
+    return if document&.last_sync_at.present? && document.last_sync_at.to_i > response.internal_date / 1000
+
+    headers = extract_headers(response&.payload&.headers)
+    body = response&.payload&.body&.data
+    return if body.blank?
 
     Document.transaction do
       if document.present?
-        document.documentable.update_and_rechunk!(response, message)
+        document.documentable.update_and_rechunk!(response, body:, headers:)
         UserDocumentOwnership.upsert({ user_id: user.id, document_id: document.id }, unique_by: %i[user_id document_id])
       else
-        gmail_message = GmailMessage.create_from_gmail_payload!(response, message)
+        gmail_message = GmailMessage.create_from_user_message!(response, body:, headers:)
         UserDocumentOwnership.upsert({ user_id: user.id, document_id: gmail_message.document.id }, unique_by: %i[user_id document_id])
       end
     end
@@ -44,6 +46,12 @@ class Ingestors::Google::Gmail
     @gmail_client ||= Google::Apis::GmailV1::GmailService.new.tap do |gmail|
       gmail.authorization = client
     end
+  end
+
+  def extract_headers(headers)
+    return {} unless headers
+
+    headers.each_with_object({}) { |header, hash| hash[header.name.downcase] = header.value }
   end
 
   attr_reader :client, :user

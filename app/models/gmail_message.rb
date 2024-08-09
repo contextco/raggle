@@ -3,20 +3,36 @@
 class GmailMessage < ApplicationRecord
   has_one :document, as: :documentable, dependent: :destroy
 
-  def update_and_rechunk!(content, file_metadata)
+  def update_and_rechunk!(message, body:, headers:)
     transaction do
-      update!(payload: file_metadata.to_json)
-      document.rechunk!(content)
+      update!(payload: message.to_json,
+              body:,
+              from: headers['from'],
+              to: headers['to'],
+              subject: headers['subject'],
+              received_at: Time.at(message.internal_date / 1000)) # Convert milliseconds to seconds
+      document.rechunk!(body)
     end
   end
 
-  def self.create_from_gmail_payload!(content, file_metadata)
+  def self.create_from_user_message!(message, body:, headers:)
     transaction do
-      file = create!(payload: file_metadata)
-      doc = file.create_document!(stable_id: file_metadata.id, documentable: file)
-      doc.rechunk!(content)
+      gmail_message = create!(
+        payload: message.to_json,
+        body:,
+        from: headers['from'],
+        to: headers['to'],
+        subject: headers['subject'],
+        received_at: Time.at(message.internal_date / 1000) # Convert milliseconds to seconds
+      )
 
-      file
+      document = gmail_message.create_document!(
+        stable_id: message.id,
+        documentable: gmail_message
+      )
+
+      document.rechunk!(body)
+      gmail_message
     end
   end
 end
