@@ -4,31 +4,14 @@
     <div class="font-medium text-stone-700">Integrations</div>
     <div class="rounded p-4 w-full bg-white text-sm flex gap-2 items-center justify-between rounded border border-stone-300">
 
-      <div class="flex items-center gap-2 justify-between w-full">
-        <div class="flex gap-2 items-center">
-          <%= heroicon 'document', variant: :outline, options: { class: 'size-4' } %>
-          <div class="group">
-            <div class="flex items-center gap-2">
-              Google Drive
-            </div>
-            <div class="text-xs text-stone-500">
-              <%= current_user.documents.where(documentable_type: GoogleDriveFile.name).count %> documents synced
-            </div>
-          </div>
-        </div>
-
-        <div class="right">
-          <% if current_user.google_docs_permission_granted? %>
-            <div class="text-green-600 px-2 py-1 bg-green-100 rounded border-green-400 border google-drive-integration-connected">Connected</div>
-          <% else %>
-            <%= button_to auth_provider_path(provider: :google_with_google_drive), data: { turbo: false } do %>
-            <div class="px-2 py-1 bg-blue-100 rounded border-blue-400 border text-blue-600 flex items-center gap-1 hover:bg-blue-200 duration-100">
-              Connect
-              <%= heroicon 'arrow-right', options: { class: 'size-4' } %>
-            </div>
-            <% end %>
-          <% end %>
-        </div>
+      <div class="flex flex-col w-full gap-2">
+        <%= render Settings::IntegrationComponent.new(
+          icon: :document,
+          title: 'Google Drive',
+          integration_link: auth_provider_path(provider: :google_with_google_drive),
+          connected: current_user.google_docs_permission_granted?,
+          resources: current_user.documents.where(documentable_type: GoogleDriveFile.name)
+        ) %>
       </div>
 
     </div>
