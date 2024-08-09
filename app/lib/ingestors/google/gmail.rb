@@ -14,6 +14,8 @@ class Ingestors::Google::Gmail
     @user = user
   end
 
+  REQUIRED_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
+
   def ingest
     messages = gmail_client.list_user_messages('me', q: 'is:unread')&.messages
     messages&.each(&method(:persist_or_update_message))

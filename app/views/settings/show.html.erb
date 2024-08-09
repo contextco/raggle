@@ -2,15 +2,23 @@
   <div class="text-lg font-medium mb-8">Settings</div>
   <div class="flex flex-col gap-2">
     <div class="font-medium text-stone-700">Integrations</div>
-    <div class="rounded p-4 w-full bg-white text-sm flex gap-2 items-center justify-between rounded border border-stone-300">
+    <div class="rounded px-4 w-full bg-white text-sm flex gap-2 items-center justify-between rounded border border-stone-300">
 
-      <div class="flex flex-col w-full gap-2">
+      <div class="flex flex-col w-full divide-y">
         <%= render Settings::IntegrationComponent.new(
           icon: :document,
           title: 'Google Drive',
           integration_link: auth_provider_path(provider: :google_with_google_drive),
           connected: current_user.google_docs_permission_granted?,
           resources: current_user.documents.where(documentable_type: GoogleDriveFile.name)
+        ) %>
+        <%= render Settings::IntegrationComponent.new(
+          icon: :envelope,
+          title: 'Gmail',
+          resource_name: :message,
+          integration_link: auth_provider_path(provider: :google_with_gmail),
+          connected: current_user.gmail_permission_granted?,
+          resources: current_user.documents.where(documentable_type: GmailMessage.name)
         ) %>
       </div>
 
