@@ -30,5 +30,21 @@ RSpec.describe 'Settings', type: :request do
         expect(response.body).to include('google-drive-integration-connected')
       end
     end
+
+    context 'when gmail is not authorized' do
+      it 'shows a link to authorize gmail' do
+        get settings_path
+        expect(response.body).to include(auth_provider_path(provider: :google_with_gmail))
+      end
+    end
+
+    context 'when gmail is authorized' do
+      let(:user) { create(:user, google_oauth_scopes: [Ingestors::Google::Gmail::REQUIRED_SCOPE]) }
+
+      it 'shows that the gmail integration is connected' do
+        get settings_path
+        expect(response.body).to include('gmail-integration-connected')
+      end
+    end
   end
 end

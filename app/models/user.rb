@@ -50,6 +50,10 @@ class User < ApplicationRecord
     google_oauth_scopes.include?(Ingestors::Google::Docs::REQUIRED_SCOPE)
   end
 
+  def gmail_permission_granted?
+    google_oauth_scopes.include?(Ingestors::Google::Gmail::REQUIRED_SCOPE)
+  end
+
   def google_oauth_scopes
     google_oauth_credentials['scope'].split
   end
