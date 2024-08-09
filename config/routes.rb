@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   resource :search, only: %i[show]
 
+  resource :settings, only: %i[show update]
+
   # Devise User Paths
   devise_for :users,
              path: '',
@@ -25,6 +27,12 @@ Rails.application.routes.draw do
                omniauth_callbacks: 'users/omniauth_callbacks',
                sessions: 'users/sessions'
              }
+
+  match '/auth/:provider', via: %i[post], as: :auth_provider, to: 'auth#create'
+
+  scope '/_/permissions' do
+    get '/google/callback', to: 'auth#handle_google_callback'
+  end
 
   # Defines the root path route ("/")
   root 'chats#index'

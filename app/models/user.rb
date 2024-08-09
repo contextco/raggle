@@ -45,4 +45,12 @@ class User < ApplicationRecord
       password: Devise.friendly_token[0, 20]
     )
   end
+
+  def google_docs_permission_granted?
+    google_oauth_scopes.include?(Ingestors::Google::Docs::REQUIRED_SCOPE)
+  end
+
+  def google_oauth_scopes
+    google_oauth_credentials['scope'].split
+  end
 end
