@@ -20,15 +20,21 @@
     </div>
   </div>
   <div class="flex items-stretch grow">
-    <div class="w-12 h-full border-r flex flex-col items-center gap-2 pt-1">
-      <%= render Ui::SidebarNavigationIconComponent.new(
-        icon: 'magnifying-glass',
-        path: search_path
-      ) %>
+    <div class="w-12 h-full border-r flex flex-col items-center gap-2 py-1 justify-between">
+      <div class="flex flex-col gap-2">
+        <%= render Ui::SidebarNavigationIconComponent.new(
+          icon: 'magnifying-glass',
+          path: search_path
+        ) %>
 
+        <%= render Ui::SidebarNavigationIconComponent.new(
+          icon: :users,
+          path: chats_path
+        ) %>
+      </div>
       <%= render Ui::SidebarNavigationIconComponent.new(
-        icon: :users,
-        path: chats_path
+        icon: :cog,
+        path: settings_path
       ) %>
     </div>
     <div class="w-full">

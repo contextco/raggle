@@ -14,6 +14,8 @@ class Ingestors::Google::Docs
     @user = user
   end
 
+  REQUIRED_SCOPE = 'https://www.googleapis.com/auth/drive.readonly'
+
   def ingest
     files = google_drive_client.list_files(q: 'mimeType = "application/vnd.google-apps.document"').items
     files.each(&method(:persist_or_update_doc))
