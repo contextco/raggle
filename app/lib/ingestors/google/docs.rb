@@ -6,7 +6,7 @@ class Ingestors::Google::Docs
       token_credential_uri: 'https://oauth2.googleapis.com/token',
       client_id: ENV.fetch('GOOGLE_CLIENT_ID', nil),
       client_secret: ENV.fetch('GOOGLE_CLIENT_SECRET', nil),
-      refresh_token: user.google_oauth_credentials['refresh_token']
+      refresh_token: user.google_oauth_credentials['token']
     )
     client.fetch_access_token!
 
