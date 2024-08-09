@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+
 class Ingestors::Google::Gmail
   def initialize(user)
     client = Signet::OAuth2::Client.new(
@@ -17,6 +20,8 @@ class Ingestors::Google::Gmail
   def ingest
     messages = gmail_client.list_user_messages('me', q: 'is:unread')&.messages
     messages&.each(&method(:persist_or_update_message))
+
+    nil
   end
 
   private
@@ -56,3 +61,6 @@ class Ingestors::Google::Gmail
 
   attr_reader :client, :user
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
