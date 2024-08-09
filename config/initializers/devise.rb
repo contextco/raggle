@@ -315,7 +315,6 @@ Devise.setup do |config|
     scope: %w[
       https://www.googleapis.com/auth/userinfo.email
       https://www.googleapis.com/auth/userinfo.profile
-      https://www.googleapis.com/auth/gmail.readonly
     ].join(' ')
   }
 end
