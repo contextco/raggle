@@ -1,0 +1,28 @@
+<div class="flex items-center gap-2 justify-between w-full">
+  <div class="flex gap-2 items-center">
+    <%= heroicon icon, variant: :outline, options: { class: 'size-4' } %>
+    <div class="group">
+      <div class="flex items-center gap-2">
+        <%= title %>
+      </div>
+      <% if connected %>
+        <div class="text-xs text-stone-500">
+          <%= pluralize(resources.count, resource_name.to_s) %> synced
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="right">
+    <% if connected %>
+      <div class="text-green-600 px-2 py-1 bg-green-100 rounded border-green-400 border <%= sentinel_connected_class %>">Connected</div>
+    <% else %>
+      <%= button_to integration_link, data: { turbo: false } do %>
+        <div class="px-2 py-1 bg-blue-100 rounded border-blue-400 border text-blue-600 flex items-center gap-1 hover:bg-blue-200 duration-100">
+          Connect
+          <%= heroicon 'arrow-right', options: { class: 'size-4' } %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
