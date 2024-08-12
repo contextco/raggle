@@ -3,6 +3,8 @@
 class GoogleDriveFile < ApplicationRecord
   has_one :document, as: :documentable, dependent: :destroy
 
+  store_accessor :payload
+
   def update_and_rechunk!(content, file_metadata)
     transaction do
       update!(payload: file_metadata.to_json)
