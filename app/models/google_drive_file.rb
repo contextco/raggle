@@ -3,7 +3,13 @@
 class GoogleDriveFile < ApplicationRecord
   has_one :document, as: :documentable, dependent: :destroy
 
-  store_accessor :file_payload, :title
+  store_accessor :file_payload, :title, :alternate_link, :owners, :modified_date
+
+  Owner = Struct.new(:display_name, :email_address, :picture, keyword_init: true) do
+    def profile_picture_url
+      picture['url']
+    end
+  end
 
   def update_and_rechunk!(content, file_metadata)
     transaction do
@@ -20,5 +26,13 @@ class GoogleDriveFile < ApplicationRecord
 
       file
     end
+  end
+
+  def owners
+    super.map { |owner| Owner.new(owner.filter { |k, _| Owner.members.include?(k.to_sym) }) }
+  end
+
+  def modified_date
+    Time.zone.parse(super)
   end
 end

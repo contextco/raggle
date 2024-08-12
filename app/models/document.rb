@@ -22,6 +22,10 @@ class Document < ApplicationRecord
     end
   end
 
+  def self.relevant_documents(chunks)
+    where(id: chunks.select(&:document_id).distinct).order
+  end
+
   def uploaded_file?
     documentable_type == 'UploadedFile'
   end
