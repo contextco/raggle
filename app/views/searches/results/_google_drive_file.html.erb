@@ -1,0 +1,15 @@
+<div class="flex border p-2 items-center gap-2">
+  <div class="w-8">
+    <%= image_tag 'search/google_docs.png' %>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <div class="text-sm text-stone-700">
+      <%= document.name %>
+    </div>
+
+    <div class="text-xs text-stone-500">
+      <%= file.mime_type %>
+    </div>
+  </div>
+</div>

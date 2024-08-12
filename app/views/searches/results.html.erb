@@ -15,4 +15,11 @@
       <%= render Search::ResultsComponent.new(query_id: @query_id) %>
     </div>
   </div>
+
+
+  <div class="max-w-2xl mx-auto flex flex-col gap-4">
+    <% @documents.each do |document, chunks| %>
+      <%= render "searches/results/#{document.documentable_name}", document: %>
+    <% end %>
+  </div>
 </div>
