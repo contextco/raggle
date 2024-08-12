@@ -67,5 +67,17 @@ RSpec.describe Ingestors::Google::Gmail do
         expect { ingestor.ingest }.not_to(change { gmail_message.reload.payload })
       end
     end
+
+    context 'when the message has non-English characters' do
+      let(:mock_message) do
+        instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
+                                                        payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
+                                                                                                                     body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '👋🌎')))
+      end
+
+      it 'exports the message' do
+        expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
+      end
+    end
   end
 end

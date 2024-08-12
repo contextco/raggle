@@ -9,7 +9,7 @@ class Document < ApplicationRecord
   has_many :users, through: :user_ownerships
   delegate :attachment, to: :documentable
 
-  delegated_type :documentable, types: %w[UploadedFile GoogleDriveFile GmailMessage]
+  delegated_type :documentable, types: %w[UploadedFile GoogleDriveFile GmailMessage], dependent: :destroy
 
   attribute :stable_id, :string, default: -> { SecureRandom.uuid_v7 }
 
