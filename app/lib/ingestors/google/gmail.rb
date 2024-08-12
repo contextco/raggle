@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+
 class Ingestors::Google::Gmail
   def initialize(user)
     client = Signet::OAuth2::Client.new(
@@ -17,7 +20,7 @@ class Ingestors::Google::Gmail
   REQUIRED_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
 
   def ingest
-    messages = gmail_client.list_user_messages('me', q: 'is:unread')&.messages
+    messages = gmail_client.list_user_messages('me', q: 'in:anywhere', max_results: 500)&.messages
     messages&.each(&method(:persist_or_update_message))
 
     nil
@@ -27,16 +30,20 @@ class Ingestors::Google::Gmail
 
   def persist_or_update_message(message)
     document = Document.find_by(stable_id: message.id, documentable_type: GmailMessage.name)
-    return if document&.last_sync_at.present? && document.last_sync_at.to_i > message.internal_date
+    response = gmail_client.get_user_message('me', message.id, format: 'full')
 
-    response = gmail_client.get_user_message('me', message.id)
+    return if document&.last_sync_at.present? && document.last_sync_at.to_i > response.internal_date / 1000
+
+    headers = extract_headers(response&.payload&.headers)
+    body = response&.payload&.body&.data
+    return if body.blank?
 
     Document.transaction do
       if document.present?
-        document.documentable.update_and_rechunk!(response, message)
+        document.documentable.update_and_rechunk!(response, body:, headers:)
         UserDocumentOwnership.upsert({ user_id: user.id, document_id: document.id }, unique_by: %i[user_id document_id])
       else
-        gmail_message = GmailMessage.create_from_gmail_payload!(response, message)
+        gmail_message = GmailMessage.create_from_user_message!(response, body:, headers:)
         UserDocumentOwnership.upsert({ user_id: user.id, document_id: gmail_message.document.id }, unique_by: %i[user_id document_id])
       end
     end
@@ -48,5 +55,14 @@ class Ingestors::Google::Gmail
     end
   end
 
+  def extract_headers(headers)
+    return {} unless headers
+
+    headers.each_with_object({}) { |header, hash| hash[header.name.downcase] = header.value }
+  end
+
   attr_reader :client, :user
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
