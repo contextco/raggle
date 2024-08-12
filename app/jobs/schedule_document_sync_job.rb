@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ScheduleDocumentSync < ApplicationJob
+class ScheduleDocumentSyncJob < ApplicationJob
   queue_as :default
 
   def perform
