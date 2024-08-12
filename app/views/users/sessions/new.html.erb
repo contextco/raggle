@@ -3,7 +3,7 @@
     <div class="font-serif">
     </div>
 
-    <%= button_to user_google_oauth2_omniauth_authorize_path, data: { turbo: "false" },
+    <%= button_to auth_provider_path(provider: :google_oauth2), data: { turbo: "false" },
                   class: 'flex items-center p-2 border rounded gap-2 shadow-sm w-full justify-center hover:bg-slate-50 bg-white' do %>
       <%= image_tag 'google.png', class: 'h-4' %>
       Continue with Google

@@ -24,14 +24,18 @@ Rails.application.routes.draw do
                sign_out: 'logout'
              },
              controllers: {
-               omniauth_callbacks: 'users/omniauth_callbacks',
                sessions: 'users/sessions'
              }
 
-  match '/auth/:provider', via: %i[post], as: :auth_provider, to: 'auth#create'
+  # Omniauth Callbacks
+  devise_scope :user do
+    get '/auth/google_oauth2/callback', to: 'users/omniauth_callbacks#google_oauth2', as: :omniauth_callback
+  end
 
+  match '/auth/:provider', via: %i[post], as: :auth_provider, to: 'auth#create'
   scope '/_/permissions' do
-    get '/google/callback', to: 'auth#handle_google_callback'
+    get '/google_with_google_drive/callback', to: 'auth#handle_google_callback'
+    get '/google_with_gmail/callback', to: 'auth#handle_google_callback'
   end
 
   # Defines the root path route ("/")
