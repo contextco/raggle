@@ -23,7 +23,7 @@ RSpec.describe Ingestors::Google::Gmail do
   end
 
   describe '#ingest' do
-    let(:mock_message_list) { instance_double(Google::Apis::GmailV1::ListMessagesResponse, messages: [mock_message]) }
+    let(:mock_message_list) { instance_double(Google::Apis::GmailV1::ListMessagesResponse, messages: [mock_message], next_page_token: nil) }
 
     before do
       allow(mock_client).to receive(:list_user_messages).and_return(mock_message_list)
@@ -31,7 +31,8 @@ RSpec.describe Ingestors::Google::Gmail do
     end
 
     it 'fetches Google Gmail messages' do
-      expect(mock_client).to receive(:list_user_messages).with('me', q: 'in:anywhere', max_results: 500)
+      expect(mock_client).to receive(:list_user_messages).with('me', include_spam_trash: false,
+                                                                     q: 'in:anywhere', max_results: 100, page_token: nil)
       ingestor.ingest
     end
 

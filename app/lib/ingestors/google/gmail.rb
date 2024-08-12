@@ -20,8 +20,23 @@ class Ingestors::Google::Gmail
   REQUIRED_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
 
   def ingest
-    messages = gmail_client.list_user_messages('me', q: 'in:anywhere', max_results: 500)&.messages
-    messages&.each(&method(:persist_or_update_message))
+    page_token = nil
+
+    loop do
+      result = gmail_client.list_user_messages(
+        'me',
+        include_spam_trash: false,
+        q: 'in:anywhere',
+        max_results: 100,
+        page_token:
+      )
+
+      messages = result&.messages || []
+      messages.each(&method(:persist_or_update_message))
+
+      page_token = result&.next_page_token
+      break unless page_token
+    end
 
     nil
   end
