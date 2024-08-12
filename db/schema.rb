@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_09_143631) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_12_133453) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -120,9 +120,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_143631) do
   end
 
   create_table "google_drive_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "file_payload"
   end
 
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

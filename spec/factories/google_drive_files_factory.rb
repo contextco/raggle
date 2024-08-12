@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :google_drive_file do
-    payload { { name: 'test_file' }.to_json }
+    file_payload { { name: 'test_file' } }
 
     association :document, factory: :document, strategy: :build
   end

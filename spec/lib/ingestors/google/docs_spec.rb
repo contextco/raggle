@@ -17,6 +17,8 @@ RSpec.describe Ingestors::Google::Docs do
     allow(mock_oauth_client).to receive(:update!)
     allow(mock_oauth_client).to receive(:fetch_access_token!)
     allow(mock_client).to receive(:authorization).and_return(mock_oauth_client)
+
+    allow(mock_file).to receive(:to_h).and_return({ id: 'fake_file_id', title: 'Test Document' })
   end
 
   describe '#ingest' do
@@ -50,7 +52,7 @@ RSpec.describe Ingestors::Google::Docs do
       let!(:google_drive_file) { create(:google_drive_file, document: build(:document, stable_id: 'fake_file_id', last_sync_at: 1.day.ago)) }
 
       it 'updates the existing document' do
-        expect { ingestor.ingest }.to change { google_drive_file.reload.payload }.to(mock_file.to_json)
+        expect { ingestor.ingest }.to change { google_drive_file.reload.file_payload }.to(mock_file.to_h.stringify_keys)
       end
     end
 
@@ -59,7 +61,7 @@ RSpec.describe Ingestors::Google::Docs do
       let(:mock_file) { instance_double(Google::Apis::DriveV2::File, id: 'fake_file_id', title: 'Test Document', modified_date: 2.days.ago) }
 
       it 'does not update the document' do
-        expect { ingestor.ingest }.not_to(change { google_drive_file.reload.payload })
+        expect { ingestor.ingest }.not_to(change { google_drive_file.reload.file_payload })
       end
     end
   end
