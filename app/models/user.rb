@@ -21,8 +21,7 @@ class User < ApplicationRecord
     if user
       user.update!(
         name: data['name'],
-        profile_picture_url: data['image'],
-        google_oauth: access_token_payload
+        profile_picture_url: data['image']
       )
       return user
     end
