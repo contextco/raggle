@@ -12,7 +12,7 @@ class GoogleDriveFile < ApplicationRecord
 
   def self.create_from_google_payload!(content, file_metadata)
     transaction do
-      file = create!(payload: file_metadata)
+      file = create!(payload: file_metadata.to_json)
       doc = file.create_document!(stable_id: file_metadata.id, documentable: file)
       doc.rechunk!(content)
 
