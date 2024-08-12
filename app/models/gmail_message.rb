@@ -2,11 +2,11 @@
 
 class GmailMessage < ApplicationRecord
   has_one :document, as: :documentable, dependent: :destroy
+  encrypts :payload, :from, :to, :subject
 
   def update_and_rechunk!(message, body:, headers:)
     transaction do
       update!(payload: message.to_json,
-              body:,
               from: headers['from'],
               to: headers['to'],
               subject: headers['subject'],
@@ -19,7 +19,6 @@ class GmailMessage < ApplicationRecord
     transaction do
       gmail_message = create!(
         payload: message.to_json,
-        body:,
         from: headers['from'],
         to: headers['to'],
         subject: headers['subject'],

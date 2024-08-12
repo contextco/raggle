@@ -18,7 +18,7 @@ class Ingestors::Google::Gmail
   end
 
   def ingest
-    messages = gmail_client.list_user_messages('me', q: 'is:unread')&.messages
+    messages = gmail_client.list_user_messages('me', q: 'in:anywhere', max_results: 500)&.messages
     messages&.each(&method(:persist_or_update_message))
 
     nil

@@ -113,7 +113,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_143631) do
     t.string "payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "body"
     t.string "from"
     t.string "to"
     t.string "subject"

@@ -31,7 +31,7 @@ RSpec.describe Ingestors::Google::Gmail do
     end
 
     it 'fetches Google Gmail messages' do
-      expect(mock_client).to receive(:list_user_messages).with('me', q: 'is:unread')
+      expect(mock_client).to receive(:list_user_messages).with('me', q: 'in:anywhere', max_results: 500)
       ingestor.ingest
     end
 
