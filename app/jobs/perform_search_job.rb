@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class PerformSearchJob < ApplicationJob
-  queue_as :default
+  queue_as :real_time
+
   include ApplicationHelper
 
   def perform(query, user, query_id)
