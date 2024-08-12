@@ -7,33 +7,37 @@ RSpec.describe Ingestors::Google::Gmail do
   let(:ingestor) { described_class.new(user) }
   let(:mock_oauth_client) { instance_double(Signet::OAuth2::Client) }
   let(:mock_client) { instance_double(Google::Apis::GmailV1::GmailService) }
-  let(:mock_message) { instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.now.to_i) }
+  let(:mock_message) do
+    instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
+                                                    payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
+                                                                                                                 body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: 'Test Body')))
+  end
 
   before do
     allow(Google::Apis::GmailV1::GmailService).to receive(:new).and_return(mock_client)
-    allow(mock_client).to receive(:authorization=)
+    allow(mock_client).to receive(:authorization=).with(mock_oauth_client)
 
     allow(Signet::OAuth2::Client).to receive(:new).and_return(mock_oauth_client)
-    allow(mock_oauth_client).to receive(:update!)
     allow(mock_oauth_client).to receive(:fetch_access_token!)
     allow(mock_client).to receive(:authorization).and_return(mock_oauth_client)
   end
 
   describe '#ingest' do
-    let(:mock_message_list) { instance_double(Google::Apis::GmailV1::ListMessagesResponse, messages: [mock_message]) }
+    let(:mock_message_list) { instance_double(Google::Apis::GmailV1::ListMessagesResponse, messages: [mock_message], next_page_token: nil) }
 
     before do
       allow(mock_client).to receive(:list_user_messages).and_return(mock_message_list)
-      allow(mock_client).to receive(:get_user_message).and_return('Exported message content')
+      allow(mock_client).to receive(:get_user_message).and_return(mock_message)
     end
 
     it 'fetches Google Gmail messages' do
-      expect(mock_client).to receive(:list_user_messages).with('me', q: 'is:unread')
+      expect(mock_client).to receive(:list_user_messages).with('me', include_spam_trash: false,
+                                                                     q: 'in:anywhere', max_results: 100, page_token: nil)
       ingestor.ingest
     end
 
     it 'exports each message' do
-      expect(mock_client).to receive(:get_user_message).with('me', 'message_id')
+      expect(mock_client).to receive(:get_user_message).with('me', 'message_id', format: 'full')
       ingestor.ingest
     end
 
@@ -43,23 +47,37 @@ RSpec.describe Ingestors::Google::Gmail do
 
     it 'associates the document with the user' do
       ingestor.ingest
-      expect(user.documents).to include(GmailMessage.last.document)
+      expect(user.documents.where(documentable_type: GmailMessage.name)).to include(GmailMessage.last.document)
     end
 
     context 'when a document already exists' do
-      let!(:gmail_message) { create(:gmail_message, document: build(:document, stable_id: 'message_id', last_sync_at: 1.day.ago)) }
+      let!(:existing_document) { create(:document, stable_id: 'message_id', last_sync_at: 1.day.ago) }
+      let!(:gmail_message) { create(:gmail_message, document: existing_document) }
 
       it 'updates the existing document' do
         expect { ingestor.ingest }.to change { gmail_message.reload.payload }.to(mock_message.to_json)
       end
     end
 
-    context 'when was modified before the last sync time' do
-      let!(:gmail_message) { create(:gmail_message, document: build(:document, stable_id: 'message_id', last_sync_at: 1.day.ago)) }
+    context 'when the message was modified before the last sync time' do
+      let!(:existing_document) { create(:document, stable_id: 'message_id', last_sync_at: 1.day.ago) }
+      let!(:gmail_message) { create(:gmail_message, document: existing_document) }
       let(:mock_message) { instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: 2.days.ago.to_i) }
 
       it 'does not update the existing document' do
         expect { ingestor.ingest }.not_to(change { gmail_message.reload.payload })
+      end
+    end
+
+    context 'when the message has non-English characters' do
+      let(:mock_message) do
+        instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
+                                                        payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
+                                                                                                                     body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '👋🌎')))
+      end
+
+      it 'exports the message' do
+        expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
       end
     end
   end

@@ -22,7 +22,7 @@ class Chunk < ApplicationRecord
              .with_index do |chunk_content, chunk_index|
         next if document.reload.chunks.exists?(chunk_index:)
 
-        create!(chunk_index:, content: chunk_content)
+        create!(chunk_index:, content: chunk_content) if chunk_content.present?
       end
     end
   end
