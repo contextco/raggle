@@ -20,13 +20,14 @@ class Ingestors::Google::Gmail
   REQUIRED_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
 
   def ingest
+    q = search_query
     page_token = nil
 
     loop do
       result = gmail_client.list_user_messages(
         'me',
         include_spam_trash: false,
-        q: 'in:anywhere',
+        q:,
         max_results: 100,
         page_token:
       )
@@ -74,6 +75,17 @@ class Ingestors::Google::Gmail
     return {} unless headers
 
     headers.each_with_object({}) { |header, hash| hash[header.name.downcase] = header.value }
+  end
+
+  def search_query
+    latest_received_at = user.documents
+                             .joins("INNER JOIN gmail_messages ON documents.documentable_id = gmail_messages.id AND documents.documentable_type = 'GmailMessage'")
+                             .maximum('gmail_messages.received_at')
+    if latest_received_at
+      "in:anywhere after:#{(latest_received_at - 1.day).strftime('%Y/%m/%d')}"
+    else
+      'in:anywhere'
+    end
   end
 
   attr_reader :client, :user
