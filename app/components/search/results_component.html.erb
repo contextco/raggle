@@ -1,9 +1,10 @@
 <%= turbo_stream_from query_id %>
 
 <div class="w-full">
-  <div class="w-full text-sm max-h-96 h-96 stable-scrollbar flex flex-col gap-4 px-4 py-4">
-    <div class="flex items-center">
+  <div class="w-full text-sm max-h-96 stable-scrollbar flex flex-col gap-4 px-4 py-4">
+    <div class="flex items-center gap-4 font-medium">
       <%= heroicon :sparkles, options: { class: 'size-8 text-stone-600' } %>
+      AI Generated Summary
     </div>
 
     <div id="generative_summary" class="overflow-y-auto pr-4 text-stone-700">

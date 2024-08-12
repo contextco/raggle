@@ -22,6 +22,16 @@ class Document < ApplicationRecord
     end
   end
 
+  def self.search_by_chunks(embedding)
+    chunks = joins(:chunks)
+             .merge(Chunk.nearest_neighbors(:embedding, embedding, distance: :euclidean))
+
+    joins("INNER JOIN LATERAL (#{chunks.to_sql}) AS matching_chunks ON matching_chunks.document_id = documents.id")
+      .group('documents.id')
+      .reselect('documents.id, documents.*, MIN(matching_chunks.neighbor_distance) AS neighbor_distance')
+      .order('MIN(matching_chunks.neighbor_distance) ASC')
+  end
+
   def uploaded_file?
     documentable_type == 'UploadedFile'
   end

@@ -1,4 +1,4 @@
-<div class="py-4">
+<div class="py-4 overflow-y-auto">
   <div class="flex flex-col justify-center items-center gap-2 mx-auto max-w-2xl">
 
     <%= form_with url: search_path, method: :get, class: 'w-full flex justify-center ' do |form| %>
@@ -10,9 +10,15 @@
 
   </div>
 
-  <div class="bg-stone-50 w-full my-4 shadow-inset">
+  <div class="bg-stone-50 w-full my-4 shadow-inset border-y">
     <div class="max-w-2xl mx-auto">
       <%= render Search::ResultsComponent.new(query_id: @query_id) %>
     </div>
+  </div>
+
+  <div class="max-w-2xl mx-auto flex flex-col gap-2">
+    <% @documents.each do |document| %>
+      <%= render "searches/results/#{document.documentable_name}", document: %>
+    <% end %>
   </div>
 </div>
