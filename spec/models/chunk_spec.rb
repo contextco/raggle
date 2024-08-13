@@ -13,7 +13,7 @@ RSpec.describe Chunk, type: :model do
   end
 
   describe 'callbacks' do
-    let(:chunk) { build(:chunk, content: 'test content') }
+    let(:chunk) { build(:chunk, content: 'test content', embedding: nil) }
 
     it 'generates embedding before creating a chunk' do
       expect(chunk).to receive(:generate_embedding)

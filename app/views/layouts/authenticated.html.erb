@@ -19,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="flex items-stretch grow">
+  <div class="flex items-stretch grow min-h-0">
     <div class="w-12 h-full border-r flex flex-col items-center gap-2 py-1 justify-between">
       <div class="flex flex-col gap-2">
         <%= render Ui::SidebarNavigationIconComponent.new(
@@ -37,7 +37,7 @@
         path: settings_path
       ) %>
     </div>
-    <div class="w-full">
+    <div class="w-full h-full overflow-y-auto">
       <%= yield %>
     </div>
   </div>
