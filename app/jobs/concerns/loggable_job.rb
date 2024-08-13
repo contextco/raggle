@@ -27,6 +27,7 @@ module LoggableJob
   end
 
   def log
-    @log ||= SyncLog.start(task_name: self.class.name, user: arguments.first)
+    integration = Integration.from_backfill_job(self.class)
+    @log ||= SyncLog.start(task_name: integration.key, user: arguments.first)
   end
 end

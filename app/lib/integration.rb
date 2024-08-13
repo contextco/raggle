@@ -25,5 +25,12 @@ class Integration
 
       new(**info.merge(key:))
     end
+
+    def from_backfill_job(job)
+      info = INFO.find { |_, v| v[:backfill_job] == job }
+      raise ArgumentError, "Unknown backfill job: #{job}" unless info
+
+      new(**info.second.merge(key: info.first))
+    end
   end
 end
