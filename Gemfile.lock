@@ -636,6 +636,7 @@ DEPENDENCIES
   hotwire-livereload
   importmap-rails
   jbuilder
+  loofah
   mission_control-jobs
   neighbor (~> 0.3.2)
   omniauth
