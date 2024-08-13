@@ -51,7 +51,11 @@ class Ingestors::Google::Gmail
     return if document&.last_sync_at.present? && document.last_sync_at.to_i > response.internal_date / 1000
 
     headers = extract_headers(response&.payload&.headers)
-    body = Nokogiri::HTML(response&.payload&.body&.data).text
+
+    body = Loofah.fragment(response&.payload&.body&.data)
+                 .scrub!(:prune)
+                 .to_text
+
     return if body.blank?
 
     Document.transaction do
