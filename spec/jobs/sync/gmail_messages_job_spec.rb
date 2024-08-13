@@ -46,7 +46,6 @@ RSpec.describe Sync::GmailMessagesJob, type: :job do
     expect(sync_log).to have_received(:mark_as_completed!)
   end
 
-
   after do
     clear_enqueued_jobs
     clear_performed_jobs
