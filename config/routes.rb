@@ -13,7 +13,9 @@ Rails.application.routes.draw do
 
   resource :search, only: %i[show]
 
-  resource :settings, only: %i[show update]
+  resource :settings, only: %i[show update] do
+    post 'resync', on: :collection
+  end
 
   # Devise User Paths
   devise_for :users,
