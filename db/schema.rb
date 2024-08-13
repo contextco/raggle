@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_12_133453) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_13_094132) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -110,13 +110,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_12_133453) do
   end
 
   create_table "gmail_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "from"
     t.string "to"
     t.string "subject"
     t.datetime "received_at"
+    t.jsonb "message_metadata_payload"
   end
 
   create_table "google_drive_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
