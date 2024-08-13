@@ -56,10 +56,10 @@ class Ingestors::Google::Gmail
 
     Document.transaction do
       if document.present?
-        document.documentable.update_and_rechunk!(response, body:, headers:)
+        document.documentable.update_and_rechunk!(filtered_message(response), body:, headers:)
         UserDocumentOwnership.upsert({ user_id: user.id, document_id: document.id }, unique_by: %i[user_id document_id])
       else
-        gmail_message = GmailMessage.create_from_user_message!(response, body:, headers:)
+        gmail_message = GmailMessage.create_from_user_message!(filtered_message(response), body:, headers:)
         UserDocumentOwnership.upsert({ user_id: user.id, document_id: gmail_message.document.id }, unique_by: %i[user_id document_id])
       end
     end
@@ -86,6 +86,10 @@ class Ingestors::Google::Gmail
     else
       'in:anywhere'
     end
+  end
+
+  def filtered_message(payload)
+    payload.to_h.except('raw', 'payload')
   end
 
   attr_reader :client, :user

@@ -20,6 +20,7 @@ RSpec.describe Ingestors::Google::Gmail do
     allow(Signet::OAuth2::Client).to receive(:new).and_return(mock_oauth_client)
     allow(mock_oauth_client).to receive(:fetch_access_token!)
     allow(mock_client).to receive(:authorization).and_return(mock_oauth_client)
+    allow(mock_message).to receive(:to_h).and_return({ id: 'message_id', internal_date: Time.current.to_i * 1000 }.stringify_keys)
   end
 
   describe '#ingest' do
@@ -55,7 +56,7 @@ RSpec.describe Ingestors::Google::Gmail do
       let!(:gmail_message) { create(:gmail_message, document: existing_document) }
 
       it 'updates the existing document' do
-        expect { ingestor.ingest }.to change { gmail_message.reload.payload }.to(mock_message.to_json)
+        expect { ingestor.ingest }.to change { gmail_message.reload.message_metadata_payload }.to(mock_message.to_h)
       end
     end
 
@@ -65,7 +66,7 @@ RSpec.describe Ingestors::Google::Gmail do
       let(:mock_message) { instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: 2.days.ago.to_i) }
 
       it 'does not update the existing document' do
-        expect { ingestor.ingest }.not_to(change { gmail_message.reload.payload })
+        expect { ingestor.ingest }.not_to(change { gmail_message.reload.message_metadata_payload })
       end
     end
 
