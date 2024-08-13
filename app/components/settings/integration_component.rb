@@ -7,6 +7,7 @@ class Settings::IntegrationComponent < ApplicationComponent
   attribute :integration_link
   attribute :connected, default: false
   attribute :resources
+  attribute :integration_key
 
   def sentinel_connected_class
     "#{title.downcase.gsub(' ', '-')}-integration-connected"

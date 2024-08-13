@@ -10,7 +10,8 @@
           title: 'Google Drive',
           integration_link: auth_provider_path(provider: :google_with_google_drive),
           connected: current_user.google_docs_permission_granted?,
-          resources: current_user.documents.where(documentable_type: GoogleDriveFile.name)
+          resources: current_user.documents.where(documentable_type: GoogleDriveFile.name),
+          integration_key: :google_docs,
         ) %>
         <%= render Settings::IntegrationComponent.new(
           icon: :envelope,
@@ -18,7 +19,8 @@
           resource_name: :message,
           integration_link: auth_provider_path(provider: :google_with_gmail),
           connected: current_user.gmail_permission_granted?,
-          resources: current_user.documents.where(documentable_type: GmailMessage.name)
+          resources: current_user.documents.where(documentable_type: GmailMessage.name),
+          integration_key: :gmail,
         ) %>
       </div>
 

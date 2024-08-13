@@ -5,11 +5,19 @@
       <div class="flex items-center gap-2">
         <%= title %>
       </div>
-      <% if connected %>
-        <div class="text-xs text-stone-500">
-          <%= pluralize(resources.count, resource_name.to_s) %> synced
-        </div>
-      <% end %>
+      <div class="flex items-center text-stone-500 gap-1">
+        <% if connected %>
+          <div class="text-xs text-stone-500">
+            <%= pluralize(resources.count, resource_name.to_s) %> synced
+          </div>
+          •
+          <%= button_to resync_settings_path(integration_key:), class: 'text-xs flex items-center gap-1 group' do %>
+            <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4' } %>
+            <span class="group-hover:underline">Resync</span>
+          <% end %>
+        <% end %>
+
+      </div>
     </div>
   </div>
 
