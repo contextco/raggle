@@ -7,7 +7,7 @@ class GoogleDriveFile < ApplicationRecord
 
   Owner = Struct.new(:display_name, :email_address, :picture, keyword_init: true) do
     def profile_picture_url
-      picture['url']
+      picture&.fetch('url', nil)
     end
   end
 

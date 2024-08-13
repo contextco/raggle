@@ -1,0 +1,26 @@
+<%= link_to link_to_gmail_message(document.stable_id),
+            target: '_blank',
+            class: 'flex py-2 items-center gap-4 rounded-md duration-200 group relative z-10',
+            id: dom_id(document.documentable, :result) do %>
+  <div class="absolute group-hover:bg-white w-full h-full -z-10 group-hover:scale-110 duration-200 rounded-md top-0 left-0"></div>
+  <div class="w-6 shrink-0">
+    <%= image_tag 'search/gmail.svg' %>
+  </div>
+
+  <div class="flex flex-col gap-1 grow">
+    <div class="text-sm text-stone-700">
+      <%= document.documentable.subject %>
+    </div>
+    <div class="flex items-center gap-1 text-xs text-stone-600">
+      <div class="flex gap-1 text-xs">
+        From <%= document.documentable.from %>
+      </div>
+      •
+      <div class="flex gap-1">
+        Received <%= time_ago_in_words(document.documentable.received_at) %> ago
+      </div>
+    </div>
+
+    <div class="text-xs line-clamp-2 text-stone-500"><%= document.chunks.first.content.force_encoding('UTF-8') %></div>
+  </div>
+<% end %>
