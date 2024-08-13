@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Sync::GoogleDocsJob < ApplicationJob
+  include LoggableJob
+
   queue_as :default
 
   def perform(user)
