@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :gmail_message do
-    payload do
+    message_metadata_payload do
       {
         id: '17b8f1d1b1b1b1b1',
         threadId: '17b8f1d1b1b1b1b1',
