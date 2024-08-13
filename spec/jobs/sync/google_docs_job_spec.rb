@@ -24,7 +24,7 @@ RSpec.describe Sync::GoogleDocsJob, type: :job do
 
   it 'starts and ends logging' do
     perform_enqueued_jobs do
-      expect(SyncLog).to receive(:start).with(task_name: 'Sync::GoogleDocsJob', user:).and_return(double('SyncLog', mark_as_completed!: true))
+      expect(SyncLog).to receive(:start).with(task_name: :google_docs, user:).and_return(double('SyncLog', mark_as_completed!: true))
       Sync::GoogleDocsJob.perform_later(user)
     end
   end
