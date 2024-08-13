@@ -11,9 +11,9 @@
             <%= pluralize(resources.count, resource_name.to_s) %> synced
           </div>
           •
-          <%= button_to resync_settings_path(integration_key:), class: 'text-xs flex items-center gap-1 group' do %>
+          <%= button_to resync_settings_path(integration_key:), class: 'text-xs flex items-center gap-1 group/resync' do %>
             <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4' } %>
-            <span class="group-hover:underline">Resync</span>
+            <span class="group-hover/resync:underline">Resync</span>
           <% end %>
         <% end %>
 
