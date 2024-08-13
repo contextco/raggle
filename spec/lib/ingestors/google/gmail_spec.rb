@@ -10,7 +10,7 @@ RSpec.describe Ingestors::Google::Gmail do
   let(:mock_message) do
     instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
                                                     payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
-                                                                                                                 body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: 'Test Body')))
+                                                                                                                 body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '<p>Test Body</p>')))
   end
 
   before do
@@ -49,6 +49,11 @@ RSpec.describe Ingestors::Google::Gmail do
     it 'associates the document with the user' do
       ingestor.ingest
       expect(user.documents.where(documentable_type: GmailMessage.name)).to include(GmailMessage.last.document)
+    end
+
+    it 'strips HTML tags from the message body' do
+      expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
+      expect(GmailMessage.last.document.chunks.first.content).to eq('Test Body')
     end
 
     context 'when a document already exists' do
