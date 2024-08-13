@@ -10,8 +10,10 @@ RSpec.describe Ingestors::Google::Gmail do
   let(:mock_message) do
     instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
                                                     payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
-                                                                                                                 body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '<p>Test Body</p>')))
+                                                                                                                 body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: message_content)))
   end
+
+  let(:message_content) { '<p>Test Body</p>' }
 
   before do
     allow(Google::Apis::GmailV1::GmailService).to receive(:new).and_return(mock_client)
@@ -53,7 +55,25 @@ RSpec.describe Ingestors::Google::Gmail do
 
     it 'strips HTML tags from the message body' do
       expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
-      expect(GmailMessage.last.document.chunks.first.content).to eq('Test Body')
+      expect(GmailMessage.last.document.chunks.first.content.strip).to eq('Test Body')
+    end
+
+    context 'when the message has style tags' do
+      let(:message_content) { '<style>#something {}</style><p>Test Body</p>' }
+
+      it 'strips the style tags' do
+        expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
+        expect(GmailMessage.last.document.chunks.first.content.strip).to eq('Test Body')
+      end
+    end
+
+    context 'when the message has script tags' do
+      let(:message_content) { '<script>alert("hello")</script><p>Test Body</p>' }
+
+      it 'strips the script tags' do
+        expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
+        expect(GmailMessage.last.document.chunks.first.content.strip).to eq('Test Body')
+      end
     end
 
     context 'when a document already exists' do
