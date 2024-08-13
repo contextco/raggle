@@ -29,7 +29,7 @@ RSpec.describe Sync::GmailMessagesJob, type: :job do
     allow(gmail_ingestor).to receive(:ingest)
 
     perform_enqueued_jobs do
-      expect(SyncLog).to receive(:start).with(task_name: 'Sync::GmailMessagesJob', user:).and_return(sync_log)
+      expect(SyncLog).to receive(:start).with(task_name: :gmail, user:).and_return(sync_log)
       expect(sync_log).to receive(:mark_as_completed!)
       Sync::GmailMessagesJob.perform_later(user)
     end
@@ -42,7 +42,7 @@ RSpec.describe Sync::GmailMessagesJob, type: :job do
       Sync::GmailMessagesJob.perform_now(user)
     end.to raise_error(StandardError, 'Something went wrong')
 
-    expect(SyncLog).to have_received(:start).with(task_name: 'Sync::GmailMessagesJob', user:)
+    expect(SyncLog).to have_received(:start).with(task_name: :gmail, user:)
     expect(sync_log).to have_received(:mark_as_completed!)
   end
 
