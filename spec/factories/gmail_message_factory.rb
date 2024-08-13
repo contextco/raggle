@@ -13,6 +13,11 @@ FactoryBot.define do
       }.to_json
     end
 
+    subject { 'Test Email' }
+    from { 'from@example.com' }
+    to { 'to@example.com' }
+    received_at { 2.days.ago }
+
     association :document, factory: :document, strategy: :build
   end
 end

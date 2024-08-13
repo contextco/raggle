@@ -52,3 +52,7 @@
     scrollbar-gutter: stable;
 }
 
+.whitespace-collapse-spaces {
+    white-space-collapse: preserve-spaces;
+}
+

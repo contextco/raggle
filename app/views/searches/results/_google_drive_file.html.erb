@@ -10,7 +10,9 @@
     </div>
     <div class="flex items-center gap-1 text-xs text-stone-600">
       <div class="flex gap-1">
-        <%= image_tag document.documentable.owners.first.profile_picture_url, class: 'rounded-full size-4', referrerpolicy: 'no-referrer' %>
+        <% if document.documentable.owners.first.profile_picture_url.present? %>
+          <%= image_tag document.documentable.owners.first.profile_picture_url, class: 'rounded-full size-4', referrerpolicy: 'no-referrer' %>
+        <% end %>
         <div class="text-xs">
           <%= document.documentable.owners.first.display_name %>
         </div>
