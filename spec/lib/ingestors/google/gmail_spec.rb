@@ -8,9 +8,18 @@ RSpec.describe Ingestors::Google::Gmail do
   let(:mock_oauth_client) { instance_double(Signet::OAuth2::Client) }
   let(:mock_client) { instance_double(Google::Apis::GmailV1::GmailService) }
   let(:mock_message) do
-    instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
-                                                    payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
-                                                                                                                 body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: message_content)))
+    instance_double(
+      Google::Apis::GmailV1::Message,
+      id: 'message_id', internal_date: Time.current.to_i * 1000,
+      payload: instance_double(
+        Google::Apis::GmailV1::MessagePart,
+        parts: [],
+        headers: [
+          instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')
+        ],
+        body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: message_content)
+      )
+    )
   end
 
   let(:message_content) { '<p>Test Body</p>' }
@@ -76,6 +85,52 @@ RSpec.describe Ingestors::Google::Gmail do
       end
     end
 
+    context 'when the message has a text/plain part' do
+      let(:mock_message) do
+        instance_double(
+          Google::Apis::GmailV1::Message,
+          id: 'message_id', internal_date: Time.current.to_i * 1000,
+          payload: instance_double(
+            Google::Apis::GmailV1::MessagePart,
+            headers: [
+              instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')
+            ],
+            parts: [
+              instance_double(Google::Apis::GmailV1::MessagePart, mime_type: 'text/plain', body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: 'Text/Plain Body'))
+            ]
+          )
+        )
+      end
+
+      it 'uses the text/plain part' do
+        expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
+        expect(GmailMessage.last.document.chunks.first.content.strip).to eq('Text/Plain Body')
+      end
+    end
+
+    context 'when the message has a text/html part' do
+      let(:mock_message) do
+        instance_double(
+          Google::Apis::GmailV1::Message,
+          id: 'message_id', internal_date: Time.current.to_i * 1000,
+          payload: instance_double(
+            Google::Apis::GmailV1::MessagePart,
+            headers: [
+              instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')
+            ],
+            parts: [
+              instance_double(Google::Apis::GmailV1::MessagePart, mime_type: 'text/html', body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '<p>Text/HTML Body</p>'))
+            ]
+          )
+        )
+      end
+
+      it 'uses the text/html part' do
+        expect { ingestor.ingest }.to change { user.documents.where(documentable_type: GmailMessage.name).count }.by(1)
+        expect(GmailMessage.last.document.chunks.first.content.strip).to eq('Text/HTML Body')
+      end
+    end
+
     context 'when a document already exists' do
       let!(:existing_document) { create(:document, stable_id: 'message_id', last_sync_at: 1.day.ago) }
       let!(:gmail_message) { create(:gmail_message, document: existing_document) }
@@ -97,9 +152,22 @@ RSpec.describe Ingestors::Google::Gmail do
 
     context 'when the message has non-English characters' do
       let(:mock_message) do
-        instance_double(Google::Apis::GmailV1::Message, id: 'message_id', internal_date: Time.current.to_i * 1000,
-                                                        payload: instance_double(Google::Apis::GmailV1::MessagePart, headers: [instance_double(Google::Apis::GmailV1::MessagePartHeader, name: 'Subject', value: 'Test Subject')],
-                                                                                                                     body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '👋🌎')))
+        instance_double(
+          Google::Apis::GmailV1::Message,
+          id: 'message_id',
+          internal_date: Time.current.to_i * 1000,
+          payload: instance_double(
+            Google::Apis::GmailV1::MessagePart,
+            parts: [],
+            headers: [
+              instance_double(
+                Google::Apis::GmailV1::MessagePartHeader,
+                name: 'Subject', value: 'Test Subject'
+              )
+            ],
+            body: instance_double(Google::Apis::GmailV1::MessagePartBody, data: '👋🌎')
+          )
+        )
       end
 
       it 'exports the message' do

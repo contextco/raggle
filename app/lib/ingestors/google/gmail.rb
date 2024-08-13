@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable Metrics/PerceivedComplexity
-
 class Ingestors::Google::Gmail
   def initialize(user)
     client = Signet::OAuth2::Client.new(
@@ -51,11 +48,7 @@ class Ingestors::Google::Gmail
     return if document&.last_sync_at.present? && document.last_sync_at.to_i > response.internal_date / 1000
 
     headers = extract_headers(response&.payload&.headers)
-
-    body = Loofah.fragment(response&.payload&.body&.data)
-                 .scrub!(:prune)
-                 .to_text
-
+    body = extract_body(response)
     return if body.blank?
 
     Document.transaction do
@@ -96,8 +89,23 @@ class Ingestors::Google::Gmail
     payload.to_h.except(:raw, :payload)
   end
 
+  def extract_body(response)
+    part = part_matching_mime_type(response, 'text/plain')
+    return part.body.data if part.present?
+
+    part = part_matching_mime_type(response, 'text/html')
+    return html_scrub(part.body.data) if part.present?
+
+    html_scrub(response&.payload&.body&.data)
+  end
+
+  def html_scrub(html)
+    Loofah.fragment(html).scrub!(:prune).to_text
+  end
+
+  def part_matching_mime_type(response, mime_type)
+    response&.payload&.parts&.find { |part| part.mime_type == mime_type }
+  end
+
   attr_reader :client, :user
 end
-
-# rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/PerceivedComplexity
