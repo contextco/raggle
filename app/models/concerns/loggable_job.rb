@@ -10,15 +10,23 @@ module LoggableJob
   private
 
   def log_task
-    @log = SyncLog.start(task_name: self.class.name, user: arguments.first)
+    mark_task_as_started
     yield
-    @log.mark_as_completed!
+    mark_task_as_completed
   rescue StandardError => e
-    mark_completed
+    mark_task_as_completed
     raise e
   end
 
-  def mark_completed
-    @log.mark_as_completed!
+  def mark_task_as_started
+    log
+  end
+
+  def mark_task_as_completed
+    log.mark_as_completed!
+  end
+
+  def log
+    @log ||= SyncLog.start(task_name: self.class.name, user: arguments.first)
   end
 end
