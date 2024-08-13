@@ -47,4 +47,14 @@ RSpec.describe 'Settings', type: :request do
       end
     end
   end
+
+  describe 'POST #resync' do
+    Integration::INFO.each_key do |key|
+      it "enqueues a backfill job for #{key}" do
+        expect do
+          post resync_settings_path, params: { integration_key: key }
+        end.to have_enqueued_job(Integration::INFO[key][:backfill_job])
+      end
+    end
+  end
 end
