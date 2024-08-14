@@ -12,4 +12,8 @@ class Settings::IntegrationComponent < ApplicationComponent
   def sentinel_connected_class
     "#{title.downcase.gsub(' ', '-')}-integration-connected"
   end
+
+  def sync_in_progress?
+    current_user.sync_logs.latest(integration_key)&.in_progress?
+  end
 end

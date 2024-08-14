@@ -11,7 +11,7 @@ RSpec.describe Sync::GoogleDocsJob, type: :job do
   before do
     allow(Ingestors::Google::Docs).to receive(:new).with(user).and_return(google_docs_ingestor)
     allow(google_docs_ingestor).to receive(:ingest)
-    allow(SyncLog).to receive(:start).and_return(double('SyncLog', mark_as_completed!: true))
+    allow(user.sync_logs).to receive(:start!).and_return(double('SyncLog', mark_as_completed!: true))
   end
 
   it 'performs the job' do
@@ -24,13 +24,8 @@ RSpec.describe Sync::GoogleDocsJob, type: :job do
 
   it 'starts and ends logging' do
     perform_enqueued_jobs do
-      expect(SyncLog).to receive(:start).with(task_name: :google_docs, user:).and_return(double('SyncLog', mark_as_completed!: true))
+      expect(user.sync_logs).to receive(:start!).with(task_name: :google_docs).and_return(double('SyncLog', mark_as_completed!: true))
       Sync::GoogleDocsJob.perform_later(user)
     end
-  end
-
-  after do
-    clear_enqueued_jobs
-    clear_performed_jobs
   end
 end
