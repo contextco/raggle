@@ -11,7 +11,7 @@ SideKick 🥾 is open source LLM chat and AI search that runs over your team's d
 
 Sidekick is fully self-hosted and can be deployed on most cloud infrastructure that supports Docker images.
 
-### Self Host
+### Configuration
 
 1. Create a new Google OAuth application that can be used to authenticate your team and allow their Google data to be integrated into Sidekick.
     1. Visit ![alt text](image.png)
@@ -29,41 +29,7 @@ Sidekick is fully self-hosted and can be deployed on most cloud infrastructure t
     Copy the keys into your .env file (or otherwise into the environment where you will deploy this Docker image).
 
 
-2. Create a new Google OAuth application that can be used to authenticate your team and allow their Google data to be integrated into Sidekick. Creating an OAuth app is free and does not require that you host the application on GCP. 
-    1. [Create a new project](https://console.cloud.google.com/projectcreate) in your Google Cloud account.
-    1. Once initialized, configure the consent screen for users that sign up to your Sidekick instance.
-       ![image](https://github.com/user-attachments/assets/f131660d-d664-40d6-af2a-eeb4581019e7)
-    1. In the next screen, configure the OAuth application according to how you want it to be displayed to your users.
-    1. Ensure that 'Authorized Domains' is setup to point at the URL where your Sidekick instance will be deployed. For example, if you want your application to be available at `https://search.acmeco.com`, add "acmeco.com" URL as an authorized domain.
-        > ℹ️ If you see the error "Must be a top level domain" when adding your authorized domain, you may need to authenticate your domain with Google. To do so, add your domain as a property with Google Search Console.
-        > 
-        > ![image](https://github.com/user-attachments/assets/b1303e62-0552-42c8-8c1d-5fedb4e6fa97)
-
-    1. Enable all of the default scopes for your application. In addition, add scopes that will allow Sidekick to ingest Gmail and Google Drive data.
-       - https://www.googleapis.com/auth/drive.readonly
-       - https://www.googleapis.com/auth/gmail.readonly
-      
-       Once your scopes have been added, the add/remove scopes table should look like this:
-
-       ![image](https://github.com/user-attachments/assets/79bc7ef8-67e9-4044-975d-34979e739a0a)
-
-3. Create credentials for the Google OAuth application. On the [OAuth credentials screen](https://console.cloud.google.com/apis/credentials), click 'Create Credentials' and then 'Client OAuth ID'.
-
-  ![image](https://github.com/user-attachments/assets/1ffb67f5-3128-41e3-b5f4-7aa15ef3a780)
-     
-  1. Select 'Web Application' and fill in the "Authorized Javascript Origin" and "Authorized Redirect URIs" fields.
-
-      1. In "Authorized Javascript Origin", add the URL where you will host this application. Eg: "https://search.acmeco.com"
-      2. In "Authorized Redirect URIs" add the following paths with your URL prefixed:
-           - `/auth/google_oauth2`
-           - `/_/permissions/google_with_google_drive`
-           - `/_/permissions/google_with_gmail`
-          
-          For example, for `/auth/google_oauth2`, add `https://search.acmeco.com/auth/google_oauth2`
-
-  1. Create the credentials and copy the Client ID and Secret. Add these as environment variables to your deployment under `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
-
-     ![image](https://github.com/user-attachments/assets/14eaf5c9-f2cd-4a0a-8fb6-515868dc255a)
+1. Create a new Google OAuth application that can be used to authenticate your team and allow their Google Workspace data to be indexed. Follow the instructions [in the wiki](https://github.com/contextco/chat/wiki/Setup-Google-OAuth) to setup this integration.
 
 1. Add your OpenAI and Anthropic (optional) API keys as environment variables:
 
@@ -71,6 +37,47 @@ Sidekick is fully self-hosted and can be deployed on most cloud infrastructure t
    OPENAI_KEY=xxx
    ANTHROPIC_API_KEY=xxx
    ```
+
+### Deployment
+
+1. A sidekick instance can be run in one of two ways:
+    - **Monolithic** This version runs all dependencies within a single Docker image and is the simplest to setup.
+        **Pros**:
+        - All dependencies are included within a single Docker image, so no additional external services are required.
+        - Easiest to deploy and get started with.
+        **Cons**:
+        - Requires provisioning and mounting of a persistent disk to maintain database state across restarts.
+        - Harder to manage backups and versioning of persisted data.
+    - **Server Only** Allows you to run the server and workers as independent services.
+        **Pros**:
+        - Can reuse existing database server resources.
+        - Requires slightly less resources to deploy.
+        **Cons**:
+        - Requires maintaining additional external Redis and Postgres dependencies, which may be overhead if you don't already maintain these.
+        - Some additional setup required to point the server instance at your external dependencies.
+
+#### Monolithic Deployment
+
+```
+ # Assuming your environment variables are configured in .env
+
+ docker run --env-file=.env \
+   -v sidekick-data:/var/lib/postgresql/15/main \
+   ghcr.io/contextco/chat:latest bin/monolith
+```
+
+#### Server-Only Deployment
+
+For a server-only deployment you will need to configure two additional environment variables:
+- `DATABASE_URL` pointing to an accessible Postgres server (eg: postgresql://user:password@host:5432/my_database)
+- `REDIS_URL` pointing to an accessible Redis server (eg: redis://username:password@host:6379)
+
+```
+ # Assuming your environment variables are configured in .env
+
+ docker run --env-file=.env ghcr.io/contextco/chat:latest bin/server-only
+```
+
 
 ## Feedback?
 We would love to hear it! Open an issue and let us know, or email us at henry@context.ai
