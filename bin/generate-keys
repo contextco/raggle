@@ -7,4 +7,5 @@ newpass() {
 echo "ENCRYPTION_KEY=$(newpass)"
 echo "ENCRYPTION_DETERMINISTIC_KEY=$(newpass)"
 echo "ENCRYPTION_KEY_DERIVATION_SALT=$(newpass)"
+echo "SECRET_KEY_BASE=$(newpass)"
 
