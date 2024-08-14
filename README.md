@@ -4,7 +4,7 @@
 SideKick 🥾 is open source LLM chat and AI search that runs over your team's data.
 
 - Connect your team's data sources, today supporting Google Docs and GMail with more available soon.
-- Perform semantic searches all your team's data and create generative AI summaries.
+- Perform RAG over all your team's data.
 - Integrate directly with frontier models over API and switch between them to get the best of each model's strengths 
 
 ## Get Started
@@ -12,9 +12,6 @@ SideKick 🥾 is open source LLM chat and AI search that runs over your team's d
 Sidekick is fully self-hosted and can be deployed on most cloud infrastructure that supports Docker images.
 
 ### Configuration
-
-1. Create a new Google OAuth application that can be used to authenticate your team and allow their Google data to be integrated into Sidekick.
-    1. Visit ![alt text](image.png)
 
 1. Generate encryption credentials for your deployment.
 
@@ -24,6 +21,7 @@ Sidekick is fully self-hosted and can be deployed on most cloud infrastructure t
     ENCRYPTION_KEY=xxx
     ENCRYPTION_DETERMINISTIC_KEY=xxx
     ENCRYPTION_KEY_DERIVATION_SALT=xxx
+    SECRET_KEY_BASE=xxx
     ```
 
     Copy the keys into your .env file (or otherwise into the environment where you will deploy this Docker image).
