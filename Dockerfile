@@ -22,6 +22,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git postgresql-server-dev-15 libvips pkg-config
 
 
+
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
