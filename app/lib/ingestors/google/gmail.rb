@@ -75,11 +75,9 @@ class Ingestors::Google::Gmail
   end
 
   def search_query
-    latest_received_at = user.documents
-                             .joins("INNER JOIN gmail_messages ON documents.documentable_id = gmail_messages.id AND documents.documentable_type = 'GmailMessage'")
-                             .maximum('gmail_messages.received_at')
-    if latest_received_at
-      "in:anywhere after:#{(latest_received_at - 1.day).strftime('%Y/%m/%d')}"
+    latest_sync_at = user.sync_logs.where(task_name: 'Sync::GmailMessagesJob')&.maximum(:started_at)
+    if latest_sync_at.present?
+      "in:anywhere after:#{latest_sync_at.strftime('%Y/%m/%d')}"
     else
       'in:anywhere'
     end

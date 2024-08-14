@@ -22,6 +22,7 @@ RSpec.describe Ingestors::Google::Gmail do
     )
   end
 
+  let(:sync_log) { create(:sync_log, task_name: 'Sync::GmailMessagesJob', user:) }
   let(:message_content) { '<p>Test Body</p>' }
 
   before do
@@ -40,6 +41,13 @@ RSpec.describe Ingestors::Google::Gmail do
     before do
       allow(mock_client).to receive(:list_user_messages).and_return(mock_message_list)
       allow(mock_client).to receive(:get_user_message).and_return(mock_message)
+    end
+
+    it 'generates a search query with modified time' do
+      sync_log.save!
+      expect(mock_client).to receive(:list_user_messages).with('me', include_spam_trash: false,
+                                                                     max_results: 100, page_token: nil, q: 'in:anywhere after:2020/07/01')
+      ingestor.ingest
     end
 
     it 'fetches Google Gmail messages' do

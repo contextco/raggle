@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   belongs_to :team
   has_many :chats, dependent: :destroy
+  has_many :sync_logs, dependent: :destroy
 
   has_many :document_ownerships, class_name: 'UserDocumentOwnership', dependent: :delete_all
   has_many :documents, through: :document_ownerships
