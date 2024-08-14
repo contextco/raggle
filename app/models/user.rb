@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :documents, through: :document_ownerships
   has_many :chunks, through: :documents
 
+  has_many :sync_logs, dependent: :destroy
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable
