@@ -12,7 +12,13 @@
           </div>
           •
           <%= button_to resync_settings_path(integration_key:), class: 'text-xs flex items-center gap-1 group/resync' do %>
-            <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4' } %>
+            <%= content_tag :div, class: ['size-4', {
+              'animate-spin': sync_in_progress?,
+            }] do %>
+              <div>
+                <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4' } %>
+              </div>
+            <% end %>
             <span class="group-hover/resync:underline">Resync</span>
           <% end %>
         <% end %>
