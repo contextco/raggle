@@ -15,7 +15,7 @@ Sidekick is designed to be fully self-hosted and can be deployed on most cloud i
 1. Generate encryption credentials for your deployment.
 
     ```
-    $ docker run contextco/chat bin/generate_keys
+    $ docker run ghcr.io/contextco/chat:latest bin/generate_keys
 
     ENCRYPTION_KEY=xxx
     ENCRYPTION_DETERMINISTIC_KEY=xxx
@@ -47,7 +47,7 @@ Sidekick is designed to be fully self-hosted and can be deployed on most cloud i
         **Cons**:
         - Requires provisioning and mounting of a persistent disk to maintain database state across restarts.
         - Harder to manage backups and versioning of persisted data.
-        
+
     - **Server Only** Allows you to run the server and workers as independent services.
         
         **Pros**:
