@@ -66,6 +66,7 @@ A sidekick instance can be run in one of two ways:
  # Assuming your environment variables are configured in .env
 
  docker run --env-file=.env \
+   -p 3000:3000 \
    -v sidekick-data:/var/lib/postgresql/15/main \
    ghcr.io/contextco/chat:latest bin/monolith
 ```
@@ -79,7 +80,7 @@ For a server-only deployment you will need to configure two additional environme
 ```
  # Assuming your environment variables are configured in .env
 
- docker run --env-file=.env ghcr.io/contextco/chat:latest bin/server-only
+ docker run --env-file=.env ghcr.io/contextco/chat:latest -p 3000:3000 bin/server-only
 ```
 
 ## Feedback?
