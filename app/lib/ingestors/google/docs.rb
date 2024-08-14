@@ -17,7 +17,7 @@ class Ingestors::Google::Docs
   REQUIRED_SCOPE = 'https://www.googleapis.com/auth/drive.readonly'
 
   def ingest
-    files = google_drive_client.list_files(q: 'mimeType = "application/vnd.google-apps.document"').items
+    files = google_drive_client.list_files(q: search_query).items
     files.each(&method(:persist_or_update_doc))
 
     nil
@@ -45,6 +45,16 @@ class Ingestors::Google::Docs
   def google_drive_client
     @google_drive_client ||= Google::Apis::DriveV2::DriveService.new.tap do |drive|
       drive.authorization = client
+    end
+  end
+
+  def search_query
+    last_sync_at = user.sync_logs.where(task_name: 'Sync::GoogleDocsJob')&.maximum(:started_at)
+
+    if last_sync_at.present?
+      "mimeType = 'application/vnd.google-apps.document' and modifiedTime > '#{last_sync_at.strftime('%Y-%m-%dT%H:%M:%S')}'"
+    else
+      "mimeType = 'application/vnd.google-apps.document'"
     end
   end
 
