@@ -2,13 +2,44 @@
 _[Star us on Github](https://github.com/contextco/chat)_
 
 # SideKick 🥾 By Context.ai
-SideKick 🥾 is an open source LLM and RAG chat product that provides similar features to both Glean and ChatGPT - but self-hosted
+SideKick 🥾 is open source LLM chat and AI search that runs over your team's data.
 
-**SideKick 🥾 provides:**
-- A best-in-class frontend to query an LLM, with conversation history, voice support, and model selection. Similar to ChatGPT, just private.
-- Connectors to RAG across data sources including Google Drive, Gmail, Notion, and more. Similar to Glean, just private.
-- Total data privacy. Run SideKick with a self-hosted open source LLM for the ultimate in privacy, or use AWS Bedrock / GCP Vertex / Azure OpenAI to retain data within your private cloud
-- XXX license for all core features, with a paid license only required for features contained in our Enterprise directory
+- Connect your team's data sources, today supporting Google Docs and GMail with more available soon.
+- Perform semantic searches all your team's data and create generative AI summaries.
+- Integrate directly with frontier models over API and switch between them to get the best of each model's strengths 
+
+## Get Started
+
+### Localhost
+
+```
+git clone https://github.com/contextco/chat
+cd chat
+
+docker-compose up -d
+```
+
+### Self-host (Single Image)
+
+1. Generate encryption credentials for your deployment.
+
+```
+docker run contextco/chat bin/generate_keys
+```
+
+Copy these keys into your .env file (or otherwise into the environment where you will deploy this Docker image).
+
+```
+ENCRYPTION_KEY=xxx
+ENCRYPTION_DETERMINISTIC_KEY=xxx
+ENCRYPTION_KEY_DERIVATION_SALT=xxx
+```
+
+2. Create a new Google OAuth application that can be used to authenticate your team and allow their Google data to be integrated into Sidekick.
+
+- Visit 
+
+
 
 ## Feedback?
 We would love to hear it! Open an issue and let us know, or email us at henry@context.ai
