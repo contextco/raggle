@@ -49,7 +49,7 @@ class Ingestors::Google::Docs
   end
 
   def search_query
-    last_sync_at = user.sync_logs.where(task_name: 'Sync::GoogleDocsJob').maximum(:started_at)
+    last_sync_at = user.sync_logs.where(task_name: 'Sync::GoogleDocsJob')&.maximum(:started_at)
 
     if last_sync_at.present?
       "mimeType = 'application/vnd.google-apps.document' and modifiedTime > '#{last_sync_at.strftime('%Y-%m-%dT%H:%M:%S')}'"
