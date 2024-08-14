@@ -1,15 +1,14 @@
 ![Github card](https://github.com/user-attachments/assets/50fc3276-d641-4931-b12a-e303cabf31ba)
 
 # SideKick 🥾 By Context.ai
-SideKick 🥾 is open source LLM chat and AI search that runs over your team's data.
+SideKick 🥾 is an open source LLM chat and RAG over your team's data.
 
-- Connect your team's data sources, today supporting Google Docs and GMail with more available soon.
-- Perform RAG over all your team's data.
-- Integrate directly with frontier models over API and switch between them to get the best of each model's strengths 
+- Perform RAG over all your team's data, today supporting Google Docs and Gmail, with more integrations available soon.
+- Chat directly with frontier models over API and switch between them to get the best of each model's strengths. 
 
 ## Get Started
 
-Sidekick is fully self-hosted and can be deployed on most cloud infrastructure that supports Docker images.
+Sidekick is designed to be fully self-hosted and can be deployed on most cloud infrastructure that supports Docker images.
 
 ### Configuration
 
@@ -75,7 +74,6 @@ For a server-only deployment you will need to configure two additional environme
 
  docker run --env-file=.env ghcr.io/contextco/chat:latest bin/server-only
 ```
-
 
 ## Feedback?
 We would love to hear it! Open an issue and let us know, or email us at henry@context.ai
