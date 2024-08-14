@@ -30,7 +30,7 @@ RSpec.describe Ingestors::Google::Docs do
     end
 
     it 'fetches Google Docs files' do
-      expect(mock_client).to receive(:list_files).with(q: 'mimeType = "application/vnd.google-apps.document"')
+      expect(mock_client).to receive(:list_files).with(q: "mimeType = 'application/vnd.google-apps.document'")
       ingestor.ingest
     end
 
