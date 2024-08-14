@@ -37,26 +37,28 @@ Sidekick is designed to be fully self-hosted and can be deployed on most cloud i
 
 ### Deployment
 
-1. A sidekick instance can be run in one of two ways:
-    - **Monolithic** This version runs all dependencies within a single Docker image and is the simplest to setup.
+A sidekick instance can be run in one of two ways:
 
-        **Pros**:
-        - All dependencies are included within a single Docker image, so no additional external services are required.
-        - Easiest to deploy and get started with.
-        
-        **Cons**:
-        - Requires provisioning and mounting of a persistent disk to maintain database state across restarts.
-        - Harder to manage backups and versioning of persisted data.
+- **Monolithic** This version runs all dependencies within a single Docker image and is the simplest to setup.
 
-    - **Server Only** Allows you to run the server and workers as independent services.
-        
-        **Pros**:
-        - Can reuse existing database server resources.
-        - Requires slightly less resources to deploy.
-        
-        **Cons**:
-        - Requires maintaining additional external Redis and Postgres dependencies, which may be overhead if you don't already maintain these.
-        - Some additional setup required to point the server instance at your external dependencies.
+    **Pros**:
+    - All dependencies are included within a single Docker image, so no additional external services are required.
+    - Easiest to deploy and get started with.
+
+    **Cons**:
+    - Requires provisioning and mounting of a persistent disk to maintain database state across restarts.
+    - Harder to manage backups and versioning of persisted data.
+
+- **Server Only** Allows you to run the server and workers as independent services.
+
+    **Pros**:
+    - Can reuse existing database server resources.
+    - Requires slightly less resources to deploy.
+
+    **Cons**:
+    - Requires maintaining additional external Redis and Postgres dependencies, which may be overhead if you don't already maintain these.
+    - Some additional setup required to point the server instance at your external dependencies.
+
 
 #### Monolithic Deployment
 
