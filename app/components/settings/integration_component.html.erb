@@ -11,18 +11,27 @@
             <%= pluralize(resources.count, resource_name.to_s) %> synced
           </div>
           •
-          <%= button_to resync_settings_path(integration_key:), class: 'text-xs flex items-center gap-1 group/resync' do %>
-            <%= content_tag :div, class: ['size-4', {
-              'animate-spin': sync_in_progress?,
-            }] do %>
+
+          <% if sync_in_progress? %>
+            <div class="text-xs flex items-center gap-1">
               <div>
-                <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4' } %>
+                <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4 animate-spin' } %>
               </div>
+              <span>Syncing started <%= time_ago_in_words(sync_log.started_at) %> ago</span>
+            </div>
+          <% else %>
+            <%= button_to resync_settings_path(integration_key:), class: 'text-xs flex items-center gap-1 group/resync' do %>
+              <%= content_tag :div, class: ['size-4', {
+                'animate-spin': sync_in_progress?,
+              }] do %>
+                <div>
+                  <%= heroicon 'arrow-path-rounded-square', options: { class: 'size-4' } %>
+                </div>
+              <% end %>
+              <span class="group-hover/resync:underline">Resync</span>
             <% end %>
-            <span class="group-hover/resync:underline">Resync</span>
           <% end %>
         <% end %>
-
       </div>
     </div>
   </div>

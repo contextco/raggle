@@ -14,6 +14,10 @@ class Settings::IntegrationComponent < ApplicationComponent
   end
 
   def sync_in_progress?
-    current_user.sync_logs.latest(integration_key)&.in_progress?
+    sync_log&.in_progress?
+  end
+
+  def sync_log
+    current_user.sync_logs.latest(integration_key)
   end
 end
