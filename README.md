@@ -16,7 +16,7 @@ Raggle is designed to be fully self-hosted and can be deployed on most cloud inf
 1. Generate encryption credentials for your deployment.
 
     ```
-    $ docker run ghcr.io/contextco/chat:latest bin/generate_keys
+    $ docker run ghcr.io/contextco/chat:latest bin/generate-keys
 
     ENCRYPTION_KEY=xxx
     ENCRYPTION_DETERMINISTIC_KEY=xxx
