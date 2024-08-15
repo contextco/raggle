@@ -22,7 +22,7 @@ RSpec.describe Ingestors::Google::Gmail do
     )
   end
 
-  let(:sync_log) { create(:sync_log, task_name: 'Sync::GmailMessagesJob', user:) }
+  let(:sync_log) { create(:sync_log, task_name: :gmail, user:) }
   let(:message_content) { '<p>Test Body</p>' }
 
   before do
