@@ -75,7 +75,7 @@ class Ingestors::Google::Gmail
   end
 
   def search_query
-    latest_sync_at = user.sync_logs.where(task_name: 'Sync::GmailMessagesJob')&.maximum(:started_at)
+    latest_sync_at = user.sync_logs.where(task_name: Integration.from_key!(:gmail).key)&.maximum(:started_at)
     if latest_sync_at.present?
       "in:anywhere after:#{latest_sync_at.strftime('%Y/%m/%d')}"
     else
