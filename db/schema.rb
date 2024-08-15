@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_13_122228) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_15_093548) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_13_122228) do
     t.vector "embedding", limit: 1536
     t.index ["document_id", "chunk_index"], name: "index_chunks_on_document_id_and_chunk_index", unique: true
     t.index ["document_id"], name: "index_chunks_on_document_id"
+    t.index ["embedding"], name: "index_chunks_on_embedding", opclass: :vector_l2_ops, using: :hnsw
   end
 
   create_table "console1984_commands", force: :cascade do |t|

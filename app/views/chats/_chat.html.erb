@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="flex flex-col gap-4 overflow-y-auto py-4 flex-1 items-center" data-chat-target="scrollContainer" data-scroll-to-bottom-target>
-      <div class="items max-w-prose w-full flex flex-col gap-4">
+      <div class="items max-w-3xl w-full flex flex-col gap-4">
         <% @chat.messages.each do |message| %>
           <% if message.role == 'assistant' %>
             <div class="flex gap-4 last:pb-8 w-full">
@@ -39,7 +39,7 @@
                 <div class="text-sm text-slate-700 flex gap-4">
                   <%= turbo_stream_from message %>
                   <div id="<%= dom_id(message) %>" class="leading-relaxed message-content min-h-4 px-2 py-1 rounded-md bg-stone-200 flex flex-col gap-1">
-                    <%== markdown_to_html(message.content) %>
+                    <div class="whitespace-pre-wrap"><%= message.content %></div>
                     <% if message.documents.present? %>
                       <div class="flex gap-2">
                         <% message.documents.each do |document| %>
@@ -53,7 +53,7 @@
                   </div>
                 </div>
               </div>
-              <div class="size-6 items-center h-full flex shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url, class: 'rounded-full overflow-hidden', referrerpolicy: 'no-referrer' %></div>
+              <div class="size-6 items-start mt-1 h-full flex shrink-0 overflow-hidden"><%= image_tag current_user.profile_picture_url, class: 'rounded-full overflow-hidden', referrerpolicy: 'no-referrer' %></div>
             </div>
           <% end %>
         <% end %>
