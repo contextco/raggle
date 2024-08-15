@@ -13,7 +13,11 @@ module ApplicationHelper
 
   def profile_picture_tag
     image_tag current_user.profile_picture_url,
-              class: 'rounded-full overflow-hidden size-full',
+              class: 'overflow-hidden size-full',
               referrerpolicy: 'no-referrer'
+  end
+
+  def delimited_pluralized(number, word)
+    "#{number_with_delimiter(number)} #{word.pluralize(number)}"
   end
 end
