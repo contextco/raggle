@@ -1,6 +1,6 @@
 <% content_for :content do %>
   <div class="flex flex-col">
-    <div class="flex justify-between pl-6 pr-2 py-2 border-b items-center h-12 bg-stone-100">
+    <div class="flex justify-between pl-6 pr-2 py-2 border-b items-center h-12">
       <div>
         <span class="font-serif font-medium text-stone-700 text-lg">Raggle</span> <span class="text-xs text-stone-500">by Context.ai</span>
       </div>
@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="flex items-stretch grow min-h-0">
-    <div class="w-12 h-full border-r flex flex-col items-center gap-2 py-1 justify-between">
+    <div class="h-full border-r flex flex-col items-center gap-2 py-1 justify-between bg-white px-1">
       <div class="flex flex-col gap-2">
         <%= render Ui::SidebarNavigationIconComponent.new(
           icon: 'magnifying-glass',
@@ -38,7 +38,7 @@
         path: settings_path
       ) %>
     </div>
-    <div class="w-full h-full overflow-y-auto">
+    <div class="w-full h-full overflow-y-auto bg-white">
       <%= yield %>
     </div>
   </div>

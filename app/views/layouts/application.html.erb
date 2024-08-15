@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <main class="h-screen flex flex-col bg-stone-100"
+    <main class="h-screen flex flex-col"
           data-controller="application">
       <div class="flex-1 flex flex-col h-full"><%= content_for?(:content) ? content_for(:content) : yield %></div>
     </main>

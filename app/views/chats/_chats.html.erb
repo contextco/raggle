@@ -1,9 +1,9 @@
-<div class="flex min-h-0 grow items-stretch h-full">
-  <div class="w-64 flex flex-col gap-1 shrink-0 items-stretch p-2 overflow-y-auto justify-between">
+<div class="flex min-h-0 grow items-stretch h-full bg-white">
+  <div class="w-64 flex flex-col gap-1 shrink-0 items-stretch p-2 overflow-y-auto justify-between bg-white">
     <div class="flex flex-col items-stretch gap-1">
       <% @chats.each do |chat| %>
-        <%= link_to chat_path(chat), class: ['p-2 text-sm rounded hover:bg-stone-200', {
-          'bg-stone-200': chat == @chat,
+        <%= link_to chat_path(chat), class: ['p-2 text-sm rounded hover:bg-stone-100', {
+          'bg-stone-100 border-l-2 border-stone-700': chat == @chat,
         }] do %>
           <div class="truncate">
             <%= chat.salient_message&.content.presence || 'Untitled' %>
