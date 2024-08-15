@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .message-content pre {
-    @apply bg-stone-200 p-2 rounded overflow-x-auto max-w-full;
+    @apply bg-white p-2 overflow-x-auto max-w-full border border-stone-400;
 }
 
 .message-content ol {

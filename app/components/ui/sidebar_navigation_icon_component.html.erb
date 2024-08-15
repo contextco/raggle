@@ -1,5 +1,7 @@
 <%= link_to path,
-            class: ['hover:bg-stone-200 p-2 rounded',
-                    { 'bg-stone-200': active? }] do %>
-  <%= heroicon icon, variant: :outline, options: { class: 'size-6 text-stone-600' } %>
+            class: ['p-2 text-stone-600 border-l-2',
+                    { 'border-stone-500': active? },
+                    { 'hover:border-stone-300 border-transparent': !active? },
+            ] do %>
+  <%= heroicon icon, variant: :outline, options: { class: 'size-6' } %>
 <% end %>
