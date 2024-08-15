@@ -1,14 +1,14 @@
-![Github card](https://github.com/user-attachments/assets/50fc3276-d641-4931-b12a-e303cabf31ba)
+![Github card](https://github.com/user-attachments/assets/6c0ec995-2fd1-4b6c-9ebd-552688df331f)
 
-# SideKick 🥾 By Context.ai
-SideKick 🥾 is an open source LLM chat and RAG over your team's data.
+# Raggle By Context.ai
+Raggle is an open source LLM chat and RAG over your team's data.
 
 - Perform RAG over all your team's data, today supporting Google Docs and Gmail, with more integrations available soon.
 - Chat directly with frontier models over API and switch between them to get the best of each model's strengths. 
 
 ## Get Started
 
-Sidekick is designed to be fully self-hosted and can be deployed on most cloud infrastructure that supports Docker images.
+Raggle is designed to be fully self-hosted and can be deployed on most cloud infrastructure that supports Docker images.
 
 ### Configuration
 
