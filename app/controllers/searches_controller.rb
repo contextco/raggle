@@ -17,6 +17,6 @@ class SearchesController < ApplicationController
     # TODO: Should the default be to search by embedding? Generating an embedding for the query makes it slow.
     #       We could alternately do full-text search, but this would mean we need to un-encrypt the chunk content.
     embedding = EmbeddingService.generate(params[:q])
-    @documents = current_user.documents.search_by_chunks(embedding).limit(10)
+    @documents = Document.search_by_chunks(embedding, current_user.documents).limit(10)
   end
 end

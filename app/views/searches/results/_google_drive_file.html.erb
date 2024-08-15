@@ -23,6 +23,6 @@
       </div>
     </div>
 
-    <div class="text-xs line-clamp-2 text-stone-500"><%= document.chunks.first.content %></div>
+    <div class="text-xs line-clamp-2 text-stone-500"><%= ActiveRecord::Encryption::Encryptor.new.decrypt(document.matching_content) %></div>
   </div>
 <% end %>
