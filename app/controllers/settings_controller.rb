@@ -6,5 +6,7 @@ class SettingsController < ApplicationController
   def resync
     integration = Integration.from_key!(params[:integration_key])
     integration.backfill!(current_user)
+
+    redirect_to settings_path
   end
 end
