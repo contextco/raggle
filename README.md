@@ -1,4 +1,5 @@
-![Github card](https://github.com/user-attachments/assets/6c0ec995-2fd1-4b6c-9ebd-552688df331f)
+![Github card](https://github.com/user-attachments/assets/6350c4e0-2985-4919-9d61-30fab0baeb4e)
+
 
 # Raggle By Context.ai
 Raggle is an open source, self-hosted alternative to **Glean** and **ChatGPT**: an employee LLM assistant with enterprise RAG search that can be deployed in your private cloud, without sharing data. 
