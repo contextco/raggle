@@ -22,14 +22,19 @@ class Document < ApplicationRecord
     end
   end
 
-  def self.search_by_chunks(embedding)
-    chunks = joins(:chunks)
-             .merge(Chunk.nearest_neighbors(:embedding, embedding, distance: :euclidean))
+  def self.search_by_chunks(embedding, scope = Document.all)
+    chunks = scope.joins(:chunks)
+                  .merge(Chunk.nearest_neighbors(:embedding, embedding, distance: :euclidean))
 
-    joins("INNER JOIN LATERAL (#{chunks.to_sql}) AS matching_chunks ON matching_chunks.document_id = documents.id")
-      .group('documents.id')
-      .reselect('documents.id, documents.*, MIN(matching_chunks.neighbor_distance) AS neighbor_distance')
-      .order('MIN(matching_chunks.neighbor_distance) ASC')
+    numbered_chunks = scope.joins("INNER JOIN LATERAL (#{chunks.to_sql}) AS matching_chunks ON matching_chunks.document_id = documents.id")
+                           .reselect('documents.id, documents.*, matching_chunks.content AS matching_content')
+                           .select('ROW_NUMBER() OVER (PARTITION BY documents.id ORDER BY matching_chunks.neighbor_distance ASC) AS row_num')
+                           .order('matching_chunks.neighbor_distance')
+
+    Document.with(numbered_chunks:)
+            .from(numbered_chunks, :numbered_chunks)
+            .select('numbered_chunks.*')
+            .where('row_num = 1')
   end
 
   def uploaded_file?
