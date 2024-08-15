@@ -46,6 +46,17 @@ RSpec.describe SearchesController, type: :request do
         get search_path, params: { q: 'foo' }
         expect(response.body).to include(dom_id(gmail_message, :result))
       end
+
+      context 'when the doc is not owned by the user' do
+        before do
+          google_drive_file.document.user_ownerships.delete_all
+        end
+
+        it 'does not render the results for the google drive file' do
+          get search_path, params: { q: 'foo' }
+          expect(response.body).not_to include(google_drive_file.title)
+        end
+      end
     end
   end
 end
