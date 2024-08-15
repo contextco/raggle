@@ -5,5 +5,5 @@ Use markdown to format your response.
 <% chunks.group_by(&:document).each do |document, chunks| %>
 <%# TODO: Add metadata about the document for citing.  %>
 Relevant chunks:
-<%= chunks.map(&:content).join("\n\n") %>
+<%= chunks.map(&:content).map {|c| c.force_encoding('UTF-8')}.join("\n\n") %>
 <% end %>
