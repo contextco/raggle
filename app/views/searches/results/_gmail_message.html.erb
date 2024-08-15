@@ -21,6 +21,6 @@
       </div>
     </div>
 
-    <div class="text-xs line-clamp-2 text-stone-500"><%= document.chunks.first.content.force_encoding('UTF-8') %></div>
+    <div class="text-xs line-clamp-2 text-stone-500"><%= ActiveRecord::Encryption::Encryptor.new.decrypt(document.matching_content).force_encoding('UTF-8') %></div>
   </div>
 <% end %>
