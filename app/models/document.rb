@@ -24,12 +24,13 @@ class Document < ApplicationRecord
 
   def self.search_by_chunks(embedding, scope = Document.all)
     chunks = scope.joins(:chunks)
-                  .merge(Chunk.nearest_neighbors(:embedding, embedding, distance: :euclidean))
+                  .merge(Chunk.nearest_neighbors(:embedding, embedding, distance: :euclidean).limit(50))
 
-    numbered_chunks = scope.joins("INNER JOIN LATERAL (#{chunks.to_sql}) AS matching_chunks ON matching_chunks.document_id = documents.id")
-                           .reselect('documents.id, documents.*, matching_chunks.content AS matching_content')
-                           .select('ROW_NUMBER() OVER (PARTITION BY documents.id ORDER BY matching_chunks.neighbor_distance ASC) AS row_num')
-                           .order('matching_chunks.neighbor_distance')
+    numbered_chunks = scope
+                      .joins("INNER JOIN LATERAL (#{chunks.to_sql}) AS matching_chunks ON matching_chunks.document_id = documents.id")
+                      .reselect('documents.id, documents.*, matching_chunks.content AS matching_content')
+                      .select('ROW_NUMBER() OVER (PARTITION BY documents.id ORDER BY matching_chunks.neighbor_distance ASC) AS row_num')
+                      .order('matching_chunks.neighbor_distance')
 
     Document.with(numbered_chunks:)
             .from(numbered_chunks, :numbered_chunks)
